@@ -14,6 +14,13 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "admin-lte": "^2.3.11",
+    "bootstrap": "^3.3.7",
+    "chart.js": "^2.5.0",
+    "expose-loader": "^0.7.3",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
     "vue": "^2.2.6",
     "vue-router": "^2.3.1"
   },
