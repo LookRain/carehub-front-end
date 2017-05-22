@@ -22,7 +22,7 @@ import AvContent from './components/AvContent.vue'
 import AvFooter from './components/AvFooter.vue'
 
 export default {
-  components: { AvNavbar, AvLeftSidebar, AvContentHeader, AvContent },
+  components: { AvNavbar, AvLeftSidebar, AvContentHeader, AvContent, AvFooter },
   name: 'app'
 }
 
