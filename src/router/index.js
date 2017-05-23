@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Page1 from '@/pages/Page1'
 import Admin from '@/pages/Admin'
+import ExamplePage from '@/pages/ExamplePage'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/admin',
       name: 'Admin',
       component: Admin
+    },
+    {
+      path: '/example',
+      name: 'ExamplePage',
+      component: ExamplePage
     }
   ]
 })
