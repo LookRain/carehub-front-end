@@ -3,6 +3,7 @@
 	<h1>
 		lalalalla
 	</h1>
+	<img src="../img/avatar.png" alt="">
 </div>
 </template>
 
