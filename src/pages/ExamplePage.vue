@@ -1,5 +1,6 @@
 <template>
 <div>
+<av-content-header primary='Home' secondary='ExamplePage'></av-content-header>
 
       <!-- Small boxes (Stat box) -->
       <div class="row">
@@ -496,8 +497,10 @@
 </template>
 
 <script>
-export default {
+import AvContentHeader from '../components/AvContentHeader.vue'
 
+export default {
+  components: { AvContentHeader },
   name: 'ExamplePage',
 
   data () {
