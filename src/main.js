@@ -7,6 +7,8 @@ import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-light.css'
 
+import fullCalendar from 'vue-fullcalendar'
+
 import 'jquery'
 import 'expose-loader?$!expose-loader?jQuery!jquery'
 // import 'admin-lte'
@@ -26,7 +28,7 @@ import 'jquery-ui/ui/widgets/sortable.js'
 import 'jquery-ui/ui/widgets/datepicker.js'
 import 'jquery-ui/themes/base/datepicker.css'
 import store from './store'
-
+Vue.component('full-calendar', fullCalendar)
 Vue.use(MuseUI)
 Vue.config.productionTip = false
 console.log(store)

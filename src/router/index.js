@@ -5,6 +5,7 @@ import Admin from '@/pages/Admin'
 import ExamplePage from '@/pages/ExamplePage'
 import AssignPatient from '@/pages/AssignPatient'
 import Settings from '@/pages/Settings'
+import AdminCalendar from '@/pages/AdminCalendar'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ export default new Router({
       path: '/assign_patient',
       name: 'AssignPatient',
       component: AssignPatient
+    },
+    {
+      path: '/admin_calendar',
+      name: 'AdminCalendar',
+      component: AdminCalendar
     },
     {
       path: '/settings',

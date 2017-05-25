@@ -40,7 +40,7 @@
         </li>
 
         <li>
-          <router-link  to="/page1" exact>
+          <router-link  to="/admin_calendar" exact>
             <i class="fa fa-th"></i> <span>Calendar/History</span>
             <!-- <span class="pull-right-container"> -->
               <!-- <small class="label pull-right bg-green">new</small> -->
