@@ -75,15 +75,6 @@
           </router-link>
         </li>
 
-        <li>
-          <router-link  to="/settings" exact>
-            <i class="fa fa-th"></i> <span>Settings</span>
-            <!-- <span class="pull-right-container"> -->
-              <!-- <small class="label pull-right bg-green">new</small> -->
-            <!-- </span> -->
-          </router-link>
-        </li>
-
 
        <!--  <li class="active treeview">
           <a href="#">
