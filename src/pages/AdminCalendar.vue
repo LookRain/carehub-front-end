@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<av-content-header primary='Home' secondary='Calendar and History'></av-content-header>
 		<br>
 		
 

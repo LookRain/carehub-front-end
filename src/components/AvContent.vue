@@ -1,23 +1,26 @@
 <template>
-<section class="content">
-<!-- /.content -->
+	<section class="content">
+		<av-content-header primary='Home' :secondary='this.$route.name'></av-content-header>
+		<!-- /.content -->
 
-    <router-view></router-view>
-</section>
-    
+		<router-view></router-view>
+	</section>
+	
 </template>
 
 <script>
-export default {
+	import AvContentHeader from '../components/AvContentHeader.vue'
 
-  name: 'AvContent',
+	export default {
+	  components: { AvContentHeader },
+	  name: 'AvContent',
 
-  data () {
-    return {
+	  data () {
+	    return {
 
-    }
-  }
-}
+	    }
+	  }
+	}
 </script>
 
 <style lang="css" scoped>

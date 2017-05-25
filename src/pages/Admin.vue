@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<av-content-header primary='Home' secondary='Admin'></av-content-header>
 		<br>
 		<div class="row">
 			<div class="col-lg-6 col-xs-6">
@@ -49,7 +48,7 @@
 					</div>
 					<div class="box-body">
 						<div class="container">
-						<mu-text-field hintText="Please upload excel or csv file"/><br/>
+							<mu-text-field hintText="Please upload excel or csv file"/><br/>
 							<div class="excel-upload">
 								<mu-raised-button label="Upload Excel" default onclick="document.getElementById('file').click();" />
 								<input type="file" style="display:none;" id="file" name="file"/>
@@ -82,18 +81,18 @@
 					</div>
 
 					<div class="box-body">
-						  <mu-list>
-    <mu-sub-header>Staff Workload</mu-sub-header>
-    <mu-list-item title="Staff 1">
-      <mu-avatar src="" slot="leftAvatar"/>
+						<mu-list>
+							<mu-sub-header>Staff Workload</mu-sub-header>
+							<mu-list-item title="Staff 1">
+								<mu-avatar src="" slot="leftAvatar"/>
 
-      <i class="fa fa-circle text-red" slot="right"><b>50</b></i>
-    </mu-list-item>
-    <mu-list-item title="Staff 2">
-      <mu-avatar src="" slot="leftAvatar"/>
-      <i class="fa fa-circle text-green" slot="right"><b>5</b></i>
-    </mu-list-item>
-  </mu-list>
+								<i class="fa fa-circle text-red" slot="right"><b>50</b></i>
+							</mu-list-item>
+							<mu-list-item title="Staff 2">
+								<mu-avatar src="" slot="leftAvatar"/>
+								<i class="fa fa-circle text-green" slot="right"><b>5</b></i>
+							</mu-list-item>
+						</mu-list>
 					</div>
 				</div>
 			</section>
@@ -114,6 +113,11 @@
 	    }
 	  },
 	  methods: {
+	  },
+	  mounted () {
+	    if (this.$root.panelMode === 3) {
+	      this.$router.push('call_tasks')
+	    }
 	  }
 	}
 </script>

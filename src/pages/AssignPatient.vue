@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<av-content-header primary='Home' secondary='Assign Patient Confirmation'></av-content-header>
 		<br>
 		
 

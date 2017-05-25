@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<av-content-header primary='Home' secondary='Settings'></av-content-header>
 		<br>
 		
 
