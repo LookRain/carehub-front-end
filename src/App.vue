@@ -4,6 +4,7 @@
       <div class="wrapper">
         <av-navbar></av-navbar>
         <av-left-sidebar v-if='mode == 1'></av-left-sidebar>
+        <av-hos-left-sidebar v-if='mode == 2'></av-hos-left-sidebar>
         <av-call-left-sidebar v-if='mode == 3'></av-call-left-sidebar>
         <!-- <av-left-sidebar-call v-if='mode == 3'></av-left-sidebar> -->
         <div class="content-wrapper">
@@ -19,16 +20,22 @@
 import AvNavbar from './components/AvNavbar.vue'
 import AvLeftSidebar from './components/AvLeftSidebar.vue'
 import AvCallLeftSidebar from './components/AvCallLeftSidebar.vue'
+import AvHosLeftSidebar from './components/AvHosLeftSidebar.vue'
 import AvContent from './components/AvContent.vue'
 import AvFooter from './components/AvFooter.vue'
 
 export default {
-  components: { AvNavbar, AvLeftSidebar, 'av-call-left-sidebar': AvCallLeftSidebar, AvContent, AvFooter },
+  components: { AvNavbar, AvLeftSidebar, AvCallLeftSidebar, AvHosLeftSidebar, AvContent, AvFooter },
   name: 'app',
   data () {
     return {
-      mode: 1 // 1: admin, 2: hospital, 3: call
+      mode: this.$root.panelMode
     }
+  },
+  created () {
+    Event.$on('1', () => { this.mode = 1 })
+    Event.$on('2', () => { this.mode = 2 })
+    Event.$on('3', () => { this.mode = 3 })
   }
 }
 

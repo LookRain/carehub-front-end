@@ -11,6 +11,7 @@ import 'chart.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'admin-lte/dist/css/AdminLTE.min.css'
 import 'admin-lte/dist/css/skins/_all-skins.min.css'
+import 'admin-lte/dist/css/skins/skin-green.css'
 import 'font-awesome/css/font-awesome.min.css'
 
 import 'admin-lte/dist/js/app.min.js'
@@ -19,14 +20,24 @@ import 'admin-lte/plugins/jQueryUI/jquery-ui.min.js'
 import 'jquery-ui/ui/widgets/sortable.js'
 import 'jquery-ui/ui/widgets/datepicker.js'
 import 'jquery-ui/themes/base/datepicker.css'
+import store from './store'
 
 Vue.config.productionTip = false
-
+console.log(store)
+window.Event = new Vue()
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: { App },
+  data: {
+    panelMode: store.mode
+  },
+  methods: {
+    changeMode (m) {
+      Event.$emit(m)
+    }
+  }
 })
 

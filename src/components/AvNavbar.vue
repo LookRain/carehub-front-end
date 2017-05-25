@@ -2,11 +2,13 @@
 	<div>
 		<header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="index2.html" class="logo" :style="styleObject">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE</span>
+      <span class="logo-lg"><b>Admin</b>LTE <small v-show="mode == 1">For-Admin</small>
+      <small v-show="mode == 2">For-Hospital</small>
+      <small v-show="mode == 3">For-Call</small></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -265,7 +267,28 @@
 
 <script>
 export default {
-  name: 'av-navbar'
+  name: 'av-navbar',
+  data () {
+    return {
+      mode: this.$root.panelMode,
+      styleObject: {
+        backgroundColor: '#367fa9'
+      }
+    }
+  },
+  created () {
+    if (this.mode === 1) { this.styleObject.backgroundColor = '#367fa9' }
+    if (this.mode === 2) { this.styleObject.backgroundColor = '#555299' }
+    if (this.mode === 3) { this.styleObject.backgroundColor = '#e08e0b' }
+    Event.$on('1', () => { this.mode = 1; this.styleObject.backgroundColor = '#367fa9' })
+    Event.$on('2', () => { this.mode = 2; this.styleObject.backgroundColor = '#555299' })
+    Event.$on('3', () => { this.mode = 3; this.styleObject.backgroundColor = '#e08e0b' })
+  },
+  computed () {
+    return {
+
+    }
+  }
 }
 </script>
 
