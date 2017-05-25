@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import 'expose-loader?$!expose-loader?jQuery!jquery'
-import 'admin-lte'
+// import 'admin-lte'
 import 'bootstrap'
 import 'chart.js'
 
