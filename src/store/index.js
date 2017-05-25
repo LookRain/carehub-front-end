@@ -1,4 +1,4 @@
 let store = {
-  mode: 2
+  mode: 1
 }
 export default store
