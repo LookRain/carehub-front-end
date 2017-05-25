@@ -17,7 +17,7 @@
 						</h3>
 					</div>
 					<div class="box-body">
-						<div class="container">
+				
 
 
 							<mu-table :showCheckbox="false">
@@ -63,12 +63,7 @@
 										</mu-select-field></mu-td>
 									</mu-tr>
 								</mu-tbody>
-							</mu-table>
-							
-							
-						</div>
-						
-						
+							</mu-table>	
 					</div>
 					<!-- /.box-body-->
 

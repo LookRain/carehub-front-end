@@ -8,7 +8,7 @@
           <img src="../img/user2-160x160.jpg" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Alexander Pierce</p>
+          <p>Admin</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -41,7 +41,7 @@
 
         <li>
           <router-link  to="/page1" exact>
-            <i class="fa fa-th"></i> <span>Page 1</span>
+            <i class="fa fa-th"></i> <span>Calendar/History</span>
             <!-- <span class="pull-right-container"> -->
               <!-- <small class="label pull-right bg-green">new</small> -->
             <!-- </span> -->
@@ -49,8 +49,8 @@
         </li>
 
         <li>
-          <router-link  to="/example" exact>
-            <i class="fa fa-th"></i> <span>Example</span>
+          <router-link  to="/settings" exact>
+            <i class="fa fa-th"></i> <span>Settings</span>
             <!-- <span class="pull-right-container"> -->
               <!-- <small class="label pull-right bg-green">new</small> -->
             <!-- </span> -->
