@@ -6,6 +6,7 @@ import AssignPatient from '@/pages/AssignPatient'
 import Settings from '@/pages/Settings'
 import AdminCalendar from '@/pages/AdminCalendar'
 import CallTasks from '@/pages/CallTasks'
+import HospitalTasks from '@/pages/HospitalTasks'
 import CallClaim from '@/pages/CallClaim'
 
 Vue.use(Router)
@@ -21,6 +22,11 @@ export default new Router({
       path: '/call_tasks',
       name: 'CallTasks',
       component: CallTasks
+    },
+    {
+      path: '/hospital_tasks',
+      name: 'HospitalTasks',
+      component: HospitalTasks
     },
     {
       path: '/claim',
