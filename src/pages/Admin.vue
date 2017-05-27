@@ -9,6 +9,7 @@
 						<h3>150</h3>
 
 						<p>New Patients last week</p>
+						<h3>Fancy Beautiful Chart</h3>
 					</div>
 					<div class="icon">
 						<i class="ion ion-bag"></i>
@@ -24,6 +25,7 @@
 						<h3>53</h3>
 
 						<p>Discharged</p>
+						<h3>Fancy Beautiful Chart</h3>
 					</div>
 					<div class="icon">
 						<i class="ion ion-stats-bars"></i>
@@ -117,6 +119,9 @@
 	  mounted () {
 	    if (this.$root.panelMode === 3) {
 	      this.$router.push('call_tasks')
+	    }
+	    if (this.$root.panelMode === 2) {
+	      this.$router.push('hospital_tasks')
 	    }
 	  }
 	}
