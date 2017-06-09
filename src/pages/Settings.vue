@@ -92,18 +92,18 @@
 	import AvContentHeader from '../components/AvContentHeader.vue'
 
 	export default {
-		components: { AvContentHeader },
-		name: 'Settings',
+	  components: { AvContentHeader },
+	  name: 'Settings',
 
-		data () {
-			return {
-				game1: 0,
-				list: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6']
-			}
-		},
-		methods: {
+	  data () {
+	    return {
+	      game1: 0,
+	      list: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6']
+	    }
+	  },
+	  methods: {
 
-		}
+	  }
 	}
 </script>
 
