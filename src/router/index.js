@@ -8,7 +8,7 @@ import AdminCalendar from '@/pages/AdminCalendar'
 import CallTasks from '@/pages/CallTasks'
 import HospitalTasks from '@/pages/HospitalTasks'
 import CallClaim from '@/pages/CallClaim'
-
+import Protocols from '@/pages/Protocols'
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +57,11 @@ export default new Router({
       path: '/example',
       name: 'ExamplePage',
       component: ExamplePage
+    },
+    {
+      path: '/protocols',
+      name: 'Protocols',
+      component: Protocols
     }
   ]
 })
