@@ -28,16 +28,19 @@ import 'jquery-ui/ui/widgets/sortable.js'
 import 'jquery-ui/ui/widgets/datepicker.js'
 import 'jquery-ui/themes/base/datepicker.css'
 import store from './store'
+import axios from 'axios'
+window.axios = axios
 Vue.component('full-calendar', fullCalendar)
 Vue.use(MuseUI)
 Vue.config.productionTip = false
 console.log(store)
 window.Event = new Vue()
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   router,
-  template: '<App/>',
+  // template: '<App username="mamamia"></App>',
   components: { App },
   data: {
     panelMode: store.mode

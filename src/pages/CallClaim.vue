@@ -90,25 +90,25 @@
 <script>
 	export default {
 
-	  name: 'CallClaim',
+		name: 'CallClaim',
 
-	  data () {
-	    return {
-	      patients: ['Amy', 'Bob', 'Cindy', 'David'],
-	      activePatient: ''
-	    }
-	  },
-	  computed: {
+		data () {
+			return {
+				patients: ['Amy', 'Bob', 'Cindy', 'David'],
+				activePatient: ''
+			}
+		},
+		computed: {
 	    // activePatient () {
 	    //   return this.patients[0]
 	    // }
 	  },
 	  methods: {
-	    choosePatient (id) {
-	      let index = id - 1
-	      console.log(this.patients[index])
-	      this.activePatient = this.patients[index]
-	    }
+	  	choosePatient (id) {
+	  		let index = id - 1
+	  		console.log(this.patients[index])
+	  		this.activePatient = this.patients[index]
+	  	}
 	  }
 	}
 </script>
