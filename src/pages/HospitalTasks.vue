@@ -154,6 +154,7 @@
 
 	  data () {
 	    return {
+	    	game1: 0,
 	      fcEvents: demoEvents,
 	      activeTab: 'tab1',
 	      styleObject: {

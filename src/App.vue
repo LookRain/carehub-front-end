@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>{{ username }}</h1>
-    <mu-raised-button @click="call" label="Add" class="demo-raised-button" secondary/>
+  <!-- count: {{ count }} -->
+  <button @click="change">change</button>
     <div class="hold-transition skin-blue sidebar-mini">
       <div class="wrapper">
         <av-navbar></av-navbar>
@@ -25,7 +25,7 @@
   import AvHosLeftSidebar from './components/AvHosLeftSidebar.vue'
   import AvContent from './components/AvContent.vue'
   import AvFooter from './components/AvFooter.vue'
-
+  import { mapState } from 'vuex'
   export default {
     components: { AvNavbar, AvLeftSidebar, AvCallLeftSidebar, AvHosLeftSidebar, AvContent, AvFooter },
     name: 'app',
@@ -35,15 +35,30 @@
         mode: this.$root.panelMode
       }
     },
+    computed: {
+      ...mapState([
+        // map this.count to store.state.count
+        'count'
+      ])
+    },
     methods: {
       call() {
         window.axios.get('/api/Me').then((response)=>{console.log(response.data)})
+      },
+      change() {
+        console.log('before: ' + store.state.username)
+        store.state.username = 'sdf'
+        console.log('after: ' + store.state.username)
       }
     },
     created () {
       Event.$on('1', () => { this.mode = 1 })
       Event.$on('2', () => { this.mode = 2 })
       Event.$on('3', () => { this.mode = 3 })
+
+      
+
+      // instance.get('usergroup').then((response)=>{console.log('group: ' + response.data)})
     }
   }
 

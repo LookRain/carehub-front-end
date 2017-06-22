@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-light.css'
@@ -27,28 +28,44 @@ import 'admin-lte/plugins/jQueryUI/jquery-ui.min.js'
 import 'jquery-ui/ui/widgets/sortable.js'
 import 'jquery-ui/ui/widgets/datepicker.js'
 import 'jquery-ui/themes/base/datepicker.css'
-import store from './store'
+
+
+
+import store from './store.js'
+
+
 import axios from 'axios'
 window.axios = axios
+
+window.instance = window.axios.create({
+        baseURL: '/api/',
+        timeout: 1000,
+        headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
+      })
+
 Vue.component('full-calendar', fullCalendar)
 Vue.use(MuseUI)
 Vue.config.productionTip = false
-console.log(store)
+// console.log(store)
 window.Event = new Vue()
 /* eslint-disable no-new */
 
 new Vue({
   el: '#app',
   router,
+  store: store,
   // template: '<App username="mamamia"></App>',
   components: { App },
   data: {
-    panelMode: store.mode
+    panelMode: store.state.mode
   },
   methods: {
     changeMode (m) {
       Event.$emit(m)
     }
+  },
+  created() {
+    // store.state.user = "bbb"
   }
 })
 

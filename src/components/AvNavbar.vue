@@ -6,9 +6,9 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>LTE <small v-show="mode == 1">For-Admin</small>
-      <small v-show="mode == 2">For-Hospital</small>
-      <small v-show="mode == 3">For-Call</small></span>
+      <span class="logo-lg"><b>Care</b>hub 
+      <small>{{ groupName }}</small></span>
+
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -216,7 +216,7 @@
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="../img/user2-160x160.jpg" class="user-image" alt="User Image">
-              <span class="hidden-xs">Alexander Pierce</span>
+              <span class="hidden-xs">{{ user.DisplayedName }}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -224,7 +224,7 @@
                 <img src="../img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                 <p>
-                  Alexander Pierce - Web Developer
+                  {{ user.DisplayedName }}
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
@@ -266,6 +266,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'av-navbar',
   data () {
@@ -276,18 +278,36 @@ export default {
       }
     }
   },
-  created () {
-    if (this.mode === 1) { this.styleObject.backgroundColor = '#367fa9' }
-    if (this.mode === 2) { this.styleObject.backgroundColor = '#555299' }
-    if (this.mode === 3) { this.styleObject.backgroundColor = '#e08e0b' }
-    Event.$on('1', () => { this.mode = 1; this.styleObject.backgroundColor = '#367fa9' })
-    Event.$on('2', () => { this.mode = 2; this.styleObject.backgroundColor = '#555299' })
-    Event.$on('3', () => { this.mode = 3; this.styleObject.backgroundColor = '#e08e0b' })
-  },
-  computed () {
-    return {
-
+  computed: {
+    ...mapState([
+        'user'
+      ]),
+    groupName() {
+     
+      switch(this.$store.state.user.UserGroup) {
+        case 1:
+          return 'Admin'
+          break;
+        case 2:
+          return 'Hospital Team'
+          break;
+        case 3:
+          return 'Call Centre Team'
+          break;
+        case 4:
+          return 'Home Visit Team'
+          break;
+        default:
+          return 'Team?'
+      }
+    
     }
+  },
+  created () {
+    if (this.user.UserGroup === 1) { this.styleObject.backgroundColor = '#367fa9' }
+    if (this.user.UserGroup === 2) { this.styleObject.backgroundColor = '#555299' }
+    if (this.user.UserGroup === 3) { this.styleObject.backgroundColor = '#e08e0b' }
+
   }
 }
 </script>
