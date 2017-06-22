@@ -273,9 +273,7 @@ export default {
   data () {
     return {
       mode: this.$root.panelMode,
-      styleObject: {
-        backgroundColor: '#367fa9'
-      }
+      
     }
   },
   computed: {
@@ -283,8 +281,7 @@ export default {
         'user'
       ]),
     groupName() {
-     
-      switch(this.$store.state.user.UserGroup) {
+      switch(this.user.UserGroup) {
         case 1:
           return 'Admin'
           break;
@@ -300,14 +297,16 @@ export default {
         default:
           return 'Team?'
       }
-    
+    },
+    styleObject() {    
+      if (this.user.UserGroup === 1) { return { backgroundColor: '#367fa9'} }
+      if (this.user.UserGroup === 2) { return { backgroundColor: '#555299'} }
+      if (this.user.UserGroup === 3) { return { backgroundColor: '#e08e0b'} }
+      if (this.user.UserGroup === 4) { return { backgroundColor: '#ba0331'} }
+      return { backgroundColor: '#367fa9'}
     }
   },
   created () {
-    if (this.user.UserGroup === 1) { this.styleObject.backgroundColor = '#367fa9' }
-    if (this.user.UserGroup === 2) { this.styleObject.backgroundColor = '#555299' }
-    if (this.user.UserGroup === 3) { this.styleObject.backgroundColor = '#e08e0b' }
-
   }
 }
 </script>
