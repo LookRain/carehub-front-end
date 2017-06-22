@@ -38,7 +38,7 @@
     computed: {
       ...mapState([
         // map this.count to store.state.count
-        'count'
+        'user'
       ])
     },
     methods: {
