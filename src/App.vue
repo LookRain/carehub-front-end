@@ -1,7 +1,5 @@
 <template>
   <div>
-  <!-- count: {{ count }} -->
-  <button @click="change">change</button>
     <div class="hold-transition skin-blue sidebar-mini">
       <div class="wrapper">
         <av-navbar></av-navbar>
