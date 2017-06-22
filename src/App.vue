@@ -39,23 +39,10 @@
         'user'
       ])
     },
-    methods: {
-      call() {
-        window.axios.get('/api/Me').then((response)=>{console.log(response.data)})
-      },
-      change() {
-        console.log('before: ' + store.state.username)
-        store.state.username = 'sdf'
-        console.log('after: ' + store.state.username)
-      }
-    },
     created () {
       Event.$on('1', () => { this.mode = 1 })
       Event.$on('2', () => { this.mode = 2 })
       Event.$on('3', () => { this.mode = 3 })
-
-      
-
       // instance.get('usergroup').then((response)=>{console.log('group: ' + response.data)})
     }
   }
