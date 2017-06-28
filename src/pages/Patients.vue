@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<user-info user-name="test"></user-info>
+	
 		<ul>
-			<li v-for="patient in patients">{{ patient.pId }}, {{ patient.nric }}, {{ patient.pName }}, {{ patient.pStatus }}</li>
+			<li v-for="patient in patients">{{ patient.PId }}, {{ patient.NRIC }}, {{ patient.PName }}, {{ patient.PStatus }}</li>
 		</ul>
 
 		<mu-raised-button @click="submit" label="Add New" class="demo-raised-button" secondary/>
