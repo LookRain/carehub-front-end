@@ -58,10 +58,8 @@ new Vue({
   el: '#app',
   router,
   store: store,
-  // template: '<App username="mamamia"></App>',
   components: { App },
   data: {
-    panelMode: store.state.user.UserGroup
   },
   methods: {
     changeMode (m) {

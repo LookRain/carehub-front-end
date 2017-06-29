@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<mu-pagination :total="total" :current="current" :defaultPageSize="numPerPage" @pageChange="handleClick">
+		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick">
  		</mu-pagination>
 
 		<ul>
@@ -23,7 +23,7 @@
 		data () {
 			return {
 				test: 6,
-				current: 1,
+				current: 3,
 				allPatients: [],
 				currentPage: 1,
 				numPerPage: 20
@@ -32,12 +32,6 @@
 		methods: {
 			changeCurrentPatients() {
 				this.currentPatients = this.allPatients.slice(this.currentPage * 1 - 1, this.currentPage * 1 - 1 + this.currentPage * 10)
-			},
-			submit() {
-				window.axios.post('/api/Patients', this.samplePatient).then((response) => { console.log(response.data)})
-			},
-			update() {
-				window.axios.put('/api/Patients/1', this.samplePatient2).then((response) => { console.log(response.data)})
 			},
 			handleClick (newIndex) {
 				this.currentPage = newIndex

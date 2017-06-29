@@ -272,8 +272,6 @@ export default {
   name: 'av-navbar',
   data () {
     return {
-      mode: this.$root.panelMode,
-      
     }
   },
   computed: {
