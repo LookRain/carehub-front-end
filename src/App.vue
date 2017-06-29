@@ -3,9 +3,9 @@
     <div class="hold-transition skin-blue sidebar-mini">
       <div class="wrapper">
         <av-navbar></av-navbar>
-        <av-left-sidebar v-if='mode == 1'></av-left-sidebar>
-        <av-hos-left-sidebar v-if='mode == 2'></av-hos-left-sidebar>
-        <av-call-left-sidebar v-if='mode == 3'></av-call-left-sidebar>
+        <av-left-sidebar v-if='user.UserGroup == 1'></av-left-sidebar>
+        <av-hos-left-sidebar v-if='user.UserGroup == 2'></av-hos-left-sidebar>
+        <av-call-left-sidebar v-if='user.UserGroup == 3'></av-call-left-sidebar>
         <!-- <av-left-sidebar-call v-if='mode == 3'></av-left-sidebar> -->
         <div class="content-wrapper">
 
@@ -30,7 +30,7 @@
     props: ['username'],
     data () {
       return {
-        mode: this.$root.panelMode
+
       }
     },
     computed: {
@@ -40,9 +40,9 @@
       ])
     },
     created () {
-      Event.$on('1', () => { this.mode = 1 })
-      Event.$on('2', () => { this.mode = 2 })
-      Event.$on('3', () => { this.mode = 3 })
+      // Event.$on('1', () => { this.mode = 1 })
+      // Event.$on('2', () => { this.mode = 2 })
+      // Event.$on('3', () => { this.mode = 3 })
       // instance.get('usergroup').then((response)=>{console.log('group: ' + response.data)})
     }
   }

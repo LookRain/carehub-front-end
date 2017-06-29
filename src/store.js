@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-  	user: 'abc',
+  	user: {
+  		UserGroup: 2
+  	},
     mode: 2,
     count: 3
   },

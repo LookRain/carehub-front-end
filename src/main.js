@@ -61,7 +61,7 @@ new Vue({
   // template: '<App username="mamamia"></App>',
   components: { App },
   data: {
-    panelMode: store.state.mode
+    panelMode: store.state.user.UserGroup
   },
   methods: {
     changeMode (m) {
