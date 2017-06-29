@@ -1,6 +1,6 @@
 <template>
 	<div>
-
+		<mu-raised-button label="bulk" @click="addBulk"></mu-raised-button>
 		<br>
 		<div class="row">
 			<div class="col-lg-6 col-xs-6">
@@ -50,14 +50,16 @@
 							<div class="container">
 								<mu-text-field hintText="Please upload excel or csv file"/><br/>
 								<div class="excel-upload">
-									<mu-raised-button label="Upload Excel" default onclick="document.getElementById('file').click();" />
-									<input type="file" style="display:none;" id="file" name="file"/>
+									<mu-raised-button label="Upload Excel" default onclick="document.getElementById('csv').click();"/>
+									<input type="file" style="display:none;" id="csv" name="file"/>
 								</div>
 								<br>
 								<hr>
 								
 								<br>
-								<router-link to="/assign_patient"><mu-raised-button label="Submit" primary/></router-link>
+								<!-- <router-link to="/assign_patient"> -->
+								<mu-raised-button label="Submit" primary @click="parseCSV"/>
+								<!-- </router-link> -->
 
 							</div>
 
@@ -85,9 +87,20 @@
 
 
 			</div>
-			<div class="row">
-				
+			<div class="row" v-show="isNewPatientAdded">
+				<section class="col-lg-12 col-xs-12 connectedSortable">
+				<div class="box box-success">
+					<div class="box-header">
+						<h3 class="box-title">New Patients Added</h3>
+					</div>
+					<div class="box-body" display="block" style="word-break:break-all;">
+						{{ returnedPatient }}
+					</div>
+				</div>
+				</section>
+			</div>
 
+			<div class="row">		
 				<section class="col-lg-8 col-xs-12 connectedSortable">
 					<div class="box box-primary">
 						<div class="box-header">
@@ -127,6 +140,8 @@
 
 			data () {
 				return {
+					parsedResult: '',
+					isNewPatientAdded: false,
 					allusers: '',
 					name: '',
 					nric: '',
@@ -137,6 +152,34 @@
 				}
 			},
 			methods: {
+				parseCSV() {
+					let reader = new FileReader()
+					reader.onload = ()=> {
+						this.parsedResult = reader.result
+					}
+					let fileInput = document.getElementById("csv")
+					reader.readAsBinaryString(fileInput.files[0])
+				},
+				addBulk() {
+					this.$post('BulkPatients', [
+						{
+							'NRIC': 'a666666',
+							'PName': 'name1',
+							'MeanTest': 1,
+							'WardNo': 1,
+							'Region': 1,
+							'PStatus': 0
+						},
+						{
+							'NRIC': 'a888888',
+							'PName': 'name2',
+							'MeanTest': 2,
+							'WardNo': 2,
+							'Region': 2,
+							'PStatus': 0
+						}
+						])
+					},
 				clearPatientFields() {
 					this.name = ''; this.nric = ''; this.meanTest=''; this.region=''; this.wardNumber = '';
 				},
@@ -155,6 +198,7 @@
 							this.returnedPatient = response.data
 							alert('Added successfully!' + this.returnedPatient.PName)
 							this.clearPatientFields()
+							this.isNewPatientAdded = true
 						}).catch((err) => {
 							alert(err.response.data.Message)
 						})
