@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuex from 'vuex'
+
 import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import 'muse-ui/dist/theme-light.css'
@@ -37,11 +37,7 @@ import store from './store.js'
 import axios from 'axios'
 window.axios = axios
 
-window.instance = window.axios.create({
-        baseURL: '/api/',
-        timeout: 1000,
-        headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
-      })
+
 
 Vue.component('full-calendar', fullCalendar)
 Vue.use(MuseUI)
@@ -50,6 +46,14 @@ Vue.config.productionTip = false
 window.Event = new Vue()
 /* eslint-disable no-new */
 
+
+const instance = window.axios.create({
+        baseURL: '/api/',
+        timeout: 1000,
+        headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
+      })
+Vue.prototype.$post = instance.post
+Vue.prototype.$get = instance.get
 new Vue({
   el: '#app',
   router,
@@ -66,6 +70,11 @@ new Vue({
   },
   created() {
     // store.state.user = "bbb"
+
+    this.$get('currentuser').then((response)=>{
+      store.commit('setUser', response.data)
+    })
+
   }
 })
 
