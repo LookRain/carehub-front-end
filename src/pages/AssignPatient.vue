@@ -2,7 +2,7 @@
 	<div>
 		<br>
 		
-
+		{{raw}}
 		<div class="row">
 			<section class="col-lg-12 col-xs-12 connectedSortable">
 				<div class="box box-success">
@@ -85,8 +85,42 @@
 	  data () {
 	    return {
 	      game1: 0,
-	      list: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6']
+	      list: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6'],
+	      csvConfig: {
+	      	colNumber: 6,
+	      	hasHeader: true
+	      }
 	    }
+	  },
+	  methods: {
+
+	  },
+	  computed: {
+	  	raw() {
+	  		return this.$store.state.rawCSV
+	  	},
+	  	parsed() {
+	  		let trimedCSV = this.raw.trim()
+	  		let lineSplitCSV = trimedCSV.split('\r\n')
+	  		let result = []
+	  		lineSplitCSV.forEach(line => {
+	  			let commaSeperatedString = line.split(',')
+
+	  			let patient = {}
+	  			patient.name = commaSeperatedString[0]
+	  			patient.nric = commaSeperatedString[1]
+	  			patient.meanTest = commaSeperatedString[2]
+	  			patient.wardNo = commaSeperatedString[3]
+	  			patient.region = commaSeperatedString[4]
+	  			patient.status = commaSeperatedString[5]
+	  			result.push(patient)
+	  		})
+	  		if (this.csvConfig.hasHeader) {
+	  			return result.slice(1)
+	  		} else {
+	  			return result
+	  		}
+	  	}
 	  },
 	  methods: {
 

@@ -8,12 +8,14 @@ const store = new Vuex.Store({
   	user: {
   		UserGroup: 1
   	},
-    mode: 2,
-    count: 3
+  	rawCSV: 'test'
   },
   mutations: {
   	setUser (state, userInfo) {
   		state.user = userInfo
+  	},
+  	setCSV(state, csv) {
+  		state.rawCSV = csv
   	}
   }
 })

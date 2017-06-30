@@ -46,7 +46,7 @@
 								Upload Excel
 							</h3>
 						</div>
-						<div class="box-body" style="overflow: hidden;">
+						<div class="box-body" style="overflow: hid den;">
 							<div class="container">
 								<mu-text-field hintText="Please upload excel or csv file"/><br/>
 								<div class="excel-upload">
@@ -155,10 +155,14 @@
 				parseCSV() {
 					let reader = new FileReader()
 					reader.onload = ()=> {
-						this.parsedResult = reader.result
+						this.$store.commit('setCSV', reader.result)
+						// this.parsedResult = reader.result
+						
 					}
 					let fileInput = document.getElementById("csv")
-					reader.readAsBinaryString(fileInput.files[0])
+					reader.readAsText(fileInput.files[0])
+
+					this.$router.push({name: 'AssignPatient'})
 				},
 				addBulk() {
 					this.$post('BulkPatients', [
@@ -206,10 +210,10 @@
 				}	
 			},
 			mounted () {
-				if (this.$root.panelMode === 3) {
+				if (this.$store.state.user.UserGroup === 3) {
 					this.$router.push('call_tasks')
 				}
-				if (this.$root.panelMode === 2) {
+				if (this.$store.state.user.UserGroup === 2) {
 					this.$router.push('hospital_tasks')
 				}
 			},
@@ -218,6 +222,9 @@
 					this.allusers = response.data
 				})
 				
+			},
+			watch: {
+
 			}
 		}
 	</script>

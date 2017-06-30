@@ -1,14 +1,17 @@
 <template>
 	<div>
-		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick">
- 		</mu-pagination>
+		<!-- <mu-pagination :total="sum" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick">
+ 		</mu-pagination> -->
+
+ 		<mu-pagination :total="sum" :current="current" @pageChange="">
+  </mu-pagination>
 
 		<ul>
 			<li v-for="patient in currentPatients">{{ patient.PId }}, {{ patient.NRIC }}, {{ patient.PName }}, {{ patient.PStatus }}</li>
 		</ul>
 
-		<mu-raised-button @click="submit" label="Add New" class="demo-raised-button" secondary/>
-		<mu-raised-button @click="update" label="update" class="demo-raised-button" secondary/>
+		<!-- <mu-raised-button @click="submit" label="Add New" class="demo-raised-button" secondary/>
+		<mu-raised-button @click="update" label="update" class="demo-raised-button" secondary/> -->
 		
 	</div>
 </template>
@@ -22,8 +25,8 @@
 
 		data () {
 			return {
-				test: 6,
-				current: 3,
+				sum: 200,
+				current: 1,
 				allPatients: [],
 				currentPage: 1,
 				numPerPage: 20
