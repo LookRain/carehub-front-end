@@ -8,7 +8,8 @@ const store = new Vuex.Store({
   	user: {
   		UserGroup: 1
   	},
-  	rawCSV: 'test'
+  	rawCSV: 'init csv',
+    wardAssignment: {}
   },
   mutations: {
   	setUser (state, userInfo) {
@@ -16,7 +17,10 @@ const store = new Vuex.Store({
   	},
   	setCSV(state, csv) {
   		state.rawCSV = csv
-  	}
+  	},
+    setWardAssignment(state, assignment) {
+      state.wardAssignment = assignment
+    }
   }
 })
 

@@ -48,10 +48,10 @@ window.Event = new Vue()
 
 
 const instance = window.axios.create({
-        baseURL: 'http://localhost:55494/api/',
-        timeout: 1000,
-        headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
-      })
+  baseURL: 'http://localhost:55494/api/',
+  timeout: 1000,
+  headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
+})
 Vue.prototype.$post = instance.post
 Vue.prototype.$get = instance.get
 new Vue({
@@ -71,6 +71,10 @@ new Vue({
 
     this.$get('currentuser').then((response)=>{
       store.commit('setUser', response.data)
+    })
+
+    this.$get('wardassignment').then(response => {
+      store.commit('setWardAssignment', response.data)
     })
 
   }
