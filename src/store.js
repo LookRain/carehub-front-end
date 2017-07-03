@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    hospitalTasks: [],
   	user: {
   		UserGroup: 1
   	},
@@ -20,6 +21,9 @@ const store = new Vuex.Store({
   	},
     setWardAssignment(state, assignment) {
       state.wardAssignment = assignment
+    },
+    setHospitalTasks(state, tasks) {
+      state.hospitalTasks = patients
     }
   }
 })

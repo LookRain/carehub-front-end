@@ -25,15 +25,14 @@
               </mu-thead>
               <mu-tbody>
                 <mu-tr v-for="(patient, index) in parsed" :key="patient.nric">
-                  <mu-td>{{ patient.nric }}</mu-td>
-                  <mu-td>{{ patient.name }}</mu-td>
-                  <mu-td>{{ patient.wardNo }}</mu-td>
-                  <mu-td><div v-on:patient.nric="listenNewUser">default: {{ patient.userAssigned }}</div>
-                  <!-- <button @click="sendNewUser(patient.nric)">aaa</button> -->
-
-                  <select v-model="valueArray[index]">
-                  <!-- <option selected="selected">{{patient.userAssigned}}</option> -->
-                  <option v-for="user in hosUsers" :value="user.Email" @click.preventDefault="consolelog('123')">{{user.DisplayName}}</option>
+                  <mu-td>{{ patient.NRIC }}</mu-td>
+                  <mu-td>{{ patient.PName }}</mu-td>
+                  <mu-td>{{ patient.WardNo }}</mu-td>
+                  <mu-td>
+                 
+                  <div v-on:patient.nric="listenNewUser">default: {{ patient.UserName }}</div>
+                  <select v-model="patient.UserName">
+                  <option v-for="user in hosUsers" :value="user.Email">{{user.DisplayName}}</option>
                   </select>
 
                   <!-- {{ patient.userAssigned }} -->
@@ -44,7 +43,8 @@
                 </mu-tr>                
               </mu-tbody>
             </mu-table> 
-            <mu-raised-button label="find" @click="matchAssignedUser(1)"></mu-raised-button>
+
+            <mu-raised-button label="submit" @click="postAssignment"></mu-raised-button>
           </div>
           <!-- /.box-body-->
         </div>
@@ -64,13 +64,6 @@
       return {
         hosUsers: [],
         value:'0',
-        valueArray: [
-        {id: 1, data: 'a'},
-        {id: 2, data: 'b'},
-        {id: 3, data: 'c'},
-        {id: 4, data: 'd'},
-        {id: 5, data: 'e'},
-        ],
         csvConfig: {
           colNumber: 6,
           hasHeader: true
@@ -89,14 +82,14 @@
           let commaSeperatedString = line.split(',')
 
           let patient = {}
-          patient.name = commaSeperatedString[0]
-          patient.nric = commaSeperatedString[1]
-          patient.meanTest = commaSeperatedString[2]
-          patient.wardNo = commaSeperatedString[3]
-          patient.region = commaSeperatedString[4]
-          patient.status = commaSeperatedString[5]
-          patient.userAssigned = this.matchAssignedUser(parseInt(patient.wardNo))
-          patient.newAssigned = ''
+          patient.PName = commaSeperatedString[0]
+          patient.NRIC = commaSeperatedString[1]
+          patient.MeanTest = commaSeperatedString[2]
+          patient.WardNo = commaSeperatedString[3]
+          patient.Region = commaSeperatedString[4]
+          patient.PStatus = commaSeperatedString[5]
+          patient.UserName = this.matchAssignedUser(parseInt(patient.WardNo))
+
           result.push(patient)
         })
         if (this.csvConfig.hasHeader) {
@@ -123,12 +116,19 @@
           }
         })
         return username
+      },
+      postAssignment() {
+        this.$post('BulkPatients', this.parsed).then(response=> {
+          alert('Added successfully!' + response.data)
+        }).catch(err=> {
+          alert(err.response.data.Message)
+        })
       }
     },
-    mounted() {
+    created() {
       this.$get('hospitalteamusers').then(response => {
         this.hosUsers = response.data
-      })
+      }).catch(err=>{console.log(err)})
     }
   }
 </script>

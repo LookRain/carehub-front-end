@@ -167,7 +167,7 @@
 				addBulk() {
 					this.$post('BulkPatients', [
 						{
-							'NRIC': 'a666666',
+							'NRIC': 'azzzz',
 							'PName': 'name1',
 							'MeanTest': 1,
 							'WardNo': 1,
@@ -175,7 +175,7 @@
 							'PStatus': 0
 						},
 						{
-							'NRIC': 'a888888',
+							'NRIC': 'acccc',
 							'PName': 'name2',
 							'MeanTest': 2,
 							'WardNo': 2,
