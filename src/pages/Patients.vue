@@ -10,8 +10,6 @@
 			<li v-for="patient in currentPatients">{{ patient.PId }}, {{ patient.NRIC }}, {{ patient.PName }}, {{ patient.PStatus }}</li>
 		</ul>
 
-		<!-- <mu-raised-button @click="submit" label="Add New" class="demo-raised-button" secondary/>
-		<mu-raised-button @click="update" label="update" class="demo-raised-button" secondary/> -->
 		
 	</div>
 </template>
