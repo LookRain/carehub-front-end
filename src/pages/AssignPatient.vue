@@ -28,6 +28,7 @@
                   <mu-td>{{ patient.NRIC }}</mu-td>
                   <mu-td>{{ patient.PName }}</mu-td>
                   <mu-td>{{ patient.WardNo }}</mu-td>
+
                   <mu-td>
                  
                   <div v-on:patient.nric="listenNewUser">default: {{ patient.UserName }}</div>
@@ -36,9 +37,6 @@
                   </select>
 
                   <!-- {{ patient.userAssigned }} -->
-                  </mu-td>
-                  <mu-td>
-                    
                   </mu-td>
                 </mu-tr>                
               </mu-tbody>
