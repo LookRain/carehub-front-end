@@ -13,7 +13,7 @@
             </h3>
           </div>
           <div class="box-body">
-         
+
             <mu-table :showCheckbox="false">
               <mu-thead>
                 <mu-tr>
@@ -30,25 +30,25 @@
                   <mu-td>{{ patient.WardNo }}</mu-td>
 
                   <mu-td>
-                 
-                  <div v-on:patient.nric="listenNewUser">default: {{ patient.UserName }}</div>
-                  <select v-model="patient.UserName">
-                  <option v-for="user in hosUsers" :value="user.Email">{{user.DisplayName}}</option>
-                  </select>
+                 <mu-select-field v-model="patient.UserName" :labelFocusClass="['label-foucs']" :label="hint + patient.UserName">
+                    <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.Email"/>
+                  </mu-select-field>
+                  <!-- <mu-select-field v-model="game1" :labelFocusClass="['label-foucs']" label="选择你喜欢的游戏">
+                    <mu-menu-item v-for="text,index in list" :key="index" :value="text.name" :title="text.name" />
+                  </mu-select-field> -->
 
-                  <!-- {{ patient.userAssigned }} -->
-                  </mu-td>
-                </mu-tr>                
-              </mu-tbody>
-            </mu-table> 
+              </mu-td>
+            </mu-tr>                
+          </mu-tbody>
+        </mu-table> 
 
-            <mu-raised-button label="submit" @click="postAssignment"></mu-raised-button>
-          </div>
-          <!-- /.box-body-->
-        </div>
-      </section>      
+        <mu-raised-button label="submit" @click="postAssignment"></mu-raised-button>
+      </div>
+      <!-- /.box-body-->
     </div>
-  </div>
+  </section>      
+</div>
+</div>
 </template>
 
 <script>
@@ -60,8 +60,12 @@
 
     data () {
       return {
-        hosUsers: [],
-        value:'0',
+        // hosUsers: [],
+        hint: 'Default assigned user: ',
+        game1: '影之刃',
+        list: [{name: '阴阳师'},{ name: '影之刃'},{ name: '天下HD'}, {name: '穿越火线'}],
+
+        value: 1,
         csvConfig: {
           colNumber: 6,
           hasHeader: true
@@ -69,6 +73,9 @@
       }
     },
     computed: {
+      hosUsers() {
+        return this.$store.state.allHosUsers
+      },
       raw() {
         return this.$store.state.rawCSV
       },
@@ -85,8 +92,12 @@
           patient.MeanTest = commaSeperatedString[2]
           patient.WardNo = commaSeperatedString[3]
           patient.Region = commaSeperatedString[4]
-          patient.PStatus = commaSeperatedString[5]
-          patient.UserName = this.matchAssignedUser(parseInt(patient.WardNo))
+          patient.Tier = commaSeperatedString[5]
+          patient.PStatus = 0
+
+          let matchedUser = this.matchAssignedUser(parseInt(patient.WardNo))
+          patient.UserName = matchedUser.UserName
+          // patient.UserDisplayName = matchedUser.
 
           result.push(patient)
         })
@@ -106,27 +117,24 @@
         this.value = value
       },
       matchAssignedUser(wardNo) {
-        let username = 'init'
+        // type == 1 : return username/email
+        // tyle == 2 : return display name
+        let user = {}
         this.$store.state.wardAssignment.forEach(assignment => {
           if (wardNo === assignment.WardNo) {
             console.log(assignment.UserName)
-            username = assignment.UserName
+            user = assignment
           }
         })
-        return username
+        return user
       },
       postAssignment() {
         this.$post('BulkPatients', this.parsed).then(response=> {
           alert('Added successfully!' + response.data)
-        }).catch(err=> {
+        }).catch(err => {
           alert(err.response.data.Message)
         })
       }
-    },
-    created() {
-      this.$get('hospitalteamusers').then(response => {
-        this.hosUsers = response.data
-      }).catch(err=>{console.log(err)})
     }
   }
 </script>

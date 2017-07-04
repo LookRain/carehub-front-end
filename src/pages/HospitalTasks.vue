@@ -34,7 +34,7 @@
 										<mu-td>{{task.PName}}</mu-td>
 										<mu-td>{{task.PTimeStamp}}</mu-td>
 										<mu-td>
-											<mu-select-field v-model="task.PStatus" :labelFocusClass="['label-foucs']">
+											<mu-select-field v-model="task.PTier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
 											</mu-select-field>
 										</mu-td>
@@ -107,42 +107,61 @@
 				'full-calendar': require('vue-fullcalendar')
 			},
 			methods: {
-				recruit(input) {
+				recruit(input, index) {
 					let patientID = input.PId
-					console.log(input.)
-				},
-				reject() {
-					console.log('clicked reject')
-				},
-				handleTabChange (val) {
-					this.activeTab = val
-				}
-			},
-			computed: {
-				username() {
-					return this.$store.state.user.Email
-				}
-			},
-			watch: {
-				username(val) {
-					if (val) {
-						this.$get('assignedpatients/values?username=' + val).then(
+					let patientNRIC = {
+						PatientId: input.NRIC
+					}
+					this.$put('patients/' + patientID, input).then(
+						response => {
+							console.log('Success' + response.data)
+						}).catch(err => {
+							console.log(err.response.data.Message)
+						})
+
+						this.$post('callcentre', patientNRIC).then(
 							response => {
-								this.tasks = response.data
+								console.log('Call centre update Success' + response.data)
+							}).catch(
+							err => {
+								console.log(err.response.data.Message)
 							})
+							console.log(input.PId)
+							
+							this.tasks.splice(0,1)
+						},
+						reject() {
+							console.log('clicked reject')
+						},
+						handleTabChange (val) {
+							this.activeTab = val
+						}
+					},
+					computed: {
+						username() {
+							return this.$store.state.user.Email
+						}
+					},
+					watch: {
+						username(val) {
+							if (val) {
+								this.$get('assignedpatients/values?username=' + val).then(
+									response => {
+										this.tasks = response.data
+									})
+							}
+						}
+					},
+					created() {
+
 					}
 				}
-			},
-			created() {
+			</script>
 
-			}
-		}
-	</script>
+			<style lang="css" scoped>
+				.my-tabs {
 
-	<style lang="css" scoped>
-		.my-tabs {
+					background-color: #ffffff;
 
-			background-color: #ffffff;
-
-		}
-	</style>
+				}
+			</style>

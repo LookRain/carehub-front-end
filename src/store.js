@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   		UserGroup: 1
   	},
   	rawCSV: 'init csv',
+    allHosUsers: [],
     wardAssignment: {}
   },
   mutations: {
@@ -24,6 +25,9 @@ const store = new Vuex.Store({
     },
     setHospitalTasks(state, tasks) {
       state.hospitalTasks = patients
+    },
+    setAllHosUsers(state, users) {
+      state.allHosUsers = users
     }
   }
 })

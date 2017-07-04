@@ -54,6 +54,7 @@ const instance = window.axios.create({
 })
 Vue.prototype.$post = instance.post
 Vue.prototype.$get = instance.get
+Vue.prototype.$put = instance.put
 new Vue({
   el: '#app',
   router,
@@ -76,6 +77,10 @@ new Vue({
     this.$get('wardassignment').then(response => {
       store.commit('setWardAssignment', response.data)
     })
+
+    this.$get('hospitalteamusers').then(response => {
+        store.commit('setAllHosUsers', response.data)
+      }).catch(err=>{console.log(err)})
 
   }
 })
