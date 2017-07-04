@@ -30,12 +30,15 @@
                   <mu-td>{{ patient.WardNo }}</mu-td>
 
                   <mu-td>
-                 <mu-select-field v-model="patient.UserName" :labelFocusClass="['label-foucs']" :label="hint + patient.UserName">
-                    <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.Email"/>
+                 <mu-select-field v-model="patient.UserName" :labelFocusClass="['label-foucs']" :label="hint + patient.UserDisplayName" :maxHeight="500">
+                    <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.DisplayName"/>
                   </mu-select-field>
-                  <!-- <mu-select-field v-model="game1" :labelFocusClass="['label-foucs']" label="选择你喜欢的游戏">
-                    <mu-menu-item v-for="text,index in list" :key="index" :value="text.name" :title="text.name" />
-                  </mu-select-field> -->
+                 <!--  <mu-select-field class="domo" v-model="game1" :labelFocusClass="['label-foucs']" label="选择你喜欢的游戏" :maxHeight="300">
+            
+                    <mu-menu-item v-for="text,index in list" :key="index" :value="text.name" :title="text.name" /> -->
+
+                    
+                  </mu-select-field>
 
               </mu-td>
             </mu-tr>                
@@ -62,10 +65,6 @@
       return {
         // hosUsers: [],
         hint: 'Default assigned user: ',
-        game1: '影之刃',
-        list: [{name: '阴阳师'},{ name: '影之刃'},{ name: '天下HD'}, {name: '穿越火线'}],
-
-        value: 1,
         csvConfig: {
           colNumber: 6,
           hasHeader: true
@@ -97,6 +96,7 @@
 
           let matchedUser = this.matchAssignedUser(parseInt(patient.WardNo))
           patient.UserName = matchedUser.UserName
+          patient.UserDisplayName = matchedUser.DisplayedName
           // patient.UserDisplayName = matchedUser.
 
           result.push(patient)
@@ -112,9 +112,6 @@
       sendNewUser(msg) {
         console.log(msg)
         this.$emit(msg)
-      },
-      handleChange (value) {
-        this.value = value
       },
       matchAssignedUser(wardNo) {
         // type == 1 : return username/email
