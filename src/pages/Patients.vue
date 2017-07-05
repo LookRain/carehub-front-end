@@ -1,10 +1,35 @@
 <template>
 	<div>
-		<!-- <mu-pagination :total="sum" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick">
- 		</mu-pagination> -->
+		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick">
+ 		</mu-pagination>
 
- 		<mu-pagination :total="sum" :current="current" @pageChange="">
-  </mu-pagination>
+<mu-table :showCheckbox="showCheckbox">
+    <mu-thead>
+      <mu-tr>
+        <mu-th>NRIC</mu-th>
+        <mu-th>Name</mu-th>
+        <mu-th>Status</mu-th>
+        <mu-th>Tier</mu-th>
+        <mu-th>Mean Test</mu-th>
+        <mu-th>Date Added</mu-th>
+        <mu-th>Ward Number</mu-th>
+        <mu-th>Staff Assigned</mu-th>
+      </mu-tr>
+    </mu-thead>
+    <mu-tbody>
+      <mu-tr v-for="patient in currentPatients">
+        <mu-td>{{ patient.NRIC }}</mu-td>
+        <mu-td>{{ patient.PName }}</mu-td>
+        <mu-td>{{ patient.PStatus | parseStatus }}</mu-td>
+        <mu-td>{{ patient.Tier }}</mu-td>
+        <mu-td>{{ patient.MeanTest }}</mu-td>
+        <mu-td>{{ patient.PTimeStamp }}</mu-td>
+        <mu-td>{{ patient.WardNo }}</mu-td>
+				<mu-td>{{ patient.UserName }}</mu-td>
+      </mu-tr>
+    </mu-tbody>
+  </mu-table>
+
 
 		<ul>
 			<li v-for="patient in currentPatients">{{ patient.PId }}, {{ patient.NRIC }}, {{ patient.PName }}, {{ patient.PStatus }}</li>
@@ -23,11 +48,17 @@
 
 		data () {
 			return {
-				sum: 200,
-				current: 1,
+				showCheckbox: false,
 				allPatients: [],
 				currentPage: 1,
 				numPerPage: 20
+			}
+		},
+		filters: {
+			parseStatus(code) {
+				if (code === 0) { return 'Unprocessed'}
+				if (code === 1) { return 'Recruited'}
+				if (code === 2) { return 'Rejected'}
 			}
 		},
 		methods: {
