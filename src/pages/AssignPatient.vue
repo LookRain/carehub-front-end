@@ -91,7 +91,7 @@
           patient.MeanTest = commaSeperatedString[2]
           patient.WardNo = commaSeperatedString[3]
           patient.Region = commaSeperatedString[4]
-          patient.Tier = commaSeperatedString[5]
+
           patient.PStatus = 0
 
           let matchedUser = this.matchAssignedUser(parseInt(patient.WardNo))
