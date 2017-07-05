@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick">
+		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick"  :showSizeChanger="showSizeChanger" :pageSizeOption="pageSizeOption" @pageSizeChange="handlePageSizeChange">
  		</mu-pagination>
 
 <mu-table :showCheckbox="showCheckbox">
@@ -30,12 +30,6 @@
     </mu-tbody>
   </mu-table>
 
-
-		<ul>
-			<li v-for="patient in currentPatients">{{ patient.PId }}, {{ patient.NRIC }}, {{ patient.PName }}, {{ patient.PStatus }}</li>
-		</ul>
-
-		
 	</div>
 </template>
 
@@ -51,7 +45,9 @@
 				showCheckbox: false,
 				allPatients: [],
 				currentPage: 1,
-				numPerPage: 20
+				numPerPage: 20,
+				showSizeChanger: true,
+      	pageSizeOption: [10, 20, 30, 40]
 			}
 		},
 		filters: {
@@ -67,6 +63,9 @@
 			},
 			handleClick (newIndex) {
 				this.currentPage = newIndex
+    	},
+    	handlePageSizeChange(newIndex) {
+    		this.numPerPage = newIndex
     	}
 		},
 		computed: {
