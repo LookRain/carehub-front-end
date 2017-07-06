@@ -10,7 +10,7 @@
 						<i class="fa fa-map-marker"></i>
 
 						<h3 class="box-title">
-							Patients To Call
+							Today's Patients for claiming
 						</h3>
 					</div>
 					<div class="box-body">
@@ -20,36 +20,27 @@
 									<mu-th>Patient Name</mu-th>
 									<mu-th>NRIC</mu-th>
 									<mu-th>No. of Call</mu-th>
-									<mu-th>Mark</mu-th>
+									<mu-th>Action</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
-								<mu-tr @click.native="choosePatient(1)">
-									<mu-td>A</mu-td>
-									<mu-td>S123123</mu-td>
-									<mu-td>1st Call</mu-td>
-									<mu-td><mu-raised-button label="Claim" class="demo-raised-button" backgroundColor="green"/></mu-td>
+								<mu-tr v-for="call, index in allCalls" :key="index" @click.native="choosePatient(call.PatientId)">
+									<mu-td>{{ call.PName }}</mu-td>
+									<mu-td>{{ call.NRIC }}</mu-td>
+									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
+									<mu-td><mu-raised-button label="Claim" @click="open(call, index)" backgroundColor="green"/></mu-td>
+									<mu-dialog :open="dialog" title="Dialog" @close="close">
+										Are you sure you want to claim the patient <b>{{ dialogCall.PName }}</b>?
+										<mu-flat-button slot="actions" @click="close" primary label="Cancel"/>
+										<mu-flat-button slot="actions" primary @click="confirmClaim" label="Yes"/>
+									</mu-dialog>
 								</mu-tr>
-								<mu-tr @click.native="choosePatient(2)">
-									<mu-td>B</mu-td>
-									<mu-td>S123123</mu-td>
-									<mu-td>3rd Call</mu-td>
-									<mu-td><mu-raised-button label="Claim" class="demo-raised-button" backgroundColor="green"/></mu-td>
-								</mu-tr>
-								<mu-tr @click.native="choosePatient(3)">
-									<mu-td>C</mu-td>
-									<mu-td>S123123</mu-td>
-									<mu-td>1st Call</mu-td>
-									<mu-td><mu-raised-button label="Claim" class="demo-raised-button" backgroundColor="green"/></mu-td>
-								</mu-tr>
-								<mu-tr @click.native="choosePatient(4)">
-									<mu-td>D</mu-td>
-									<mu-td>S123123</mu-td>
-									<mu-td>2nd Call</mu-td>
-									<mu-td><mu-raised-button label="Claim" class="demo-raised-button" backgroundColor="green"/></mu-td>
-								</mu-tr>
+								
 							</mu-tbody>
 						</mu-table>	
+						
+
+
 						
 						
 					</div>
@@ -61,24 +52,18 @@
 			<section class="col-lg-4 col-xs-12 connectedSortable">
 				<div class="box box-primary">
 					<div class="box-header">
-
-
-						
-
 						<h3 class="box-title">
 							Patient Details
 						</h3>
 					</div>
-
 					<div class="box-body">
 						<mu-list>
-							<mu-sub-header>Patient Name</mu-sub-header>
-							<mu-list-item title="Name"><h3>{{ activePatient }}</h3>
-								<mu-avatar src="" slot="leftAvatar"/>
-
-								<i class="fa fa-circle text-red" slot="right"><b>50</b></i>
-							</mu-list-item>
-							
+							<!-- <mu-sub-header>Patient Name</mu-sub-header> -->
+							<mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item>
+							<mu-list-item><h3>NRIC: {{ activePatient.NRIC }}</h3></mu-list-item>
+							<mu-list-item><h3>Tier: {{ activePatient.Tier }}</h3></mu-list-item>
+							<mu-list-item><h3>Mean Test: {{ activePatient.MeanTest }}</h3></mu-list-item>
+							<mu-list-item><h3>Ward Number: {{ activePatient.WardNo }}</h3></mu-list-item>
 						</mu-list>
 					</div>
 				</div>
@@ -94,22 +79,61 @@
 
 		data () {
 			return {
-				patients: ['Amy', 'Bob', 'Cindy', 'David'],
-				activePatient: ''
+				dialog: false,
+				dialogCall: {},
+				dialogCallIndex: '',
+				allCalls: '',
+				activePatient: '',
+				CLAIMED_PROGRESS_ID: 1
 			}
 		},
-		computed: {
-	    // activePatient () {
-	    //   return this.patients[0]
-	    // }
-	  },
-	  methods: {
-	  	choosePatient (id) {
-	  		let index = id - 1
-	  		console.log(this.patients[index])
-	  		this.activePatient = this.patients[index]
+		created() {
+			this.$get('callcentre').then(response => {
+				this.allCalls = response.data
+			})
+		},
+		methods: {
+			confirmClaim() {
+				this.$put('claimedcalls/' + this.dialogCall.CallId, {Progress: this.CLAIMED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
+	  		this.allCalls.splice(this.dialogCallIndex, 1)
+	  		this.close()
+			},
+			open (call, index) {
+				this.dialog = true
+				this.dialogCall = call
+				this.dialogCallIndex = index
+			},
+			close () {
+				this.dialog = false
+			},
+
+			choosePatient (id) {
+				this.$get('patients/' + id).then(response => {
+					this.activePatient = response.data
+				})
+			},
+			claim(callId, index) {
+	  		// console.log(callId)
+	  		this.$put('claimedcalls/' + callId, {Progress: this.CLAIMED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
+	  		this.allCalls.splice(index, 1)
 	  	}
-	  }
+	  },
+	  filters: {
+	  	parseCallNo(val) {
+	  		if (val === 1) {
+	  			return '1st Call'
+	  		}
+	  		if (val === 2) {
+	  			return '2nd Call'
+	  		}
+	  		if (val === 3) {
+	  			return '3rd Call'
+	  		}
+	  		if (val === 4) {
+	  			return '4th Call'
+	  		}
+	  	}
+	  },
 	}
 </script>
 
