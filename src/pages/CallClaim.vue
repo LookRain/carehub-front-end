@@ -29,7 +29,7 @@
 									<mu-td>{{ call.NRIC }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
 									<mu-td><mu-raised-button label="Claim" @click="open(call, index)" backgroundColor="green"/></mu-td>
-									<mu-dialog :open="dialog" title="Dialog" @close="close">
+									<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Are you sure you want to claim the patient <b>{{ dialogCall.PName }}</b>?
 										<mu-flat-button slot="actions" @click="close" primary label="Cancel"/>
 										<mu-flat-button slot="actions" primary @click="confirmClaim" label="Yes"/>

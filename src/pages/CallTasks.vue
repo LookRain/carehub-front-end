@@ -20,15 +20,20 @@
 									<mu-th>Patient Name</mu-th>
 									<mu-th>NRIC</mu-th>
 									<mu-th>No. of Call</mu-th>
-									<mu-th>Mark</mu-th>
+									<mu-th>Action</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
-								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(index)">
+								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call.PatientId)">
 									<mu-td>{{ call.PName }}</mu-td>
 									<mu-td>{{ call.NRIC }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
-									<mu-td><mu-raised-button label="Complete" class="demo-raised-button" backgroundColor="red"/></mu-td>
+									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
+									<mu-dialog :open="dialog" title="Confirmation" @close="close">
+										Have you completed your call to <b>{{ dialogCall.PName }}</b>?
+										<mu-flat-button slot="actions" @click="close" primary label="No"/>
+										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+									</mu-dialog>
 								</mu-tr>
 								
 							</mu-tbody>
@@ -51,35 +56,13 @@
 					</div>
 
 					<div class="box-body">
-						<mu-list :selectable="false">
-
-							<mu-list-item title="Patient Name" :selectable="false"><h3>{{ activePatient }}</h3>
-
-
-								<mu-raised-button label="Add ad hoc" primary @click="open('bottom')"></mu-raised-button>
-
-								<div>
-
-
-
-									<mu-popup position="bottom" popupClass="demo-popup-bottom" :open="bottomPopup" @close="close('bottom')">
-										<mu-appbar title="Add ad hoc">
-											<mu-flat-button slot="right" label="close" color="white" @click="close('bottom')"/>
-										</mu-appbar>
-										<mu-content-block>
-											
-											<div class="col-lg-8 col-xs-12">
-												<mu-date-picker hintText="Pick A Date" :dateTimeFormat="enDateFormat"/>
-											</div>
-											<div class="col-lg-4 col-xs-12">
-												<mu-raised-button label="Add" primary/>
-											</div>
-										</mu-content-block>
-									</mu-popup>
-
-								</div>
-							</mu-list-item>
-							
+						<mu-list>
+							<!-- <mu-sub-header>Patient Name</mu-sub-header> -->
+							<mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item>
+							<mu-list-item><h3>NRIC: {{ activePatient.NRIC }}</h3></mu-list-item>
+							<mu-list-item><h3>Tier: {{ activePatient.Tier }}</h3></mu-list-item>
+							<mu-list-item><h3>Mean Test: {{ activePatient.MeanTest }}</h3></mu-list-item>
+							<mu-list-item><h3>Ward Number: {{ activePatient.WardNo }}</h3></mu-list-item>
 						</mu-list>
 					</div>
 				</div>
@@ -89,46 +72,18 @@
 </template>
 
 <script>
-	const dayAbbreviation = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-	const dayList = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-	const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-	'Oct', 'Nov', 'Dec']
-	const monthLongList = ['January', 'February', 'March', 'April', 'May', 'June',
-	'July', 'August', 'September', 'October', 'November', 'December']
-
-	const enDateFormat = {
-		formatDisplay (date) {
-			return `${dayList[date.getDay()]}, ${monthList[date.getMonth()]} ${date.getDate()}`
-		},
-		formatMonth (date) {
-			return `${monthLongList[date.getMonth()]} ${date.getFullYear()}`
-		},
-		getWeekDayArray (firstDayOfWeek) {
-			let beforeArray = []
-			let afterArray = []
-			for (let i = 0; i < dayAbbreviation.length; i++) {
-				if (i < firstDayOfWeek) {
-					afterArray.push(dayAbbreviation[i])
-				} else {
-					beforeArray.push(dayAbbreviation[i])
-				}
-			}
-			return beforeArray.concat(afterArray)
-		}
-	}
 	export default {
 
 		name: 'CallTasks',
 
 		data () {
 			return {
-				allTasks: '',
-				enDateFormat,
+				allTasks: '',				
 				activePatient: '',
-				bottomPopup: false,
-				topPopup: false,
-				leftPopup: false,
-				rightPopup: false
+				COMPLETED_PROGRESS_ID: 2,
+				dialog: false,
+				dialogCall: {},
+				dialogCallIndex: ''
 			}
 		},
 		computed: {
@@ -138,16 +93,23 @@
 	  },
 	  methods: {
 	  	choosePatient (id) {
-	  		let index = id - 1
-	  		console.log(this.patients[index])
-	  		this.activePatient = this.patients[index]
+	  		this.$get('patients/' + id).then(response => {
+					this.activePatient = response.data
+				})
 	  	},
-	  	open (position) {
-	  		this[position + 'Popup'] = true
-	  	},
-	  	close (position) {
-	  		this[position + 'Popup'] = false
-	  	}
+	  	open (call, index) {
+				this.dialog = true
+				this.dialogCall = call
+				this.dialogCallIndex = index
+			},
+			close () {
+				this.dialog = false
+			},
+			confirmComplete() {
+				this.$put('claimedcalls/' + this.dialogCall.CallId, {Progress: this.COMPLETED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
+	  		this.allTasks.splice(this.dialogCallIndex, 1)
+	  		this.close()
+			}
 	  },
 	  filters: {
 	  	parseCallNo(val) {
@@ -177,14 +139,7 @@
 					this.allTasks = response.data
 					})
 				}
-			},
-	  	topPopup (val) {
-	  		if (val) {
-	  			setTimeout(() => {
-	  				this.topPopup = false
-	  			}, 2000)
-	  		}
-	  	}
+			}
 	  }
 	}
 </script>
