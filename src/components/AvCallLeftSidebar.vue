@@ -32,6 +32,12 @@
         </li>
 
         <li>
+          <router-link  to="/call_history" exact>
+            <i class="fa fa-th"></i> <span>Call History</span>
+          </router-link>
+        </li>
+
+        <li>
           <router-link  to="/patients" exact>
             <i class="fa fa-th"></i> <span>Patients</span>
           </router-link>
