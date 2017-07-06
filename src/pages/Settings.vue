@@ -22,33 +22,21 @@
 								<mu-tr>
 									<mu-th>Ward</mu-th>
 									<mu-th>Staff Assigned</mu-th>
+									<mu-th>Action</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
-								<mu-tr>
-									<mu-td>12</mu-td>
-									<mu-td><mu-select-field v-model="game1" :labelFocusClass="['label-foucs']">
-										<mu-menu-item v-for="text,index in list" :key="index" :value="index" :title="text" />
-									</mu-select-field></mu-td>
+								<mu-tr v-for="assignment in wardAssignment" :key="assignment.WAssignmentId">
+									<mu-td>{{ assignment.WardNo }}</mu-td>
+									<mu-td>
+									<mu-select-field v-model="assignment.UserName" :labelFocusClass="['label-foucs']" :maxHeight="500">
+                    <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.DisplayName"/>
+                  </mu-select-field>
+                  </mu-td>
+                  <mu-td><mu-raised-button label="Update" secondary @click="updateWardAssignment(assignment.WAssignmentId, assignment.WardNo, assignment.UserName)"></mu-raised-button></mu-td>
+
 								</mu-tr>
-								<mu-tr>
-									<mu-td>13</mu-td>
-									<mu-td><mu-select-field v-model="game1" :labelFocusClass="['label-foucs']">
-										<mu-menu-item v-for="text,index in list" :key="index" :value="index" :title="text" />
-									</mu-select-field></mu-td>
-								</mu-tr>
-								<mu-tr>
-									<mu-td>14</mu-td>
-									<mu-td><mu-select-field v-model="game1" :labelFocusClass="['label-foucs']">
-										<mu-menu-item v-for="text,index in list" :key="index" :value="index" :title="text" />
-									</mu-select-field></mu-td>
-								</mu-tr>
-								<mu-tr>
-									<mu-td>15</mu-td>
-									<mu-td><mu-select-field v-model="game1" :labelFocusClass="['label-foucs']">
-										<mu-menu-item v-for="text,index in list" :key="index" :value="index" :title="text" />
-									</mu-select-field></mu-td>
-								</mu-tr>
+
 							</mu-tbody>
 						</mu-table>	
 					</div>
@@ -97,12 +85,25 @@
 
 	  data () {
 	    return {
-	      game1: 0,
-	      list: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6']
+	      wardAssignment: []
 	    }
 	  },
 	  methods: {
-
+	  	updateWardAssignment(wardAssID, wardNo, username) {
+	  		this.$put('wardassignment/' + wardAssID, {WardNo: wardNo, UserName: username}).then(response=> {
+          alert('Update successfully! ' + 'User ' + response.data.UserName + ' assigned to ward ' + response.data.WardNo)
+        })
+	  	}
+	  },
+	  computed: {
+	  	hosUsers() {
+        return this.$store.state.allHosUsers
+      }
+	  },
+	  created() {
+	  	this.$get('wardassignment').then(response => {
+	  		this.wardAssignment = response.data
+	  	})
 	  }
 	}
 </script>
