@@ -9,8 +9,9 @@ import CallTasks from '@/pages/CallTasks'
 import HospitalTasks from '@/pages/HospitalTasks'
 import CallClaim from '@/pages/CallClaim'
 import CallHistory from '@/pages/CallHistory'
-import Protocols from '@/pages/Protocols'
 import Patients from '@/pages/Patients'
+
+import Protocols from '@/pages/Protocols'
 import Protocol1 from '@/pages/Protocol1'
 import Protocol2 from '@/pages/Protocol2'
 import Protocol3 from '@/pages/Protocol3'
@@ -82,6 +83,10 @@ export default new Router({
     name: 'Protocols',
     component: Protocols,
     children: [
+    {
+      path: '',
+      component: Protocol1
+    },
     {
       path: '1',
       component: Protocol1

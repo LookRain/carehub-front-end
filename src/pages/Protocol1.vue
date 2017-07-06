@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<div class="container-fluid">
+  <div>
+    <div class="container-fluid">
   <h3><strong>Chest Pain</strong></h3>
   <div class="guide-panel"><div data-wizard-init>
     <ul class="steps">
@@ -157,17 +157,17 @@
   </div></div><!--/.guide-panel-->
 </div>
 
-		</div>
-	</template>
-	<script>
-		export default {
-		  data () {
-		    return {
-	
-		    }
-		  },
-		  created() {
-		  	/*
+    </div>
+  </template>
+  <script>
+    export default {
+      data () {
+        return {
+  
+        }
+      },
+      created() {
+        /*
  * jQuery / jqLite Wizard Plugin
  * version: 0.0.7
  * Author: Girolamo Tomaselli http://bygiro.com
@@ -434,7 +434,7 @@ if(!bg){
         $(mySelector)[ pluginName ]({});
     });
 }(bg, document, window));
-		  	jQuery(document).ready(function() {
+        jQuery(document).ready(function() {
         //color change for checked/unchecked box
         $('input:checkbox').each(function(){
           var $t = $(this);
@@ -478,6 +478,6 @@ if(!bg){
         //attach href to redirect to protocolIndex page when clicking
         $('.cancel-btn').attr("href", "{{ url('/protocol')}}")
       });
-		  }
-		}
-	</script>
+      }
+    }
+  </script>

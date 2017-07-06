@@ -1,14 +1,14 @@
 <template>
 <div>
 <div class="row">
-	<div class="col-xs-2">
+	<div class="col-xs-2" id="protocol-list">
 		<ul>
-			<li><router-link to="1">Chest Pain</router-link></li>
-			<li><router-link to="2">Congestive Heart Failure</router-link></li>
-			<li><router-link to="3">Breathing Problem</router-link></li>
-			<li><router-link to="4">Dizziness</router-link></li>
-			<li><router-link to="5">Escalation</router-link></li>
-			<li><router-link to="6">Heart Rate problem</router-link></li>
+			<li><router-link to="/protocols/1">Chest Pain</router-link></li>
+			<li><router-link to="/protocols/2">Congestive Heart Failure</router-link></li>
+			<li><router-link to="/protocols/3">Breathing Problem</router-link></li>
+			<li><router-link to="/protocols/4">Dizziness</router-link></li>
+			<li><router-link to="/protocols/5">Escalation</router-link></li>
+			<li><router-link to="/protocols/6">Heart Rate problem</router-link></li>
 		</ul>
 	</div>
 <div class="col-xs-10">
@@ -37,6 +37,10 @@ export default {
  * Copyright (c) 2013 G. Tomaselli
  * Licensed under the MIT license.
  */
+ #protocol-list {
+ 	padding-top: 60px;
+
+ }
 @font-face {
 	font-family: 'wizard-font';
 	font-weight: normal;
