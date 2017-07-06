@@ -15,7 +15,7 @@
 					<div>
 						<mu-tabs :value="activeTab" @change="handleTabChange" class="my-tabs" >
 							<mu-tab value="tab1" title="Patients Assigned Today" :style="styleObject"/>
-							<mu-tab disabled="disabled" value="tab2" title="Patients History" :style="styleObject"/>
+							<mu-tab value="tab2" title="Patients History" :style="styleObject"/>
 						</mu-tabs>
 						<div v-if="activeTab === 'tab1'">
 							<br>
@@ -47,135 +47,174 @@
 								</mu-tbody>
 							</mu-table>	
 
-
-
 						</div>
 						<div v-if="activeTab === 'tab2'">
 
-							<mu-tbody>
-									</mu-tbody>
-								</mu-table>	
-							</div>				
-						</div>
+							<mu-table :showCheckbox="false">
+								<mu-thead>
+									<mu-tr>
+										<mu-th>Patient Name/ID</mu-th>
+										<mu-th>Date</mu-th>
+										<mu-th>Tier</mu-th>
+										<mu-th>Status</mu-th>
+										<mu-th>Action</mu-th>
+									</mu-tr>
+								</mu-thead>
+								<mu-tbody>
+									<mu-tr v-for="task, index in history" :key="index">
+										<mu-td>{{ task.PName }}</mu-td>
+										<mu-td>{{ task.PTimeStamp }}</mu-td>
+										<mu-td>
+											<mu-select-field v-model="task.Tier" :labelFocusClass="['label-foucs']">
+												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
+											</mu-select-field>
+										</mu-td>
+										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
+										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
+										<mu-raised-button label="Recruit" backgroundColor="green" @click="recruit(task)"/>
+										<mu-raised-button label="Reject" backgroundColor="red" @click="reject(task, index)"/>
+									</mu-tr>
+
+
+								</mu-tbody>
+							</mu-table>	
+
+						</div>				
 					</div>
-					<!-- /.box-body-->
-
 				</div>
+				<!-- /.box-body-->
 
-				
-			</section>
+			</div>
 
-			
-		</div>
-	</template>
 
-	<script>
-		import AvContentHeader from '../components/AvContentHeader.vue'
+		</section>
 
-		export default {
-			name: 'HospitalTasks',
 
-			data () {
-				return {
-					disabled: true,
-					test: '',
-					tasks: [],
-					game1: 0,
-					activeTab: 'tab1',
-					styleObject: {
-						color: '#000000'
-					},
-					tierList: ['1','2','3']
+	</div>
+</template>
+
+<script>
+	import AvContentHeader from '../components/AvContentHeader.vue'
+
+	export default {
+		name: 'HospitalTasks',
+
+		data () {
+			return {
+				test: '',
+				tasks: [],
+				history: [],
+				game1: 0,
+				activeTab: 'tab1',
+				styleObject: {
+					color: '#000000'
+				},
+				tierList: ['1','2','3']
+			}
+		},
+		components: {
+			AvContentHeader,
+			'full-calendar': require('vue-fullcalendar')
+		},
+		filters: {
+			parseStatus(val) {
+				if (val === 0) { return 'UnProcessed'}
+				if (val === 1) { return 'Recruited'}
+				if (val === 2) { return 'Rejected'}
+			}
+		},
+		methods: {
+			setStatusRecruit(patient) {
+				patient.PStatus = 1
+				return patient
+			},
+			setStatusReject(patient) {
+				patient.PStatus = 2
+				return patient
+			},
+			recruit(input) {
+				if (!input.Tier) {
+					alert('You must provide a Tier that the patient belongs to!')
+					return;
 				}
-			},
-			components: {
-				AvContentHeader,
-				'full-calendar': require('vue-fullcalendar')
-			},
-			methods: {
-				setStatusRecruit(patient) {
-					patient.PStatus = 1
-					return patient
-				},
-				setStatusReject(patient) {
-					patient.PStatus = 2
-					return patient
-				},
-				recruit(input) {
-					if (!input.Tier) {
-						alert('You must provide a Tier that the patient belongs to!')
-						return;
-					}
-					let patientID = input.PId
-					let patientNRIC = {
-						PatientId: input.PId
-					}
-					this.$put('patients/' + patientID, this.setStatusRecruit(input)).then(
+				let patientID = input.PId
+				let patientNRIC = {
+					PatientId: input.PId
+				}
+				this.$put('patients/' + patientID, this.setStatusRecruit(input)).then(
+					response => {
+						console.log('Success' + response.data)
+					}).catch(err => {
+						console.log(err.response.data.Message)
+					})
+
+					this.$post('callcentre', patientNRIC).then(
 						response => {
-							console.log('Success' + response.data)
-						}).catch(err => {
+							console.log('Call centre update Success' + response.data)
+						}).catch(
+						err => {
 							console.log(err.response.data.Message)
 						})
+						console.log(input.PId)
 
-						this.$post('callcentre', patientNRIC).then(
+						this.tasks.splice(0,1)
+					},
+					reject(input, index) {
+						let patientID = input.PId
+						let patientNRIC = {
+							PatientId: input.PId
+						}
+						this.$put('patients/' + patientID, this.setStatusReject(input)).then(
 							response => {
-								console.log('Call centre update Success' + response.data)
-							}).catch(
-							err => {
+								console.log('Patient Rejected' + response.data)
+							}).catch(err => {
 								console.log(err.response.data.Message)
 							})
-							console.log(input.PId)
-							
-							this.tasks.splice(0,1)
-						},
-						reject(input, index) {
-							let patientID = input.PId
-							let patientNRIC = {
-								PatientId: input.PId
-							}
-							this.$put('patients/' + patientID, this.setStatusReject(input)).then(
-								response => {
-									console.log('Patient Rejected' + response.data)
-								}).catch(err => {
-									console.log(err.response.data.Message)
-								})
 
 							console.log('clicked reject')
 							this.tasks.splice(index, 1)
 
-							},
-							handleTabChange (val) {
-								this.activeTab = val
-							}
 						},
-						computed: {
-							username() {
-								return this.$store.state.user.Email
-							}
-						},
-						watch: {
-							username(val) {
-								if (val) {
-									this.$get('assignedpatients/values?username=' + val).then(
-										response => {
-											this.tasks = response.data
-										})
-								}
-							}
-						},
-						created() {
-							this.$get('assignedpatients/values?username=' + this.$store.state.user.Email).then(
-								response => {
-									this.tasks = response.data
-								})
+						handleTabChange (val) {
+							this.activeTab = val
 						}
+					},
+					computed: {
+						username() {
+							return this.$store.state.user.Email
+						}
+					},
+					watch: {
+						username(val) {
+							if (val) {
+								this.$get('assignedpatients/values?username=' + val).then(
+									response => {
+										this.tasks = response.data
+									})
+								this.$get('assignedpatientshistory/values?username=' + val).then(
+									response => {
+										this.history = response.data
+									})
+							}
+						}
+					},
+					created() {
+						this.$get('assignedpatients/values?username=' + this.$store.state.user.Email).then(
+							response => {
+								this.tasks = response.data
+							})
+						this.$get('assignedpatientshistory/values?username=' + this.$store.state.user.Email).then(
+							response => {
+								this.history = response.data
+							})
 					}
-				</script>
+				}
+			</script>
 
-				<style lang="css" scoped>
-					.my-tabs {
+			<style lang="css" scoped>
+				.my-tabs {
 
-						background-color: #ffffff;
+					background-color: #ffffff;
 
-					}
-				</style>
+				}
+			</style>
