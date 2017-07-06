@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<mu-raised-button label="bulk" @click="addBulk"></mu-raised-button>
+
 		<br>
 		<div class="row">
 			<div class="col-lg-6 col-xs-6">
@@ -37,38 +37,38 @@
 			<!-- ./col -->
 		</div>
 		<div class="row">
-		<section class="col-lg-6 col-xs-12 connectedSortable">
-					<div class="box box-success">
-						<div class="box-header">
-							<i class="fa fa-map-marker"></i>
+			<section class="col-lg-6 col-xs-12 connectedSortable">
+				<div class="box box-success">
+					<div class="box-header">
+						<i class="fa fa-map-marker"></i>
 
-							<h3 class="box-title">
-								Upload Excel
-							</h3>
-						</div>
-						<div class="box-body" style="overflow: hid den;">
-							<div class="container">
-								<mu-text-field hintText="Please upload excel or csv file"/><br/>
-								<div class="excel-upload">
-									<mu-raised-button label="Upload Excel" default onclick="document.getElementById('csv').click();"/>
-									<input type="file" style="display:none;" id="csv" name="file"/>
-								</div>
-								<br>
-								<hr>
-								
-								<br>
-								<!-- <router-link to="/assign_patient"> -->
-								<mu-raised-button label="Submit" primary @click="parseCSV"/>
-								<!-- </router-link> -->
-
+						<h3 class="box-title">
+							Upload Excel
+						</h3>
+					</div>
+					<div class="box-body" style="overflow: hid den;">
+						<div class="container">
+							<mu-text-field hintText="Please upload excel or csv file"/><br/>
+							<div class="excel-upload">
+								<mu-raised-button label="Upload Excel" default onclick="document.getElementById('csv').click();"/>
+								<input type="file" style="display:none;" id="csv" name="file"/>
 							</div>
+							<br>
+							<hr>
 
+							<br>
+							<!-- <router-link to="/assign_patient"> -->
+							<mu-raised-button label="Submit" primary @click="parseCSV"/>
+							<!-- </router-link> -->
 
 						</div>
-						<!-- /.box-body-->
+
 
 					</div>
-				</section>
+					<!-- /.box-body-->
+
+				</div>
+			</section>
 			<section class="col-lg-6 col-xs-6 connectedSortable">
 				<div class="box box-success">
 					<div class="box-header">
@@ -83,12 +83,12 @@
 						<mu-raised-button label="Add" primary @click="addPatient"></mu-raised-button>
 					</div>
 				</div>
-				</section>
+			</section>
 
 
-			</div>
-			<div class="row" v-show="isNewPatientAdded">
-				<section class="col-lg-12 col-xs-12 connectedSortable">
+		</div>
+		<div class="row" v-show="isNewPatientAdded">
+			<section class="col-lg-12 col-xs-12 connectedSortable">
 				<div class="box box-success">
 					<div class="box-header">
 						<h3 class="box-title">New Patients Added</h3>
@@ -97,65 +97,101 @@
 						{{ returnedPatient }}
 					</div>
 				</div>
-				</section>
-			</div>
-
-			<div class="row">		
-				<section class="col-lg-8 col-xs-12 connectedSortable">
-					<div class="box box-primary">
-						<div class="box-header">
-
-							<h3 class="box-title">
-								Staff Workload
-							</h3>
-						</div>
-
-						<div class="box-body">
-							<mu-list>
-								<mu-sub-header>Staff Workload</mu-sub-header>
-								<mu-list-item title="Staff 1">
-									<mu-avatar src="" slot="leftAvatar"/>
-
-									<i class="fa fa-circle text-red" slot="right"><b>50</b></i>
-								</mu-list-item>
-								<mu-list-item title="Staff 2">
-									<mu-avatar src="" slot="leftAvatar"/>
-									<i class="fa fa-circle text-green" slot="right"><b>5</b></i>
-								</mu-list-item>
-							</mu-list>
-						</div>
-					</div>
-				</section>
-			</div>
-
+			</section>
 		</div>
-	</template>
 
-	<script>
-		import AvContentHeader from '../components/AvContentHeader.vue'
+		<div class="row">		
+			<section class="col-lg-6 col-xs-12 connectedSortable">
+				<div class="box box-warning">
+					<div class="box-header">
 
-		export default {
-			components: { AvContentHeader },
-			name: 'Admin',
+						<h3 class="box-title">
+							Hospital Team Staff Workload
+						</h3>
+					</div>
 
-			data () {
-				return {
-					parsedResult: '',
-					isNewPatientAdded: false,
-					allusers: '',
-					name: '',
-					nric: '',
-					meanTest: '',
-					region: '',
-					wardNumber: '',
-					returnedPatient: ''
-				}
-			},
-			methods: {
-				parseCSV() {
-					let reader = new FileReader()
-					reader.onload = ()=> {
-						this.$store.commit('setCSV', reader.result)
+					<div class="box-body">
+						<mu-table :showCheckbox="showCheckbox">
+							<mu-thead>
+								<mu-tr>
+									<mu-th>Name</mu-th>
+									<mu-th>Email</mu-th>
+									<mu-th>Workload</mu-th>							
+								</mu-tr>
+							</mu-thead>
+							<mu-tbody>
+								<mu-tr v-for="user in hosWorkload">
+									<mu-td>{{ user.DisplayedName }}</mu-td>
+									<mu-td>{{ user.UserName }}</mu-td>
+									<mu-td>{{ user.Workload }}</mu-td>
+								</mu-tr>
+							</mu-tbody>
+						</mu-table>
+					</div>
+				</div>
+			</section>
+			<section class="col-lg-6 col-xs-12 connectedSortable">
+				<div class="box box-primary">
+					<div class="box-header">
+
+						<h3 class="box-title">
+							Staff Workload
+						</h3>
+					</div>
+
+					<div class="box-body">
+						<mu-table :showCheckbox="showCheckbox">
+							<mu-thead>
+								<mu-tr>
+									<mu-th>Name</mu-th>
+									<mu-th>Email</mu-th>
+									<mu-th>Workload</mu-th>							
+								</mu-tr>
+							</mu-thead>
+							<mu-tbody>
+								<mu-tr v-for="user in callWorkload">
+									<mu-td>{{ user.DisplayedName }}</mu-td>
+									<mu-td>{{ user.UserName }}</mu-td>
+									<mu-td>{{ user.Workload }}</mu-td>
+								</mu-tr>
+							</mu-tbody>
+						</mu-table>
+					</div>
+				</div>
+			</section>
+		</div>
+
+	</div>
+</template>
+
+<script>
+	import AvContentHeader from '../components/AvContentHeader.vue'
+
+	export default {
+		components: { AvContentHeader },
+		name: 'Admin',
+
+		data () {
+			return {
+				hosWorkload: '',
+				callWorkload: '',
+				parsedResult: '',
+				isNewPatientAdded: false,
+				showCheckbox: false,
+				allusers: '',
+				name: '',
+				nric: '',
+				meanTest: '',
+				region: '',
+				wardNumber: '',
+				returnedPatient: ''
+			}
+		},
+		methods: {
+			parseCSV() {
+				let reader = new FileReader()
+				reader.onload = ()=> {
+					this.$store.commit('setCSV', reader.result)
 						// this.parsedResult = reader.result
 						
 					}
@@ -166,24 +202,24 @@
 				},
 				addBulk() {
 					this.$post('BulkPatients', [
-						{
-							'NRIC': 'azzzz',
-							'PName': 'name1',
-							'MeanTest': 1,
-							'WardNo': 1,
-							'Region': 1,
-							'PStatus': 0
-						},
-						{
-							'NRIC': 'acccc',
-							'PName': 'name2',
-							'MeanTest': 2,
-							'WardNo': 2,
-							'Region': 2,
-							'PStatus': 0
-						}
-						])
+					{
+						'NRIC': 'azzzz',
+						'PName': 'name1',
+						'MeanTest': 1,
+						'WardNo': 1,
+						'Region': 1,
+						'PStatus': 0
 					},
+					{
+						'NRIC': 'acccc',
+						'PName': 'name2',
+						'MeanTest': 2,
+						'WardNo': 2,
+						'Region': 2,
+						'PStatus': 0
+					}
+					])
+				},
 				clearPatientFields() {
 					this.name = ''; this.nric = ''; this.meanTest=''; this.region=''; this.wardNumber = '';
 				},
@@ -221,6 +257,13 @@
 				this.$get('AllUsers').then(response=> {
 					this.allusers = response.data
 				})
+				this.$get('hospitalteamworkload').then(response=> {
+					this.hosWorkload = response.data
+				})
+				this.$get('callcentreteamworkload').then(response=> {
+					this.callWorkload = response.data
+				})
+
 				
 			},
 			watch: {

@@ -13,6 +13,7 @@ const store = new Vuex.Store({
   	rawCSV: 'init csv',
     allHosUsers: [],
     wardAssignment: {},
+    hosWorkload: []
 
   },
   mutations: {
@@ -33,6 +34,9 @@ const store = new Vuex.Store({
     },
     setCallTasks(state, tasks) {
       state.callTasks = tasks
+    },
+    setHosWorkload(state, load) {
+      state.hosWorkload = load
     }
   }
 })

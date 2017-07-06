@@ -2,9 +2,40 @@
   <div>
     <br>
     
-  
+
     <div class="row">
-      <section class="col-lg-12 col-xs-12 connectedSortable">
+    <section class="col-lg-4 col-xs-12 connectedSortable">
+        <div class="box box-warning">
+          <div class="box-header">
+
+            <h3 class="box-title">
+              Hospital Team Staff Workload
+            </h3>
+          </div>
+
+          <div class="box-body">
+            <mu-table :showCheckbox="showCheckbox">
+              <mu-thead>
+                <mu-tr>
+                  <mu-th>Name</mu-th>
+                  <mu-th>Email</mu-th>
+                  <mu-th>Workload</mu-th>             
+                </mu-tr>
+              </mu-thead>
+              <mu-tbody>
+                <mu-tr v-for="user in hosWorkload">
+                  <mu-td>{{ user.DisplayedName }}</mu-td>
+                  <mu-td>{{ user.UserName }}</mu-td>
+                  <mu-td>{{ user.Workload }}</mu-td>
+                </mu-tr>
+              </mu-tbody>
+            </mu-table>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="col-lg-8 col-xs-12 connectedSortable">
         <div class="box box-success">
           <div class="box-header">
             <i class="fa fa-map-marker"></i>
@@ -30,27 +61,21 @@
                   <mu-td>{{ patient.WardNo }}</mu-td>
 
                   <mu-td>
-                 <mu-select-field v-model="patient.UserName" :labelFocusClass="['label-foucs']" :label="hint + patient.UserDisplayName" :maxHeight="500">
+                  <mu-select-field v-model="patient.UserName" :labelFocusClass="['label-foucs']" :label="hint + patient.UserDisplayName" :maxHeight="500">
                     <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.DisplayName"/>
                   </mu-select-field>
-                 <!--  <mu-select-field class="domo" v-model="game1" :labelFocusClass="['label-foucs']" label="选择你喜欢的游戏" :maxHeight="300">
-            
-                    <mu-menu-item v-for="text,index in list" :key="index" :value="text.name" :title="text.name" /> -->
+                  {{ matchWorkload(patient.UserName) }}
+                </mu-td>
+              </mu-tr>                
+            </mu-tbody>
+          </mu-table> 
 
-                    
-                  </mu-select-field>
-
-              </mu-td>
-            </mu-tr>                
-          </mu-tbody>
-        </mu-table> 
-
-        <mu-raised-button label="submit" @click="postAssignment"></mu-raised-button>
+          <mu-raised-button label="submit" @click="postAssignment"></mu-raised-button>
+        </div>
+        <!-- /.box-body-->
       </div>
-      <!-- /.box-body-->
-    </div>
-  </section>      
-</div>
+    </section>      
+  </div>
 </div>
 </template>
 
@@ -63,8 +88,9 @@
 
     data () {
       return {
-        // hosUsers: [],
+        // hosWorkload: [],
         hint: 'Default assigned user: ',
+        showCheckbox: false,
         csvConfig: {
           colNumber: 6,
           hasHeader: true
@@ -72,6 +98,9 @@
       }
     },
     computed: {
+      hosWorkload() {
+        return this.$store.state.hosWorkload
+      },
       hosUsers() {
         return this.$store.state.allHosUsers
       },
@@ -113,6 +142,15 @@
         console.log(msg)
         this.$emit(msg)
       },
+      matchWorkload(email) {
+        let result = ''
+        this.hosWorkload.forEach(w => {
+          if (w.UserName === email) {
+            result = w.Workload
+          }
+        })
+        return result
+      },
       matchAssignedUser(wardNo) {
         // type == 1 : return username/email
         // tyle == 2 : return display name
@@ -132,6 +170,14 @@
           alert(err.response.data.Message)
         })
       }
+    },
+    watch: {
+
+    },
+    created() {
+      this.$get('hospitalteamworkload').then(response=> {
+        this.hosWorkload = response.data
+      })
     }
   }
 </script>

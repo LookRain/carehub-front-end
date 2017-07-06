@@ -82,6 +82,10 @@ new Vue({
         store.commit('setAllHosUsers', response.data)
       }).catch(err=>{console.log(err)})
 
+    this.$get('hospitalteamworkload').then(response=> {
+        store.commit('setHosWorkload', response.data)
+      })
+
   }
 })
 
