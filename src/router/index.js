@@ -86,7 +86,6 @@ export default new Router({
   },
   {
     path: '/protocols',
-    name: 'Protocols',
     component: Protocols,
     children: [
     {

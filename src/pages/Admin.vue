@@ -1,6 +1,5 @@
 <template>
 	<div>
-
 		<br>
 		<div class="row">
 			<div class="col-lg-6 col-xs-6">
@@ -187,7 +186,13 @@
 				returnedPatient: ''
 			}
 		},
+		computed: {
+			usergroup() {
+				return this.$store.state.user.UserGroup
+			}
+		},
 		methods: {
+
 			parseCSV() {
 				let reader = new FileReader()
 				reader.onload = ()=> {
@@ -254,6 +259,13 @@
 				}
 			},
 			created() {
+				if (this.$store.state.user.UserGroup === 3) {
+					this.$router.push('call_tasks')
+				}
+				if (this.$store.state.user.UserGroup === 2) {
+					this.$router.push('hospital_tasks')
+				}
+
 				this.$get('AllUsers').then(response=> {
 					this.allusers = response.data
 				})
@@ -267,7 +279,14 @@
 				
 			},
 			watch: {
-
+				usergroup(val) {
+					if (val === 3) {
+					this.$router.push('call_tasks')
+				}
+				if (val === 2) {
+					this.$router.push('hospital_tasks')
+				}
+				}
 			}
 		}
 	</script>
