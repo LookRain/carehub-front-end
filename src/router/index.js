@@ -9,6 +9,7 @@ import CallTasks from '@/pages/CallTasks'
 import HospitalTasks from '@/pages/HospitalTasks'
 import CallClaim from '@/pages/CallClaim'
 import CallHistory from '@/pages/CallHistory'
+import AdHocCall from '@/pages/AdHocCall'
 import Patients from '@/pages/Patients'
 
 import Protocols from '@/pages/Protocols'
@@ -47,6 +48,11 @@ export default new Router({
     path: '/call_history',
     name: 'CallHistory',
     component: CallHistory
+  },
+  {
+    path: '/ad_hoc_call',
+    name: 'AdHocCall',
+    component: AdHocCall
   },
   {
     path: '/assign_patient',

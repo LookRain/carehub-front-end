@@ -38,6 +38,12 @@
         </li>
 
         <li>
+          <router-link  to="/ad_hoc_call" exact>
+            <i class="fa fa-th"></i> <span>ad hoc Call</span>
+          </router-link>
+        </li>
+
+        <li>
           <router-link  to="/patients" exact>
             <i class="fa fa-th"></i> <span>Patients</span>
           </router-link>
