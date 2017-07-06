@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick"  :showSizeChanger="showSizeChanger" :pageSizeOption="pageSizeOption" @pageSizeChange="handlePageSizeChange">
+		<mu-pagination :total="total" :current="currentPage" :defaultPageSize="numPerPage" @pageChange="handleClick"  :showSizeChanger="showSizeChanger" :pageSizeOption="pageSizeOption" @pageSizeChange="handlePageSizeChange" :pageChangerText="'/Page'">
  		</mu-pagination>
 
 <mu-table :showCheckbox="showCheckbox">
@@ -17,7 +17,7 @@
       </mu-tr>
     </mu-thead>
     <mu-tbody>
-      <mu-tr v-for="patient in currentPatients">
+      <mu-tr v-for="patient in currentPatients" :key="patient.PId">
         <mu-td>{{ patient.NRIC }}</mu-td>
         <mu-td>{{ patient.PName }}</mu-td>
         <mu-td>{{ patient.PStatus | parseStatus }}</mu-td>
