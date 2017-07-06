@@ -8,8 +8,16 @@ import AdminCalendar from '@/pages/AdminCalendar'
 import CallTasks from '@/pages/CallTasks'
 import HospitalTasks from '@/pages/HospitalTasks'
 import CallClaim from '@/pages/CallClaim'
+import CallHistory from '@/pages/CallHistory'
 import Protocols from '@/pages/Protocols'
 import Patients from '@/pages/Patients'
+import Protocol1 from '@/pages/Protocol1'
+import Protocol2 from '@/pages/Protocol2'
+import Protocol3 from '@/pages/Protocol3'
+import Protocol4 from '@/pages/Protocol4'
+import Protocol5 from '@/pages/Protocol5'
+import Protocol6 from '@/pages/Protocol6'
+
 Vue.use(Router)
 
 export default new Router({
@@ -33,6 +41,11 @@ export default new Router({
     path: '/claim',
     name: 'CallClaim',
     component: CallClaim
+  },
+  {
+    path: '/call_history',
+    name: 'CallHistory',
+    component: CallHistory
   },
   {
     path: '/assign_patient',
@@ -67,7 +80,34 @@ export default new Router({
   {
     path: '/protocols',
     name: 'Protocols',
-    component: Protocols
+    component: Protocols,
+    children: [
+    {
+      path: '1',
+      component: Protocol1
+    },
+    {
+      path: '2',
+      component: Protocol2
+    },
+    {
+      path: '3',
+      component: Protocol3
+    },
+    {
+      path: '4',
+      component: Protocol4
+    },
+    {
+      path: '5',
+      component: Protocol5
+    },
+    {
+      path: '6',
+      component: Protocol6
+    }
+    
+    ]
   }
   ]
 })
