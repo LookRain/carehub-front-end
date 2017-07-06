@@ -6,12 +6,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     hospitalTasks: [],
+    callTasks: [],
   	user: {
   		UserGroup: 1
   	},
   	rawCSV: 'init csv',
     allHosUsers: [],
-    wardAssignment: {}
+    wardAssignment: {},
+
   },
   mutations: {
   	setUser (state, userInfo) {
@@ -28,6 +30,9 @@ const store = new Vuex.Store({
     },
     setAllHosUsers(state, users) {
       state.allHosUsers = users
+    },
+    setCallTasks(state, tasks) {
+      state.callTasks = tasks
     }
   }
 })
