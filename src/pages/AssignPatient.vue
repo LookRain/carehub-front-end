@@ -2,7 +2,7 @@
   <div>
     <br>
     
-    {{parsed}}
+  
     <div class="row">
       <section class="col-lg-12 col-xs-12 connectedSortable">
         <div class="box box-success">
