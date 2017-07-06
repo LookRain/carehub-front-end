@@ -3,14 +3,14 @@
 		<br>
 		<div class="row">
 			<section class="col-lg-8 col-xs-12 connectedSortable">
-				<div class="box box-solid bg-green-gradient">
+				<div class="box box-solid bg-yellow-gradient">
 					<div class="box-header">
 
 
 						<i class="fa fa-map-marker"></i>
 
 						<h3 class="box-title">
-							Today's Patients for claiming
+							Calls Made by Me
 						</h3>
 					</div>
 					<div class="box-body">
@@ -20,27 +20,19 @@
 									<mu-th>Patient Name</mu-th>
 									<mu-th>NRIC</mu-th>
 									<mu-th>No. of Call</mu-th>
-									<mu-th>Action</mu-th>
+									<mu-th>Date</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
-								<mu-tr v-for="call, index in allCalls" :key="index" @click.native="choosePatient(call.PatientId)">
+								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call.PatientId)">
 									<mu-td>{{ call.PName }}</mu-td>
 									<mu-td>{{ call.NRIC }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
-									<mu-td><mu-raised-button label="Claim" @click="open(call, index)" backgroundColor="green"/></mu-td>
-									<mu-dialog :open="dialog" title="Confirmation" @close="close">
-										Are you sure you want to claim the patient <b>{{ dialogCall.PName }}</b>?
-										<mu-flat-button slot="actions" @click="close" primary label="Cancel"/>
-										<mu-flat-button slot="actions" primary @click="confirmClaim" label="Yes"/>
-									</mu-dialog>
+									<mu-td>{{ call.CallDate }}</mu-td>									
 								</mu-tr>
 								
 							</mu-tbody>
 						</mu-table>	
-						
-
-
 						
 						
 					</div>
@@ -52,10 +44,12 @@
 			<section class="col-lg-4 col-xs-12 connectedSortable">
 				<div class="box box-primary">
 					<div class="box-header">
+
 						<h3 class="box-title">
 							Patient Details
 						</h3>
 					</div>
+
 					<div class="box-body">
 						<mu-list>
 							<!-- <mu-sub-header>Patient Name</mu-sub-header> -->
@@ -79,43 +73,20 @@
 
 		data () {
 			return {
-				dialog: false,
-				dialogCall: {},
-				dialogCallIndex: '',
-				allCalls: '',
+				allTasks: '',				
 				activePatient: '',
-				CLAIMED_PROGRESS_ID: 1
 			}
 		},
-		created() {
-			this.$get('callcentre').then(response => {
-				this.allCalls = response.data
-			})
-		},
-		methods: {
-			confirmClaim() {
-				this.$put('claimedcalls/' + this.dialogCall.CallId, {Progress: this.CLAIMED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
-	  		this.allCalls.splice(this.dialogCallIndex, 1)
-	  		this.close()
-			},
-			open (call, index) {
-				this.dialog = true
-				this.dialogCall = call
-				this.dialogCallIndex = index
-			},
-			close () {
-				this.dialog = false
-			},
-
-			choosePatient (id) {
-				this.$get('patients/' + id).then(response => {
+		computed: {
+	    username() {
+	    	return this.$store.state.user.Email
+	    }
+	  },
+	  methods: {
+	  	choosePatient (id) {
+	  		this.$get('patients/' + id).then(response => {
 					this.activePatient = response.data
 				})
-			},
-			claim(callId, index) {
-	  		// console.log(callId)
-	  		this.$put('claimedcalls/' + callId, {Progress: this.CLAIMED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
-	  		this.allCalls.splice(index, 1)
 	  	}
 	  },
 	  filters: {
@@ -134,6 +105,24 @@
 	  		}
 	  	}
 	  },
+
+	  created() {
+	  	this.$get('claimedcallhistory/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
+
+	  },
+	  mounted() {
+	  	
+	  },
+	  watch: {
+	  	username(val) {
+				if (val) {
+					this.$get('claimedcallhistory/values?username=' + val).then(
+					response => {
+					this.allTasks = response.data
+					})
+				}
+			}
+	  }
 	}
 </script>
 
