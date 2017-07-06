@@ -4,33 +4,35 @@
 		<div class="row">
 			<div class="col-lg-6 col-xs-6">
 				<!-- small box -->
-				<div class="small-box bg-aqua">
+				<div class="small-box bg-teal">
 					<div class="inner">
-						<h3>150</h3>
+						<h3>{{ callNo }}</h3>
 
-						<p>New Patients last week</p>
-						<h3>Fancy Beautiful Chart</h3>
+						<p>Calls made in these months</p>
+						<h3>Call Centre Past Months Stats</h3>
+						 <call-chart></call-chart>
 					</div>
 					<div class="icon">
 						<i class="ion ion-bag"></i>
 					</div>
-					<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+					
 				</div>
 			</div>
 			<!-- ./col -->
 			<div class="col-lg-6 col-xs-6">
 				<!-- small box -->
-				<div class="small-box bg-green">
+				<div class="small-box bg-teal">
 					<div class="inner">
-						<h3>53</h3>
+						<h3>{{ patientNo }}</h3>
 
-						<p>Discharged</p>
-						<h3>Fancy Beautiful Chart</h3>
+						<p>Patient Entries in These Months</p>
+						<h3>Patient Entry Past Months Stats</h3>
+						 <patient-chart></patient-chart>
 					</div>
 					<div class="icon">
-						<i class="ion ion-stats-bars"></i>
+						<i class="ion ion-bag"></i>
 					</div>
-					<a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+					
 				</div>
 			</div>
 			<!-- ./col -->
@@ -165,13 +167,16 @@
 
 <script>
 	import AvContentHeader from '../components/AvContentHeader.vue'
-
+	import CallChart from './CallChart.js'
+	import PatientChart from './PatientChart.js'
 	export default {
-		components: { AvContentHeader },
+		components: { AvContentHeader, CallChart, PatientChart},
 		name: 'Admin',
 
 		data () {
 			return {
+				callNo: 0,
+				patientNo: 0,				
 				hosWorkload: '',
 				callWorkload: '',
 				parsedResult: '',
@@ -257,6 +262,7 @@
 				if (this.$store.state.user.UserGroup === 2) {
 					this.$router.push('hospital_tasks')
 				}
+				
 			},
 			created() {
 				if (this.$store.state.user.UserGroup === 3) {
@@ -276,6 +282,20 @@
 					this.callWorkload = response.data
 				})
 
+				this.$get('callchart').then(response => {
+					let temp = response.data
+					temp.forEach(item => {
+						this.callNo += parseInt(item.Cases)
+					})
+				})
+
+				this.$get('patiententrychart').then(response => {
+					let temp = response.data
+					temp.forEach(item => {
+						this.patientNo += parseInt(item.Cases)
+					})
+				})
+
 				
 			},
 			watch: {
@@ -292,5 +312,8 @@
 	</script>
 
 	<style lang="css" scoped>
-
+.bg-teal{
+	background-color: #212733 !important;
+}
 	</style>
+
