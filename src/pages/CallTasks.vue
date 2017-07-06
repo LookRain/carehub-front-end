@@ -130,6 +130,10 @@
 
 	  created() {
 	  	this.$get('claimedcalls/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
+
+	  },
+	  mounted() {
+	  	
 	  },
 	  watch: {
 	  	username(val) {
