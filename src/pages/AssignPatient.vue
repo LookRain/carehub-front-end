@@ -165,7 +165,8 @@
       },
       postAssignment() {
         this.$post('BulkPatients', this.parsed).then(response=> {
-          alert('Added successfully!' + response.data)
+          alert('Added successfully!')
+          this.$router.push({name: 'Admin'})
         }).catch(err => {
           alert(err.response.data.Message)
         })

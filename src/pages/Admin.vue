@@ -136,7 +136,7 @@
 					<div class="box-header">
 
 						<h3 class="box-title">
-							Staff Workload
+							Call Centre Staff Workload
 						</h3>
 					</div>
 
@@ -209,26 +209,6 @@
 					reader.readAsText(fileInput.files[0])
 
 					this.$router.push({name: 'AssignPatient'})
-				},
-				addBulk() {
-					this.$post('BulkPatients', [
-					{
-						'NRIC': 'azzzz',
-						'PName': 'name1',
-						'MeanTest': 1,
-						'WardNo': 1,
-						'Region': 1,
-						'PStatus': 0
-					},
-					{
-						'NRIC': 'acccc',
-						'PName': 'name2',
-						'MeanTest': 2,
-						'WardNo': 2,
-						'Region': 2,
-						'PStatus': 0
-					}
-					])
 				},
 				clearPatientFields() {
 					this.name = ''; this.nric = ''; this.meanTest=''; this.region=''; this.wardNumber = '';
