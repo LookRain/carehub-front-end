@@ -1,6 +1,6 @@
 # vue-admin-lte
 
-> A Vue.js project
+> AdminLTE converted to Vue.js components for a project.
 
 ## Build Setup
 
