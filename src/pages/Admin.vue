@@ -9,7 +9,7 @@
 						<h3>{{ callNo }}</h3>
 
 						<p>Calls made in these months</p>
-						<h3>Call Centre Past Months Stats</h3>
+						<h3 style="white-space: normal;">Call Centre Past Months Stats</h3>
 						 <call-chart></call-chart>
 					</div>
 					<div class="icon">
