@@ -26,7 +26,7 @@
 						<h3>{{ patientNo }}</h3>
 
 						<p>Patient Entries in These Months</p>
-						<h3>Patient Entry Past Months Stats</h3>
+						<h3 style="white-space: normal;">Patient Entry Past Months Stats</h3>
 						 <patient-chart></patient-chart>
 					</div>
 					<div class="icon">
@@ -116,14 +116,14 @@
 							<mu-thead>
 								<mu-tr>
 									<mu-th>Name</mu-th>
-									<mu-th>Email</mu-th>
+									<!-- <mu-th>Email</mu-th> -->
 									<mu-th>Workload</mu-th>							
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
 								<mu-tr v-for="user in hosWorkload">
 									<mu-td>{{ user.DisplayedName }}</mu-td>
-									<mu-td>{{ user.UserName }}</mu-td>
+									<!-- <mu-td>{{ user.UserName }}</mu-td> -->
 									<mu-td>{{ user.Workload }}</mu-td>
 								</mu-tr>
 							</mu-tbody>
@@ -145,14 +145,14 @@
 							<mu-thead>
 								<mu-tr>
 									<mu-th>Name</mu-th>
-									<mu-th>Email</mu-th>
+									<!-- <mu-th>Email</mu-th> -->
 									<mu-th>Workload</mu-th>							
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
 								<mu-tr v-for="user in callWorkload">
 									<mu-td>{{ user.DisplayedName }}</mu-td>
-									<mu-td>{{ user.UserName }}</mu-td>
+									<!-- <mu-td>{{ user.UserName }}</mu-td> -->
 									<mu-td>{{ user.Workload }}</mu-td>
 								</mu-tr>
 							</mu-tbody>
