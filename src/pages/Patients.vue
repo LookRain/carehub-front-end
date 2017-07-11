@@ -17,8 +17,8 @@
 				<mu-table :showCheckbox="showCheckbox">
 					<mu-thead>
 						<mu-tr>
-							<mu-th>NRIC</mu-th>
-							<mu-th>Name</mu-th>
+						<!-- 	<mu-th>NRIC</mu-th> -->
+							<mu-th>Case ID</mu-th>
 							<mu-th>Status</mu-th>
 							<mu-th>Tier</mu-th>
 							<mu-th>Mean Test</mu-th>
@@ -29,12 +29,12 @@
 					</mu-thead>
 					<mu-tbody>
 						<mu-tr v-for="patient in searchResult" :key="patient.PId">
-							<mu-td>{{ patient.NRIC }}</mu-td>
-							<mu-td>{{ patient.PName }}</mu-td>
+							<!-- <mu-td>{{ patient.NRIC }}</mu-td> -->
+							<mu-td>{{ patient.CaseId }}</mu-td>
 							<mu-td>{{ patient.PStatus | parseStatus }}</mu-td>
 							<mu-td>{{ patient.Tier }}</mu-td>
 							<mu-td>{{ patient.MeanTest }}</mu-td>
-							<mu-td>{{ patient.PTimeStamp }}</mu-td>
+							<mu-td>{{ patient.PTimeStamp | parseDate }}</mu-td>
 							<mu-td>{{ patient.WardNo }}</mu-td>
 							<mu-td>{{ patient.UserName }}</mu-td>
 						</mu-tr>
@@ -59,8 +59,8 @@
 				<mu-table :showCheckbox="showCheckbox">
 					<mu-thead>
 						<mu-tr>
-							<mu-th>NRIC</mu-th>
-							<mu-th>Name</mu-th>
+							<!-- <mu-th>NRIC</mu-th> -->
+							<mu-th>Case ID</mu-th>
 							<mu-th>Status</mu-th>
 							<mu-th>Tier</mu-th>
 							<mu-th>Mean Test</mu-th>
@@ -71,12 +71,12 @@
 					</mu-thead>
 					<mu-tbody>
 						<mu-tr v-for="patient in currentPatients" :key="patient.PId">
-							<mu-td>{{ patient.NRIC }}</mu-td>
-							<mu-td>{{ patient.PName }}</mu-td>
+							<!-- <mu-td>{{ patient.NRIC }}</mu-td> -->
+							<mu-td>{{ patient.CaseId }}</mu-td>
 							<mu-td>{{ patient.PStatus | parseStatus }}</mu-td>
 							<mu-td>{{ patient.Tier }}</mu-td>
 							<mu-td>{{ patient.MeanTest }}</mu-td>
-							<mu-td>{{ patient.PTimeStamp }}</mu-td>
+							<mu-td>{{ patient.PTimeStamp | parseDate }}</mu-td>
 							<mu-td>{{ patient.WardNo }}</mu-td>
 							<mu-td>{{ patient.UserName }}</mu-td>
 						</mu-tr>
@@ -90,7 +90,7 @@
 
 <script>
 	// import UserInfo from '../components/UserInfo'
-
+import moment from 'moment'
 	export default {
 
 		name: 'Patients',
@@ -108,6 +108,10 @@
 			}
 		},
 		filters: {
+			parseDate(date) {
+	  		moment.locale('en-gb');
+	  		return moment(date).format('lll')
+	  	},
 			parseStatus(code) {
 				if (code === 0) { return 'Unprocessed'}
 					if (code === 1) { return 'Recruited'}
