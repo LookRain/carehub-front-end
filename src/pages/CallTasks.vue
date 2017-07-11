@@ -17,17 +17,19 @@
 						<mu-table :showCheckbox="false">
 							<mu-thead>
 								<mu-tr>
-									<mu-th>Patient Name</mu-th>
-									<mu-th>NRIC</mu-th>
+									<!-- <mu-th>Patient Name</mu-th> -->
+									<mu-th>Case ID</mu-th>
 									<mu-th>No. of Call</mu-th>
+									<mu-th>Scheduled Date</mu-th>
 									<mu-th>Action</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
 								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call.PatientId)">
-									<mu-td>{{ call.PName }}</mu-td>
-									<mu-td>{{ call.NRIC }}</mu-td>
+									<!-- <mu-td>{{ call.PName }}</mu-td> -->
+									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
+									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
 									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
 									<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Have you completed your call to <b>{{ dialogCall.PName }}</b>?
@@ -58,8 +60,8 @@
 					<div class="box-body">
 						<mu-list>
 							<!-- <mu-sub-header>Patient Name</mu-sub-header> -->
-							<mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item>
-							<mu-list-item><h3>NRIC: {{ activePatient.NRIC }}</h3></mu-list-item>
+							<!-- <mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item> -->
+							<mu-list-item><h3>Case ID: {{ activePatient.CaseId }}</h3></mu-list-item>
 							<mu-list-item><h3>Tier: {{ activePatient.Tier }}</h3></mu-list-item>
 							<mu-list-item><h3>Mean Test: {{ activePatient.MeanTest }}</h3></mu-list-item>
 							<mu-list-item><h3>Ward Number: {{ activePatient.WardNo }}</h3></mu-list-item>
@@ -72,6 +74,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 	export default {
 
 		name: 'CallTasks',
@@ -112,6 +116,10 @@
 			}
 	  },
 	  filters: {
+	  	parseDate(date) {
+	  		moment.locale('en-gb');
+	  		return moment(date).format('lll')
+	  	},
 	  	parseCallNo(val) {
 	  		if (val === 1) {
 	  			return '1st Call'
