@@ -160,7 +160,7 @@
 					</div>
 				</div>
 			</section>
-		</div>
+		</div>   
 
 	</div>
 </template>
