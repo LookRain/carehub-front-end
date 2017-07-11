@@ -15,7 +15,8 @@
 					<div>
 						<mu-tabs :value="activeTab" @change="handleTabChange" class="my-tabs" >
 							<mu-tab value="tab1" title="Patients Assigned Today" :style="styleObject"/>
-							<mu-tab value="tab2" title="Patients History" :style="styleObject"/>
+							<mu-tab value="tab2" title="Recruited" :style="styleObject"/>
+							<mu-tab value="tab3" title="Rejected" :style="styleObject"/>
 						</mu-tabs>
 						<div v-if="activeTab === 'tab1'">
 							<br>
