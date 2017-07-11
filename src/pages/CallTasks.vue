@@ -110,7 +110,11 @@ import moment from 'moment'
 				this.dialog = false
 			},
 			confirmComplete() {
-				this.$put('claimedcalls/' + this.dialogCall.CallId, {Progress: this.COMPLETED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
+				this.$put('claimedcalls/' + this.dialogCall.CallId, 
+					{
+						Progress: this.COMPLETED_PROGRESS_ID,
+						// UserName: this.$store.state.user.Email
+					}).then(response=>{console.log(response.data)})
 	  		this.allTasks.splice(this.dialogCallIndex, 1)
 	  		this.close()
 			}
@@ -132,6 +136,9 @@ import moment from 'moment'
 	  		}
 	  		if (val === 4) {
 	  			return '4th Call'
+	  		}
+	  		if (val === 5) {
+	  			return '5th Call'
 	  		}
 	  	}
 	  },

@@ -93,7 +93,11 @@
 		},
 		methods: {
 			confirmClaim() {
-				this.$put('claimedcalls/' + this.dialogCall.CallId, {Progress: this.CLAIMED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
+				this.$put('claimedcalls/' + this.dialogCall.CallId, 
+					{
+						Progress: this.CLAIMED_PROGRESS_ID,
+						UserName: this.$store.state.user.Email
+					}).then(response=>{console.log(response.data)})
 	  		this.allCalls.splice(this.dialogCallIndex, 1)
 	  		this.close()
 			},
@@ -111,12 +115,6 @@
 					this.activePatient = response.data
 				})
 			},
-			claim(callId, index) {
-	  		// console.log(callId)
-	  		this.$put('claimedcalls/' + callId, {Progress: this.CLAIMED_PROGRESS_ID, UserName: this.$store.state.user.Email}).then(response=>{console.log(response.data)})
-	  		this.allCalls.splice(index, 1)
-	  	}
-	  },
 	  filters: {
 	  	parseCallNo(val) {
 	  		if (val === 1) {
@@ -131,9 +129,14 @@
 	  		if (val === 4) {
 	  			return '4th Call'
 	  		}
+	  		if (val === 5) {
+	  			return '5th Call'
+	  		}
 	  	}
-	  },
+	  }
 	}
+}
+
 </script>
 
 <style lang="css" scoped>
