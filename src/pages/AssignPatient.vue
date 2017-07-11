@@ -18,14 +18,14 @@
               <mu-thead>
                 <mu-tr>
                   <mu-th>Name</mu-th>
-                  <mu-th>Email</mu-th>
+                  <!-- <mu-th>Email</mu-th> -->
                   <mu-th>Workload</mu-th>             
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
                 <mu-tr v-for="user in hosWorkload">
                   <mu-td>{{ user.DisplayedName }}</mu-td>
-                  <mu-td>{{ user.UserName }}</mu-td>
+                  <!-- <mu-td>{{ user.UserName }}</mu-td> -->
                   <mu-td>{{ user.Workload }}</mu-td>
                 </mu-tr>
               </mu-tbody>
@@ -48,16 +48,16 @@
             <mu-table :showCheckbox="false">
               <mu-thead>
                 <mu-tr>
-                  <mu-th>Patient NRIC</mu-th>
-                  <mu-th>Patient Name</mu-th>
+                  <!-- <mu-th>Patient NRIC</mu-th> -->
+                  <mu-th>Patient Case ID</mu-th>
                   <mu-th>Patient Ward</mu-th>
                   <mu-th>Staff Assigned</mu-th>
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
-                <mu-tr v-for="(patient, index) in parsed" :key="patient.nric">
-                  <mu-td>{{ patient.NRIC }}</mu-td>
-                  <mu-td>{{ patient.PName }}</mu-td>
+                <mu-tr v-for="(patient, index) in parsed" :key="patient.CaseId">
+                  <mu-td>{{ patient.CaseId }}</mu-td>
+                  <!-- <mu-td>{{ patient.PName }}</mu-td> -->
                   <mu-td>{{ patient.WardNo }}</mu-td>
 
                   <mu-td>
@@ -115,15 +115,16 @@
           let commaSeperatedString = line.split(',')
 
           let patient = {}
-          patient.PName = commaSeperatedString[0]
-          patient.NRIC = commaSeperatedString[1]
-          patient.MeanTest = commaSeperatedString[2]
-          patient.WardNo = commaSeperatedString[3]
-          patient.Region = commaSeperatedString[4]
+          patient.CaseId = commaSeperatedString[0]
+          // patient.NRIC = commaSeperatedString[1]
+          patient.MeanTest = commaSeperatedString[1]
+          patient.WardNo = commaSeperatedString[2]
+          patient.Region = commaSeperatedString[3]
 
           patient.PStatus = 0
 
-          let matchedUser = this.matchAssignedUser(parseInt(patient.WardNo))
+          let matchedUser = this.matchAssignedUser(patient.WardNo)
+
           patient.UserName = matchedUser.UserName
           patient.UserDisplayName = matchedUser.DisplayedName
           // patient.UserDisplayName = matchedUser.
@@ -155,10 +156,13 @@
         // type == 1 : return username/email
         // tyle == 2 : return display name
         let user = {}
+        // console.log(123)
         this.$store.state.wardAssignment.forEach(assignment => {
           if (wardNo === assignment.WardNo) {
             console.log(assignment.UserName)
             user = assignment
+          } else {
+            // console.log(wardNo)
           }
         })
         return user
