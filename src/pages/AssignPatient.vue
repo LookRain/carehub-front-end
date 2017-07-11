@@ -49,7 +49,7 @@
               <mu-thead>
                 <mu-tr>
                   <!-- <mu-th>Patient NRIC</mu-th> -->
-                  <mu-th>Patient Case ID</mu-th>
+                  <mu-th>Case ID</mu-th>
                   <mu-th>Patient Ward</mu-th>
                   <mu-th>Staff Assigned</mu-th>
                 </mu-tr>

@@ -23,7 +23,7 @@
 							<mu-table :showCheckbox="false">
 								<mu-thead>
 									<mu-tr>
-										<mu-th>Patient Name/ID</mu-th>
+										<mu-th>Case ID</mu-th>
 										<mu-th>Date</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Action</mu-th>
@@ -31,8 +31,8 @@
 								</mu-thead>
 								<mu-tbody>
 									<mu-tr v-for="task, index in tasks" :key="index">
-										<mu-td>{{task.PName}}</mu-td>
-										<mu-td>{{task.PTimeStamp}}</mu-td>
+										<mu-td>{{task.CaseId}}</mu-td>
+										<mu-td>{{task.PTimeStamp | parseDate}}</mu-td>
 										<mu-td>
 											<mu-select-field v-model="task.Tier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
@@ -53,7 +53,7 @@
 							<mu-table :showCheckbox="false">
 								<mu-thead>
 									<mu-tr>
-										<mu-th>Patient Name/ID</mu-th>
+										<mu-th>Case ID</mu-th>
 										<mu-th>Date</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Status</mu-th>
@@ -62,8 +62,8 @@
 								</mu-thead>
 								<mu-tbody>
 									<mu-tr v-for="task, index in history" :key="index">
-										<mu-td>{{ task.PName }}</mu-td>
-										<mu-td>{{ task.PTimeStamp }}</mu-td>
+										<mu-td>{{ task.CaseId }}</mu-td>
+										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
 										<mu-td>
 											<mu-select-field v-model="task.Tier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+	import moment from 'moment'
 	import AvContentHeader from '../components/AvContentHeader.vue'
 
 	export default {
@@ -117,6 +118,10 @@
 			'full-calendar': require('vue-fullcalendar')
 		},
 		filters: {
+			parseDate(date) {
+	  		moment.locale('en-gb');
+	  		return moment(date).format('lll')
+	  	},
 			parseStatus(val) {
 				if (val === 0) { return 'UnProcessed'}
 				if (val === 1) { return 'Recruited'}
