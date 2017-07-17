@@ -40,7 +40,7 @@
 											</mu-select-field>
 										</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
-										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task)"/>
+										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task, index)"/>
 										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
 									</mu-tr>
 
@@ -48,7 +48,7 @@
 								</mu-tbody>
 							</mu-table>	
 
-							<mu-dialog :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
+							<mu-dialog id="recruit_dialog" :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
 								Are you sure you want to <b>recruit</b> {{ activePatient.CaseId }} ?
 
 								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
@@ -56,14 +56,15 @@
 								<mu-flat-button slot="actions" primary @click="confirmRecruit" label="Yes"/>
 							</mu-dialog>
 
-							<mu-dialog :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
+							<mu-dialog id="reject_dialog" :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
 								Are you sure you want to <b>reject</b> {{ activePatient.CaseId }} ?
 								<br>
-								Edit Remarks about patient
 								<br>
-								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+								Why did you reject this patient?
+								<br>
+								<mu-text-field multiLine fullWidth v-model="activePatient.Reason" /><br/>
 								<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
-								<mu-flat-button slot="actions" primary @click="" label="Yes"/>
+								<mu-flat-button slot="actions" primary @click="confirmReject" label="Yes"/>
 							</mu-dialog>
 
 						</div>
@@ -132,7 +133,8 @@
 				tierList: ['1','2','3'],
 				recruitDialogOpen: false,
 				rejectDialogOpen: false,
-				activePatient: ''
+				activePatient: '',
+				activePatientIndex: -1
 			}
 		},
 		components: {
@@ -154,18 +156,20 @@
 			selectActivePatient(p) {
 				this.activePatient = p
 			},
-			openRecruit(p) {
+			openRecruit(p, i) {
 				this.selectActivePatient(p)
 				this.recruitDialogOpen = true
+				this.activePatientIndex = i
 			},
 			openReject(p, i) {
 				this.selectActivePatient(p)
 				this.rejectDialogOpen = true
+				this.activePatientIndex = i
 			},
-			closeRecruit (p) {
+			closeRecruit () {
 				this.recruitDialogOpen = false
 			},
-			closeReject (p) {
+			closeReject () {
 				this.rejectDialogOpen = false
 			},
 			setStatusRecruit(patient) {
@@ -201,15 +205,18 @@
 					})
 					console.log(this.activePatient.PId)
 
-					this.tasks.splice(0,1)
+					this.tasks.splice(this.activePatientIndex, 1)
+
+					//close the dialog
+					this.closeRecruit()
 				},
 
-				reject(input, index) {
-					let patientID = input.PId
+				confirmReject() {
+					let patientID = this.activePatient.PId
 					let patientNRIC = {
-						PatientId: input.PId
+						PatientId: this.activePatient.PId
 					}
-					this.$put('patients/' + patientID, this.setStatusReject(input)).then(
+					this.$put('patients/' + patientID, this.setStatusReject(this.activePatient)).then(
 						response => {
 							console.log('Patient Rejected' + response.data)
 						}).catch(err => {
@@ -217,8 +224,10 @@
 						})
 
 						console.log('clicked reject')
-						this.tasks.splice(index, 1)
+						this.tasks.splice(this.activePatientIndex, 1)
 
+						//close the dialog
+						this.closeReject()
 					},
 					handleTabChange (val) {
 						this.activeTab = val
