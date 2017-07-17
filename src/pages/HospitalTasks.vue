@@ -40,8 +40,8 @@
 											</mu-select-field>
 										</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
-										<mu-raised-button label="Recruit" backgroundColor="green" @click="recruit(task)"/>
-										<mu-raised-button label="Reject" backgroundColor="red" @click="reject(task, index)"/>
+										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task)"/>
+										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
 									</mu-tr>
 
 
@@ -49,23 +49,21 @@
 							</mu-table>	
 
 							<mu-dialog :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
-										Have you completed your call to ?
-										<br>
-										Edit Remarks about patient
-										<br>
-										<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
-										<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
-										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+								Are you sure you want to <b>recruit</b> {{ activePatient.CaseId }} ?
+
+								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+								<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
+								<mu-flat-button slot="actions" primary @click="confirmRecruit" label="Yes"/>
 							</mu-dialog>
 
 							<mu-dialog :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
-										Have you completed your call to ?
-										<br>
-										Edit Remarks about patient
-										<br>
-										<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
-										<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
-										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+								Are you sure you want to <b>reject</b> {{ activePatient.CaseId }} ?
+								<br>
+								Edit Remarks about patient
+								<br>
+								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+								<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
+								<mu-flat-button slot="actions" primary @click="" label="Yes"/>
 							</mu-dialog>
 
 						</div>
@@ -92,8 +90,8 @@
 										</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
-										<mu-raised-button label="Recruit" backgroundColor="green" @click="recruit(task)"/>
-										<mu-raised-button label="Reject" backgroundColor="red" @click="reject(task, index)"/>
+										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task)"/>
+										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
 									</mu-tr>
 
 
@@ -133,7 +131,8 @@
 				},
 				tierList: ['1','2','3'],
 				recruitDialogOpen: false,
-				rejectDialogOpen: false
+				rejectDialogOpen: false,
+				activePatient: ''
 			}
 		},
 		components: {
@@ -142,20 +141,31 @@
 		},
 		filters: {
 			parseDate(date) {
-	  		moment.locale('en-gb');
-	  		return moment(date).format('lll')
-	  	},
+				moment.locale('en-gb');
+				return moment(date).format('lll')
+			},
 			parseStatus(val) {
-				if (val === 0) { return 'UnProcessed'}
-				if (val === 1) { return 'Recruited'}
-				if (val === 2) { return 'Rejected'}
+				if (val === 0) { return 'UnProcessed'};
+				if (val === 1) { return 'Recruited'};
+				if (val === 2) { return 'Rejected'};
 			}
 		},
 		methods: {
-			closeRecruit () {
+			selectActivePatient(p) {
+				this.activePatient = p
+			},
+			openRecruit(p) {
+				this.selectActivePatient(p)
+				this.recruitDialogOpen = true
+			},
+			openReject(p, i) {
+				this.selectActivePatient(p)
+				this.rejectDialogOpen = true
+			},
+			closeRecruit (p) {
 				this.recruitDialogOpen = false
 			},
-			closeReject () {
+			closeReject (p) {
 				this.rejectDialogOpen = false
 			},
 			setStatusRecruit(patient) {
@@ -166,89 +176,90 @@
 				patient.PStatus = 2
 				return patient
 			},
-			recruit(input) {
-				if (!input.Tier) {
+			// confirm recruit active patient
+			confirmRecruit () {
+				if (!this.activePatient.Tier) {
 					alert('You must provide a Tier that the patient belongs to!')
 					return;
 				}
-				let patientID = input.PId
+				let patientID = this.activePatient.PId
 				let patientNRIC = {
-					PatientId: input.PId
+					PatientId: this.activePatient.PId
 				}
-				this.$put('patients/' + patientID, this.setStatusRecruit(input)).then(
+				this.$put('patients/' + patientID, this.setStatusRecruit(this.activePatient)).then(response => {
+					console.log('Success' + response.data)
+				}).catch(err => {
+					console.log(err.response.data.Message)
+				})
+
+				this.$post('callcentre', patientNRIC).then(
 					response => {
-						console.log('Success' + response.data)
-					}).catch(err => {
+						console.log('Call centre update Success' + response.data)
+					}).catch(
+					err => {
 						console.log(err.response.data.Message)
 					})
+					console.log(this.activePatient.PId)
 
-					this.$post('callcentre', patientNRIC).then(
+					this.tasks.splice(0,1)
+				},
+
+				reject(input, index) {
+					let patientID = input.PId
+					let patientNRIC = {
+						PatientId: input.PId
+					}
+					this.$put('patients/' + patientID, this.setStatusReject(input)).then(
 						response => {
-							console.log('Call centre update Success' + response.data)
-						}).catch(
-						err => {
+							console.log('Patient Rejected' + response.data)
+						}).catch(err => {
 							console.log(err.response.data.Message)
 						})
-						console.log(input.PId)
 
-						this.tasks.splice(0,1)
-					},
-					reject(input, index) {
-						let patientID = input.PId
-						let patientNRIC = {
-							PatientId: input.PId
-						}
-						this.$put('patients/' + patientID, this.setStatusReject(input)).then(
-							response => {
-								console.log('Patient Rejected' + response.data)
-							}).catch(err => {
-								console.log(err.response.data.Message)
-							})
+						console.log('clicked reject')
+						this.tasks.splice(index, 1)
 
-							console.log('clicked reject')
-							this.tasks.splice(index, 1)
-
-						},
-						handleTabChange (val) {
-							this.activeTab = val
-						}
 					},
-					computed: {
-						username() {
-							return this.$store.state.user.Email
-						}
-					},
-					watch: {
-						username(val) {
-							if (val) {
-								this.$get('assignedpatients/values?username=' + val).then(
-									response => {
-										this.tasks = response.data
-									})
-								this.$get('assignedpatientshistory/values?username=' + val).then(
-									response => {
-										this.history = response.data
-									})
-							}
-						}
-					},
-					created() {
-						this.$get('assignedpatients/values?username=' + this.$store.state.user.Email).then(
-							response => {
-								this.tasks = response.data
-							})
-						this.$get('assignedpatientshistory/values?username=' + this.$store.state.user.Email).then(
-							response => {
-								this.history = response.data
-							})
+					handleTabChange (val) {
+						this.activeTab = val
 					}
+				},
+				computed: {
+					username() {
+						return this.$store.state.user.Email
+					}
+				},
+				watch: {
+					username(val) {
+						if (val) {
+							this.$get('assignedpatients/values?username=' + val).then(
+								response => {
+									this.tasks = response.data
+								})
+							this.$get('assignedpatientshistory/values?username=' + val).then(
+								response => {
+									this.history = response.data
+								})
+						}
+					}
+				},
+				created() {
+					this.$get('assignedpatients/values?username=' + this.$store.state.user.Email).then(
+						response => {
+							this.tasks = response.data
+						})
+					this.$get('assignedpatientshistory/values?username=' + this.$store.state.user.Email).then(
+						response => {
+							this.history = response.data
+						})
 				}
-			</script>
+			}
+		</script>
 
-			<style lang="css" scoped>
-				.my-tabs {
+		<style lang="css" scoped>
+			.my-tabs {
 
-					background-color: #ffffff;
+				background-color: #ffffff;
 
-				}
-			</style>
+			}
+		</style>
