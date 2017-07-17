@@ -21,18 +21,24 @@
 									<mu-th>Case ID</mu-th>
 									<mu-th>No. of Call</mu-th>
 									<mu-th>Scheduled Date</mu-th>
+									<mu-th>Tier</mu-th>
 									<mu-th>Action</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
-								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call.PatientId)">
+								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call)">
 									<!-- <mu-td>{{ call.PName }}</mu-td> -->
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
 									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
+									<mu-td>{{ call.Tier }}</mu-td>
 									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
 									<mu-dialog :open="dialog" title="Confirmation" @close="close">
-										Have you completed your call to <b>{{ dialogCall.PName }}</b>?
+										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
+										<br>
+										Edit Remarks about patient
+										<br>
+										<mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/>
 										<mu-flat-button slot="actions" @click="close" primary label="No"/>
 										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
 									</mu-dialog>
@@ -63,8 +69,8 @@
 							<!-- <mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item> -->
 							<mu-list-item><h3>Case ID: {{ activePatient.CaseId }}</h3></mu-list-item>
 							<mu-list-item><h3>Tier: {{ activePatient.Tier }}</h3></mu-list-item>
-							<mu-list-item><h3>Mean Test: {{ activePatient.MeanTest }}</h3></mu-list-item>
-							<mu-list-item><h3>Ward Number: {{ activePatient.WardNo }}</h3></mu-list-item>
+							<mu-list-item><h3>Call Type: {{ activePatient.CallType }}</h3></mu-list-item>
+							<mu-list-item><h3>Remark: {{ activePatient.CallRemark }}</h3></mu-list-item>
 						</mu-list>
 					</div>
 				</div>
@@ -96,10 +102,11 @@ import moment from 'moment'
 	    }
 	  },
 	  methods: {
-	  	choosePatient (id) {
-	  		this.$get('patients/' + id).then(response => {
-					this.activePatient = response.data
-				})
+	  	choosePatient (c) {
+	  	// 	this.$get('patients/' + id).then(response => {
+				// 	this.activePatient = response.data
+				// })
+				this.activePatient = c
 	  	},
 	  	open (call, index) {
 				this.dialog = true
@@ -110,6 +117,18 @@ import moment from 'moment'
 				this.dialog = false
 			},
 			confirmComplete() {
+				/*
+					update patient call remarks
+				*/
+				this.$put('patients/' + this.dialogCall.PatientId, {CallRemark: this.dialogCall.CallRemark}).then(
+					response => {
+						console.log('Success' + response.data)
+					}).catch(err => {
+						console.log(err.response.data.Message)
+					})
+				/*
+					update patient call progress
+				*/		
 				this.$put('claimedcalls/' + this.dialogCall.CallId, 
 					{
 						Progress: this.COMPLETED_PROGRESS_ID,
@@ -122,7 +141,7 @@ import moment from 'moment'
 	  filters: {
 	  	parseDate(date) {
 	  		moment.locale('en-gb');
-	  		return moment(date).format('lll')
+	  		return moment(date).format('ll')
 	  	},
 	  	parseCallNo(val) {
 	  		if (val === 1) {

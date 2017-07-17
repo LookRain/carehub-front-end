@@ -20,6 +20,7 @@
 									<!-- <mu-th>Patient Name</mu-th> -->
 									<mu-th>Case ID</mu-th>
 									<mu-th>No. of Call</mu-th>
+									<mu-th>Tier</mu-th>
 									<mu-th>Action</mu-th>
 								</mu-tr>
 							</mu-thead>
@@ -28,6 +29,7 @@
 									<!-- <mu-td>{{ call.PName }}</mu-td> -->
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
+									<mu-td>{{ call.Tier }}</mu-td>
 									<mu-td><mu-raised-button label="Claim" @click="open(call, index)" backgroundColor="green"/></mu-td>
 									<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Are you sure you want to claim the patient <b>{{ dialogCall.PName }}</b>?
