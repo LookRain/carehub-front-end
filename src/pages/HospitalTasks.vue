@@ -48,6 +48,26 @@
 								</mu-tbody>
 							</mu-table>	
 
+							<mu-dialog :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
+										Have you completed your call to ?
+										<br>
+										Edit Remarks about patient
+										<br>
+										<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+										<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
+										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+							</mu-dialog>
+
+							<mu-dialog :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
+										Have you completed your call to ?
+										<br>
+										Edit Remarks about patient
+										<br>
+										<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+										<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
+										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+							</mu-dialog>
+
 						</div>
 						<div v-if="activeTab === 'tab2'">
 
@@ -111,7 +131,9 @@
 				styleObject: {
 					color: '#000000'
 				},
-				tierList: ['1','2','3']
+				tierList: ['1','2','3'],
+				recruitDialogOpen: false,
+				rejectDialogOpen: false
 			}
 		},
 		components: {
@@ -130,6 +152,12 @@
 			}
 		},
 		methods: {
+			closeRecruit () {
+				this.recruitDialogOpen = false
+			},
+			closeReject () {
+				this.rejectDialogOpen = false
+			},
 			setStatusRecruit(patient) {
 				patient.PStatus = 1
 				return patient
