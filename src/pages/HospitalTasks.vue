@@ -14,6 +14,10 @@
 								<br>
 								Why did you reject this patient?
 								<br>
+								<mu-select-field v-model="activePatient.Reason" :labelFocusClass="['label-foucs']">
+									<mu-menu-item v-for="item, index in reasonList" :key="index" :value="item" :title="item"/>
+								</mu-select-field>
+
 								<mu-text-field fullWidth v-model="activePatient.Reason" /><br/>
 								<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
 								<mu-flat-button slot="actions" primary @click="confirmReject" label="Yes"/>
@@ -156,7 +160,16 @@
 				recruitDialogOpen: false,
 				rejectDialogOpen: false,
 				activePatient: '',
-				activePatientIndex: -1
+				activePatientIndex: -1,
+				reasonList: [
+				'Existing Patient in NUH programs',
+				'Existing Patient in other institute H2H program',
+				'Nursing Home Patients',
+				'Destitute Home Patients',
+				'Under O&G Specialty',
+				'Under Paediatric Specialty',
+				'Others, Please specify: '
+				]
 			}
 		},
 		components: {
