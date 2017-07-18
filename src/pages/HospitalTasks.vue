@@ -49,6 +49,7 @@
 										<mu-th>Case ID</mu-th>
 										<mu-th>Date</mu-th>
 										<mu-th>Tier</mu-th>
+										<mu-th>Handle By Call Centre</mu-th>
 										<mu-th>Action</mu-th>
 									</mu-tr>
 								</mu-thead>
@@ -61,9 +62,17 @@
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
 											</mu-select-field>
 										</mu-td>
-										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
-										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task, index)"/>
-										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
+										
+										<mu-td>
+											<mu-switch v-model="task.handleByCallCentre" class="demo-switch" /><br/>
+										</mu-td>
+
+
+										<mu-td>
+											<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task, index)"/>
+											<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
+										</mu-td>
+
 									</mu-tr>
 
 
