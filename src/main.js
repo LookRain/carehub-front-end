@@ -55,6 +55,16 @@ const instance = window.axios.create({
 Vue.prototype.$post = instance.post
 Vue.prototype.$get = instance.get
 Vue.prototype.$put = instance.put
+
+const fileUploadInstance = window.axios.create({
+  baseURL: 'http://localhost:55494/api/',
+  timeout: 1000,
+  headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken"),
+            'content-type': 'multipart/form-data'}
+})
+Vue.prototype.$postFile = fileUploadInstance.post
+
+
 new Vue({
   el: '#app',
   router,

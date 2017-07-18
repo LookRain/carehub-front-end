@@ -20,6 +20,8 @@ import Protocol4 from '@/pages/Protocol4'
 import Protocol5 from '@/pages/Protocol5'
 import Protocol6 from '@/pages/Protocol6'
 
+import UploadProtocol from '@/pages/UploadProtocol'
+
 Vue.use(Router)
 
 export default new Router({
@@ -118,6 +120,11 @@ export default new Router({
     }
     
     ]
+  },
+  {
+    path: '/upload_protocol',
+    name: 'UploadProtocol',
+    component: UploadProtocol
   }
   ]
 })
