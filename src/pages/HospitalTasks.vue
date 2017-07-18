@@ -1,5 +1,23 @@
 <template>
 	<div class="row">
+	<mu-dialog id="recruit_dialog" :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
+								Are you sure you want to <b>recruit</b> {{ activePatient.CaseId }} ?
+
+								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+								<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
+								<mu-flat-button slot="actions" primary @click="confirmRecruit" label="Yes"/>
+							</mu-dialog>
+
+							<mu-dialog id="reject_dialog" :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
+								Are you sure you want to <b>reject</b> {{ activePatient.CaseId }} ?
+								<br>
+								<br>
+								Why did you reject this patient?
+								<br>
+								<mu-text-field fullWidth v-model="activePatient.Reason" /><br/>
+								<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
+								<mu-flat-button slot="actions" primary @click="confirmReject" label="Yes"/>
+							</mu-dialog>
 		<section class="col-lg-12 col-xs-12 connectedSortable">
 			<div class="box box-success">
 				<div class="box-header">
@@ -48,25 +66,6 @@
 								</mu-tbody>
 							</mu-table>	
 
-							<mu-dialog id="recruit_dialog" :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
-								Are you sure you want to <b>recruit</b> {{ activePatient.CaseId }} ?
-
-								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
-								<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
-								<mu-flat-button slot="actions" primary @click="confirmRecruit" label="Yes"/>
-							</mu-dialog>
-
-							<mu-dialog id="reject_dialog" :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
-								Are you sure you want to <b>reject</b> {{ activePatient.CaseId }} ?
-								<br>
-								<br>
-								Why did you reject this patient?
-								<br>
-								<mu-text-field multiLine fullWidth v-model="activePatient.Reason" /><br/>
-								<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
-								<mu-flat-button slot="actions" primary @click="confirmReject" label="Yes"/>
-							</mu-dialog>
-
 						</div>
 						<div v-if="activeTab === 'tab2'">
 
@@ -81,7 +80,33 @@
 									</mu-tr>
 								</mu-thead>
 								<mu-tbody>
-									<mu-tr v-for="task, index in history" :key="index">
+									<mu-tr v-for="task, index in recruit_history" :key="index">
+										<mu-td>{{ task.CaseId }}</mu-td>
+										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
+										<mu-td>{{ task.Tier }}</mu-td>
+										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
+										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
+										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
+									</mu-tr>
+								</mu-tbody>
+							</mu-table>	
+
+						</div>				
+
+						<div v-if="activeTab === 'tab3'">
+
+							<mu-table :showCheckbox="false">
+								<mu-thead>
+									<mu-tr>
+										<mu-th>Case ID</mu-th>
+										<mu-th>Date</mu-th>
+										<mu-th>Tier</mu-th>
+										<mu-th>Status</mu-th>
+										<mu-th>Action</mu-th>
+									</mu-tr>
+								</mu-thead>
+								<mu-tbody>
+									<mu-tr v-for="task, index in reject_history" :key="index">
 										<mu-td>{{ task.CaseId }}</mu-td>
 										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
 										<mu-td>
@@ -91,15 +116,12 @@
 										</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
-										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task)"/>
-										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
+										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task, index)"/>
 									</mu-tr>
-
-
 								</mu-tbody>
 							</mu-table>	
 
-						</div>				
+						</div>	
 					</div>
 				</div>
 				<!-- /.box-body-->
@@ -138,8 +160,7 @@
 			}
 		},
 		components: {
-			AvContentHeader,
-			'full-calendar': require('vue-fullcalendar')
+			AvContentHeader
 		},
 		filters: {
 			parseDate(date) {
@@ -236,6 +257,20 @@
 				computed: {
 					username() {
 						return this.$store.state.user.Email
+					},
+					recruit_history() {
+						return this.history.filter(task => {
+							if (task.PStatus === 1) { // if the patient is recruited 
+								return task
+							}
+						})
+					},
+					reject_history() {
+						return this.history.filter(task => {
+							if (task.PStatus === 2) { // if the patient is rejected 
+								return task
+							}
+						})
 					}
 				},
 				watch: {

@@ -38,7 +38,7 @@
 										<br>
 										Edit Remarks about patient
 										<br>
-										<mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/>
+										<mu-text-field fullWidth v-model="dialogCall.CallRemark" /><br/>
 										<mu-flat-button slot="actions" @click="close" primary label="No"/>
 										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
 									</mu-dialog>
