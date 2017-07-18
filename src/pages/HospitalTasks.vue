@@ -57,7 +57,7 @@
 										<mu-td>{{task.CaseId}}</mu-td>
 										<mu-td>{{task.PTimeStamp | parseDate}}</mu-td>
 										<mu-td>
-											<mu-select-field v-model="task.Tier" :labelFocusClass="['label-foucs']">
+											<mu-select-field autoWidth fullWidth v-model="task.Tier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
 											</mu-select-field>
 										</mu-td>
@@ -106,6 +106,7 @@
 										<mu-th>Date</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Status</mu-th>
+										<mu-th>Reason</mu-th>
 										<mu-th>Action</mu-th>
 									</mu-tr>
 								</mu-thead>
@@ -114,11 +115,18 @@
 										<mu-td>{{ task.CaseId }}</mu-td>
 										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
 										<mu-td>
-											<mu-select-field v-model="task.Tier" :labelFocusClass="['label-foucs']">
+											<mu-select-field autoWidth fullWidth v-model="task.Tier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
 											</mu-select-field>
 										</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
+										<mu-td><p id="reasonItem" @click="openReason(task.Reason)">{{ task.Reason }}</p>
+										<mu-dialog :open="reasonDialog" title="Reason" @close="closeReason">
+									    {{ activeReason }}
+									    <mu-flat-button slot="actions" @click="closeReason" primary label="Close"/>
+									  </mu-dialog>
+
+										</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
 										<mu-raised-button label="Recruit" backgroundColor="green" @click="openRecruit(task, index)"/>
 									</mu-tr>
@@ -169,7 +177,9 @@
 				'Under O&G Specialty',
 				'Under Paediatric Specialty',
 				'Others, Please specify: '
-				]
+				],
+				reasonDialog: false,
+				activeReason: ''
 			}
 		},
 		components: {
@@ -178,7 +188,7 @@
 		filters: {
 			parseDate(date) {
 				moment.locale('en-gb');
-				return moment(date).format('lll')
+				return moment(date).format('ll')
 			},
 			parseStatus(val) {
 				if (val === 0) { return 'UnProcessed'};
@@ -265,6 +275,13 @@
 					},
 					handleTabChange (val) {
 						this.activeTab = val
+					},
+					openReason(r) {
+						this.activeReason = r
+						this.reasonDialog = true
+					},
+					closeReason() {
+						this.reasonDialog = false
 					}
 				},
 				computed: {
@@ -318,5 +335,15 @@
 
 				background-color: #ffffff;
 
+			}
+			#reasonItem {
+				white-space: nowrap; 
+				overflow: hidden; 
+				text-overflow: ellipsis; 
+				max-width: 100%;
+			}
+			#reasonItem:hover {
+				background: red;
+				font-size: 120%;
 			}
 		</style>
