@@ -22,12 +22,10 @@
 					<div class="container"><h3>Others</h3>
 						<br>
 						<ul>
-							<li><router-link to="/protocols/1">Chest Pain</router-link></li>
-							<li><router-link to="/protocols/2">Congestive Heart Failure</router-link></li>
-							<li><router-link to="/protocols/3">Breathing Problem</router-link></li>
-							<li><router-link to="/protocols/4">Dizziness</router-link></li>
-							<li><router-link to="/protocols/5">Escalation</router-link></li>
-							<li><router-link to="/protocols/6">Heart Rate problem</router-link></li>
+							<li v-for="p in protocolsList">
+							<a :href="p.FilePath" target="_blank">{{ p.Filename }}</a>
+							</li>
+
 						</ul></div>
 
 					</div>
