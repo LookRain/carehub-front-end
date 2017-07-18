@@ -3,7 +3,7 @@
 		<br>
 		<div class="row">
 			<section class="col-lg-8 col-xs-12 connectedSortable">
-				<div class="box box-solid bg-red-gradient">
+				<div class="box box-danger">
 					<div class="box-header">
 
 
@@ -14,7 +14,8 @@
 						</h3>
 					</div>
 					<div class="box-body">
-						<mu-table :showCheckbox="false">
+					<mu-text-field label="Search For Patient by Case ID" v-model="searchText"/><mu-raised-button label="Clear" @click="clearSearch"/>
+						<mu-table :showCheckbox="false" v-show="showFullTable">
 							<mu-thead>
 								<mu-tr>
 									<!-- <mu-th>Patient Name</mu-th> -->
@@ -47,7 +48,38 @@
 							</mu-tbody>
 						</mu-table>	
 						
-						
+						<mu-table :showCheckbox="false" v-show="searchText">
+							<mu-thead>
+								<mu-tr>
+									<!-- <mu-th>Patient Name</mu-th> -->
+									<mu-th>Case ID</mu-th>
+									<mu-th>No. of Call</mu-th>
+									<mu-th>Scheduled Date</mu-th>
+									<mu-th>Tier</mu-th>
+									<mu-th>Action</mu-th>
+								</mu-tr>
+							</mu-thead>
+							<mu-tbody>
+								<mu-tr v-for="call, index in searchResult" :key="index" @click.native="choosePatient(call)">
+									<!-- <mu-td>{{ call.PName }}</mu-td> -->
+									<mu-td>{{ call.CaseId }}</mu-td>
+									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
+									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
+									<mu-td>{{ call.Tier }}</mu-td>
+									<mu-td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
+									<mu-dialog :open="dialog" title="Confirmation" @close="close">
+										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
+										<br>
+										Edit Remarks about patient
+										<br>
+										<mu-text-field fullWidth v-model="dialogCall.CallRemark" /><br/>
+										<mu-flat-button slot="actions" @click="close" primary label="No"/>
+										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+									</mu-dialog>
+								</mu-tr>
+								
+							</mu-tbody>
+						</mu-table>	
 					</div>
 					<!-- /.box-body-->
 
@@ -93,12 +125,17 @@ import moment from 'moment'
 				COMPLETED_PROGRESS_ID: 2,
 				dialog: false,
 				dialogCall: {},
-				dialogCallIndex: ''
+				dialogCallIndex: '',
+				searchText:'',
+				searchResult: []
 			}
 		},
 		computed: {
 	    username() {
 	    	return this.$store.state.user.Email
+	    },
+	    showFullTable() {
+	    	return !this.searchText
 	    }
 	  },
 	  methods: {
@@ -112,6 +149,15 @@ import moment from 'moment'
 				this.dialog = true
 				this.dialogCall = call
 				this.dialogCallIndex = index
+			},
+			openInSearchResult (call, index) {
+				this.dialog = true
+				this.dialogCall = call
+				this.dialogCallIndex = this.allTasks.findIndex(task => {
+					if (task.CallId === call.CallId) {
+						return task
+					}
+				})
 			},
 			close () {
 				this.dialog = false
@@ -134,8 +180,13 @@ import moment from 'moment'
 						Progress: this.COMPLETED_PROGRESS_ID,
 						// UserName: this.$store.state.user.Email
 					}).then(response=>{console.log(response.data)})
+
+				// delete the task from the list
 	  		this.allTasks.splice(this.dialogCallIndex, 1)
 	  		this.close()
+			},
+			clearSearch() {
+				this.searchText = ''
 			}
 	  },
 	  filters: {
@@ -176,6 +227,22 @@ import moment from 'moment'
 					response => {
 					this.allTasks = response.data
 					})
+				}
+			},
+			searchText(val) {
+				if (val) {
+					let result = this.allTasks.filter(task => {
+	    			return  (task.CaseId.includes(val)) 
+		    	})
+		    	this.searchResult = result
+				}
+			},
+			allTasks(val) {
+				if (val) {
+					let result = val.filter(task => {
+	    			return  (task.CaseId.includes(this.searchText)) 
+		    	})
+		    	this.searchResult = result
 				}
 			}
 	  }
