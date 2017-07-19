@@ -32,8 +32,11 @@
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
 									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
-									<mu-td>{{ call.Tier }}</mu-td>
+									<mu-td>
+										<mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)" />
+									</mu-td>
 									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
+
 									<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
 										<br>
@@ -43,6 +46,19 @@
 										<mu-flat-button slot="actions" @click="close" primary label="No"/>
 										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
 									</mu-dialog>
+
+									<mu-dialog :open="elevateDialog" title="Elevate Patient Tier" @close="closeElevate">
+										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
+										<br>
+										Choose the Tier to Elevate to
+										<br>
+										<mu-select-field autoWidth fullWidth v-model="activeElevatingCall.Tier" :labelFocusClass="['label-foucs']">
+												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
+										</mu-select-field>
+										<mu-flat-button slot="actions" @click="closeElevate"  label="Close"/>
+										<mu-flat-button slot="actions" primary @click="confirmElevate" label="Elevate"/>
+									</mu-dialog>
+
 								</mu-tr>
 								
 							</mu-tbody>
@@ -65,7 +81,7 @@
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
 									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
-									<mu-td>{{ call.Tier }}</mu-td>
+									<mu-td><mu-raised-button :label="call.Tier.toString()" /></mu-td>
 									<mu-td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
 									<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
@@ -127,7 +143,10 @@ import moment from 'moment'
 				dialogCall: {},
 				dialogCallIndex: '',
 				searchText:'',
-				searchResult: []
+				searchResult: [],
+				elevateDialog: false,
+				tierList: ['1','2','3'],
+				activeElevatingCall: ''
 			}
 		},
 		computed: {
@@ -187,6 +206,27 @@ import moment from 'moment'
 			},
 			clearSearch() {
 				this.searchText = ''
+			},
+			openElevate(call) {
+				this.activeElevatingCall = call
+				if (call.Tier === 3) {
+					alert('Tier 3 patient cannot be elevated anymore!')
+					return
+				} else {
+					this.elevateDialog = true
+				}
+			},
+			closeElevate () {
+				this.elevateDialog = false
+			},
+			confirmElevate(call) {
+				this.$put('patients/' + this.activeElevatingCall.PatientId, {Tier: this.activeElevatingCall.Tier}).then(response => {
+					alert('Success!' + response.data)
+					this.closeElevate()
+				}).catch(err => {
+					alert('Something went wrong: ' + err.response.data.Message)
+					this.closeElevate()
+				})
 			}
 	  },
 	  filters: {
@@ -215,11 +255,8 @@ import moment from 'moment'
 
 	  created() {
 	  	this.$get('claimedcalls/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
+	  },
 
-	  },
-	  mounted() {
-	  	
-	  },
 	  watch: {
 	  	username(val) {
 				if (val) {
