@@ -54,6 +54,13 @@
           </router-link>
         </li>
 
+        <li>
+          <router-link  to="/stats_summary" exact>
+            <i class="fa fa-th"></i> <span>Statistics</span>
+
+          </router-link>
+        </li>
+
 
         <li class="header">LABELS</li>
         <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
