@@ -21,6 +21,7 @@ import Protocol5 from '@/pages/Protocol5'
 import Protocol6 from '@/pages/Protocol6'
 
 import UploadProtocol from '@/pages/UploadProtocol'
+import StatsSummary from '@/pages/StatsSummary'
 
 Vue.use(Router)
 
@@ -125,6 +126,11 @@ export default new Router({
     path: '/upload_protocol',
     name: 'UploadProtocol',
     component: UploadProtocol
+  },
+  {
+    path: '/stats_summary',
+    name: 'StatsSummary',
+    component: StatsSummary
   }
   ]
 })
