@@ -77,7 +77,7 @@
 									<th>Count</th>
 								</tr>
 								<tr v-for="call in fullStats.HourlyCallsList">
-									<td>{{ call.HourTitile }}</td> 
+									<td>{{ call.HourTitle }}</td> 
 									<td>{{ call.Count }}</td>
 								</tr>								
 							</table>

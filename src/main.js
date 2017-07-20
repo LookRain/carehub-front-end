@@ -81,8 +81,13 @@ new Vue({
     // store.state.user = "bbb"
 
     this.$get('currentuser').then((response)=>{
-      store.commit('setUser', response.data)
+      store.commit('setUser', response.data)      
+    }).catch(err => {
+      alert('Please log in first!')
+      window.location.replace('/')
     })
+    
+
 
     this.$get('wardassignment').then(response => {
       store.commit('setWardAssignment', response.data)
@@ -96,6 +101,10 @@ new Vue({
         store.commit('setHosWorkload', response.data)
       })
 
+
+    // if (!store.state.user.Email) {
+    //   console.log(store.state.user.Email)
+    // }
   }
 })
 

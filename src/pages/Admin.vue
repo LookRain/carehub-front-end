@@ -242,9 +242,13 @@
 				if (this.$store.state.user.UserGroup === 2) {
 					this.$router.push('hospital_tasks')
 				}
+	
 				
 			},
 			created() {
+
+				
+
 				if (this.$store.state.user.UserGroup === 3) {
 					this.$router.push('call_tasks')
 				}
@@ -282,10 +286,10 @@
 				usergroup(val) {
 					if (val === 3) {
 					this.$router.push('call_tasks')
-				}
-				if (val === 2) {
-					this.$router.push('hospital_tasks')
-				}
+					}
+					if (val === 2) {
+						this.$router.push('hospital_tasks')
+					}
 				}
 			}
 		}
