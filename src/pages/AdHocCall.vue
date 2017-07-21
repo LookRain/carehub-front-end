@@ -10,12 +10,18 @@
 					<h3 class="box-title">
 						Add ad-hoc Call
 					</h3>
+
 				</div>
 				<div class="box-body">
+				<h4>Note: The call will be automatically assigned to you!</h4>
 				<mu-text-field label="Case ID(Auto Select the first result in the search result)" v-model="caseId"></mu-text-field><br>
 				<mu-date-picker v-model="date" label="Date" hintText="Date" okLabel="Ok" cancelLabel="Cancel" :dateTimeFormat="enDateFormat"/><br>
-				<mu-text-field label="Call Progress" v-model="progress"></mu-text-field><br>
-				<mu-text-field label="Call Tyle" v-model="type"></mu-text-field><br>
+				<!-- <mu-text-field label="Call Progress" v-model="progress"></mu-text-field><br> -->
+				<!-- <mu-text-field label="Call Tyle" v-model="type"></mu-text-field><br> -->
+				<mu-select-field autoWidth fullWidth v-model="type" :labelFocusClass="['label-foucs']">
+					<mu-menu-item :value="1" title="Outgoing"/>
+					<mu-menu-item :value="2" title="Incoming"/>
+				</mu-select-field>
 				<!-- <mu-text-field label="User Email" v-model="email"></mu-text-field> -->
 				
 				<mu-raised-button label="Submit" @click="submit"></mu-raised-button>
@@ -80,7 +86,8 @@ import enDateFormat from '@/utils/DateFormat'
 				type: '',
 				email: '',
 				matchedPatients: '',
-				enDateFormat
+				enDateFormat,
+				CLAIMED_CONS: 1,
 			}	
 		},
 		watch: {
@@ -94,12 +101,14 @@ import enDateFormat from '@/utils/DateFormat'
 				submit() {
 					this.$post('adhoc', {
 						PatientId: this.matchedPatients[0].PId,
-						Progress: this.progress,
+						Progress: this.CLAIMED_CONS,
 						CallType: this.type,
 						UserName: this.$store.state.user.Email,
-						CallDate: this.date,
-						CallNo: 0
-					}).then(response=>{alert('Added!')})
+						CallDate: this.date
+					}).then(response=>{
+						alert(`New call to ${this.PatientId} successfully added!`)
+						location.reload()
+					})
 				}
 			},
 		filters: {
