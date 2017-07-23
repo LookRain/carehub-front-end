@@ -33,16 +33,12 @@
           </router-link>
         </li>
 
-        <li>
+        <!-- <li>
           <router-link  to="/admin_calendar" exact>
             <i class="fa fa-th"></i> <span>Calendar/History</span>
           </router-link>
-        </li>
-        
-        <li class="header">LABELS</li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+        </li> -->
+       
       </ul>
     </section>
     <!-- /.sidebar -->

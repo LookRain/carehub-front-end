@@ -4,7 +4,7 @@ import Admin from '@/pages/Admin'
 import ExamplePage from '@/pages/ExamplePage'
 import AssignPatient from '@/pages/AssignPatient'
 import Settings from '@/pages/Settings'
-import AdminCalendar from '@/pages/AdminCalendar'
+// import AdminCalendar from '@/pages/AdminCalendar'
 import CallTasks from '@/pages/CallTasks'
 import HospitalTasks from '@/pages/HospitalTasks'
 import CallClaim from '@/pages/CallClaim'
@@ -67,11 +67,11 @@ export default new Router({
     name: 'Patients',
     component: Patients
   },
-  {
-    path: '/admin_calendar',
-    name: 'AdminCalendar',
-    component: AdminCalendar
-  },
+  // {
+  //   path: '/admin_calendar',
+  //   name: 'AdminCalendar',
+  //   component: AdminCalendar
+  // },
   {
     path: '/settings',
     name: 'Settings',
