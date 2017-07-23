@@ -51,9 +51,10 @@
 					<div class="box-body" style="overflow: hid den;">
 						<div class="container">
 							<p>Please upload only csv file</p>
+							<p>{{ csvFilename }}</p>
 							<div class="excel-upload">
-								<mu-raised-button label="Choose CSV" default onclick="document.getElementById('csv').click();"/>
-								<input type="file" style="display:none;" id="csv" name="file"/>
+								<mu-raised-button label="Choose CSV" default onclick="document.getElementById('csv').click();" />
+								<input type="file" style="display:none;" id="csv" name="file" @change="onFileChange" />
 							</div>
 							<br>
 							<hr>
@@ -190,6 +191,7 @@
 					WardNo: ''
 				},
 				
+				csvFilename: '',
 				returnedPatient: ''
 			}
 		},
@@ -199,8 +201,19 @@
 			}
 		},
 		methods: {
+			onFileChange(e) {
+				let data = new FormData()
+        data.append('file', document.getElementById('csv').files[0])
+        this.file = data
+        this.csvFilename = data.get('file').name
+			},
 
 			parseCSV() {
+				// let data = new FormData()
+    //     data.append('file', document.getElementById('csv').files[0])
+
+				// this.csvFilename = data
+
 				let reader = new FileReader()
 				reader.onload = ()=> {
 					this.$store.commit('setCSV', reader.result)
