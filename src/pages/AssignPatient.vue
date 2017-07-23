@@ -108,18 +108,21 @@
         return this.$store.state.rawCSV
       },
       parsed() {
+
         let trimedCSV = this.raw.trim()
         let lineSplitCSV = trimedCSV.split('\r\n')
         let result = []
         lineSplitCSV.forEach(line => {
           let commaSeperatedString = line.split(',')
-
+          if (!commaSeperatedString[0] || !commaSeperatedString[1] || !commaSeperatedString[2]) {
+            return 
+          }
           let patient = {}
           patient.CaseId = commaSeperatedString[0]
           // patient.NRIC = commaSeperatedString[1]
           patient.MeanTest = commaSeperatedString[1]
           patient.WardNo = commaSeperatedString[2]
-          patient.Region = commaSeperatedString[3]
+          // patient.Region = commaSeperatedString[3]
 
           patient.PStatus = 0
 
