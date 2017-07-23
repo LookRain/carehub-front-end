@@ -1,7 +1,10 @@
 <template>
 <div class="user-panel">
         <div class="pull-left image">
-          <img src="../img/user2-160x160.jpg" class="img-circle" alt="User Image">
+          <img v-if="userGroupRaw === 1" src="../assets/admin.jpg" class="img-circle" alt="User Image">
+          <img v-if="userGroupRaw === 2" src="../assets/hos_team.jpg" class="img-circle" alt="User Image">
+          <img v-if="userGroupRaw === 3" src="../assets/call_centre_team.jpg" class="img-circle" alt="User Image">
+
         </div>
         <div class="pull-left info">
           <p>{{username}}</p>
@@ -21,6 +24,9 @@ export default {
   	username() {
   		return this.$store.state.user.DisplayedName
   	},
+    userGroupRaw() {
+      return this.$store.state.user.UserGroup
+    },
   	usergroup() {
   		switch(this.$store.state.user.UserGroup) {
   			case 1:
