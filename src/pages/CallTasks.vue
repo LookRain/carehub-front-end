@@ -14,7 +14,8 @@
 						</h3>
 					</div>
 					<div class="box-body">
-					<mu-text-field label="Search For Patient by Case ID" v-model="searchText"/><mu-raised-button label="Clear" @click="clearSearch"/>
+
+						<mu-text-field label="Search For Patient by Case ID" v-model="searchText"/><mu-raised-button label="Clear" @click="clearSearch"/>
 						<mu-table :showCheckbox="false" v-show="showFullTable">
 							<mu-thead>
 								<mu-tr>
@@ -52,8 +53,8 @@
 										<br>
 										Choose the Tier to Elevate to
 										<br>
-										<mu-select-field autoWidth fullWidth v-model="activeElevatingCall.Tier" :labelFocusClass="['label-foucs']">
-												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
+										<mu-select-field autoWidth fullWidth v-model="elevatedTier" :labelFocusClass="['label-foucs']">
+											<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
 										</mu-select-field>
 										<mu-flat-button slot="actions" @click="closeElevate"  label="Close"/>
 										<mu-flat-button slot="actions" primary @click="confirmElevate" label="Elevate"/>
@@ -128,7 +129,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+	import moment from 'moment'
 
 	export default {
 
@@ -146,25 +147,29 @@ import moment from 'moment'
 				searchResult: [],
 				elevateDialog: false,
 				tierList: ['1','2','3'],
-				activeElevatingCall: ''
+				activeElevatingCall: '',
+				elevatedTier: ''
 			}
 		},
 		computed: {
-	    username() {
-	    	return this.$store.state.user.Email
-	    },
-	    showFullTable() {
-	    	return !this.searchText
-	    }
-	  },
-	  methods: {
-	  	choosePatient (c) {
+			username() {
+				return this.$store.state.user.Email
+			},
+			showFullTable() {
+				return !this.searchText
+			}
+		},
+		methods: {
+			test() {
+				alert(123)
+			},
+			choosePatient (c) {
 	  	// 	this.$get('patients/' + id).then(response => {
 				// 	this.activePatient = response.data
 				// })
 				this.activePatient = c
-	  	},
-	  	open (call, index) {
+			},
+			open (call, index) {
 				this.dialog = true
 				this.dialogCall = call
 				this.dialogCallIndex = index
@@ -184,25 +189,25 @@ import moment from 'moment'
 			confirmComplete() {
 				/*
 					update patient call remarks
-				*/
-				this.$put('patients/' + this.dialogCall.PatientId, {CallRemark: this.dialogCall.CallRemark}).then(
-					response => {
-						console.log('Success' + response.data)
-					}).catch(err => {
-						console.log(err.response.data.Message)
-					})
+					*/
+					this.$put('patients/' + this.dialogCall.PatientId, {CallRemark: this.dialogCall.CallRemark}).then(
+						response => {
+							console.log('Success' + response.data)
+						}).catch(err => {
+							console.log(err.response.data.Message)
+						})
 				/*
 					update patient call progress
-				*/		
-				this.$put('claimedcalls/' + this.dialogCall.CallId, 
+					*/		
+					this.$put('claimedcalls/' + this.dialogCall.CallId, 
 					{
 						Progress: this.COMPLETED_PROGRESS_ID,
 						// UserName: this.$store.state.user.Email
 					}).then(response=>{console.log(response.data)})
 
 				// delete the task from the list
-	  		this.allTasks.splice(this.dialogCallIndex, 1)
-	  		this.close()
+				this.allTasks.splice(this.dialogCallIndex, 1)
+				this.close()
 			},
 			clearSearch() {
 				this.searchText = ''
@@ -220,71 +225,83 @@ import moment from 'moment'
 				this.elevateDialog = false
 			},
 			confirmElevate(call) {
-				this.$put('patients/' + this.activeElevatingCall.PatientId, {Tier: this.activeElevatingCall.Tier}).then(response => {
+				if (this.elevatedTier < this.activeElevatingCall.Tier) {
+					alert(`You must choose a Tier higher than the patient's current Tier!`)
+					return
+				}
+				this.$put('patients/' + this.activeElevatingCall.PatientId, {Tier: this.elevatedTier}).then(response => {
 					alert('Success!' + response.data)
 					this.closeElevate()
+					location.reload()
 				}).catch(err => {
 					alert('Something went wrong: ' + err.response.data.Message)
 					this.closeElevate()
 				})
 			}
-	  },
-	  filters: {
-	  	parseDate(date) {
-	  		moment.locale('en-gb');
-	  		return moment(date).format('ll')
-	  	},
-	  	parseCallNo(val) {
-	  		if (val === 1) {
-	  			return '1st Call'
-	  		}
-	  		if (val === 2) {
-	  			return '2nd Call'
-	  		}
-	  		if (val === 3) {
-	  			return '3rd Call'
-	  		}
-	  		if (val === 4) {
-	  			return '4th Call'
-	  		}
-	  		if (val === 5) {
-	  			return '5th Call'
-	  		}
-	  	}
-	  },
+		},
+		filters: {
+			parseDate(date) {
+				moment.locale('en-gb');
+				return moment(date).format('ll')
+			},
+			parseCallNo(val) {
+				if (val === 1) {
+					return '1st Call'
+				}
+				if (val === 2) {
+					return '2nd Call'
+				}
+				if (val === 3) {
+					return '3rd Call'
+				}
+				if (val === 4) {
+					return '4th Call'
+				}
+				if (val === 5) {
+					return '5th Call'
+				}
+			}
+		},
 
-	  created() {
-	  	this.$get('claimedcalls/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
-	  },
+		created() {
+			this.$get('claimedcalls/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
+		},
 
-	  watch: {
-	  	username(val) {
+		watch: {
+			username(val) {
 				if (val) {
 					this.$get('claimedcalls/values?username=' + val).then(
-					response => {
-					this.allTasks = response.data
-					})
+						response => {
+							this.allTasks = response.data
+						})
 				}
 			},
 			searchText(val) {
 				if (val) {
 					let result = this.allTasks.filter(task => {
-	    			return  (task.CaseId.includes(val)) 
-		    	})
-		    	this.searchResult = result
+						return  (task.CaseId.includes(val)) 
+					})
+					this.searchResult = result
 				}
 			},
 			allTasks(val) {
 				if (val) {
 					let result = val.filter(task => {
-	    			return  (task.CaseId.includes(this.searchText)) 
-		    	})
-		    	this.searchResult = result
+						return  (task.CaseId.includes(this.searchText)) 
+					})
+					this.searchResult = result
 				}
 			}
-	  }
+		}
 	}
 </script>
 
 <style lang="css" scoped>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+tr:hover {
+	background-color: red;
+}
 </style>
