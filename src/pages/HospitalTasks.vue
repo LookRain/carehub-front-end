@@ -1,27 +1,27 @@
 <template>
 	<div class="row">
-	<mu-dialog id="recruit_dialog" :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
-								Are you sure you want to <b>recruit</b> {{ activePatient.CaseId }} ?
+		<mu-dialog id="recruit_dialog" :open="recruitDialogOpen" title="Confirmation" @close="closeRecruit">
+			Are you sure you want to <b>recruit</b> {{ activePatient.CaseId }} ?
 
-								<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
-								<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
-								<mu-flat-button slot="actions" primary @click="confirmRecruit" label="Yes"/>
-							</mu-dialog>
+			<!-- <mu-text-field multiLine fullWidth v-model="dialogCall.CallRemark" /><br/> -->
+			<mu-flat-button slot="actions" @click="closeRecruit" primary label="No"/>
+			<mu-flat-button slot="actions" primary @click="confirmRecruit" label="Yes"/>
+		</mu-dialog>
 
-							<mu-dialog id="reject_dialog" :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
-								Are you sure you want to <b>reject</b> {{ activePatient.CaseId }} ?
-								<br>
-								<br>
-								Why did you reject this patient?
-								<br>
-								<mu-select-field v-model="activePatient.Reason" :labelFocusClass="['label-foucs']">
-									<mu-menu-item v-for="item, index in reasonList" :key="index" :value="item" :title="item"/>
-								</mu-select-field>
+		<mu-dialog id="reject_dialog" :open="rejectDialogOpen" title="Confirmation" @close="closeReject">
+			Are you sure you want to <b>reject</b> {{ activePatient.CaseId }} ?
+			<br>
+			<br>
+			Why did you reject this patient?
+			<br>
+			<mu-select-field v-model="activePatient.Reason" :labelFocusClass="['label-foucs']">
+				<mu-menu-item v-for="item, index in reasonList" :key="index" :value="item" :title="item"/>
+			</mu-select-field>
 
-								<mu-text-field fullWidth v-model="activePatient.Reason" /><br/>
-								<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
-								<mu-flat-button slot="actions" primary @click="confirmReject" label="Yes"/>
-							</mu-dialog>
+			<mu-text-field fullWidth v-model="activePatient.Reason" /><br/>
+			<mu-flat-button slot="actions" @click="closeReject" primary label="No"/>
+			<mu-flat-button slot="actions" primary @click="confirmReject" label="Yes"/>
+		</mu-dialog>
 		<section class="col-lg-12 col-xs-12 connectedSortable">
 			<div class="box box-success">
 				<div class="box-header">
@@ -130,10 +130,10 @@
 										</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
 										<mu-td><p id="reasonItem" @click="openReason(task.Reason)">{{ task.Reason }}</p>
-										<mu-dialog :open="reasonDialog" title="Reason" @close="closeReason">
-									    {{ activeReason }}
-									    <mu-flat-button slot="actions" @click="closeReason" primary label="Close"/>
-									  </mu-dialog>
+											<mu-dialog :open="reasonDialog" title="Reason" @close="closeReason">
+												{{ activeReason }}
+												<mu-flat-button slot="actions" @click="closeReason" primary label="Close"/>
+											</mu-dialog>
 
 										</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
@@ -249,13 +249,13 @@
 					console.log(err.response.data.Message)
 				})
 
-				this.$post('callcentre', patientNRIC).then(
+				this.$post('callcentre/' + this.activePatient.Tier, patientNRIC).then(
 					response => {
 						console.log('Call centre update Success' + response.data)
-					}).catch(
-					err => {
+					}).catch(err => {
 						console.log(err.response.data.Message)
 					})
+
 					console.log(this.activePatient.PId)
 
 					this.tasks.splice(this.activePatientIndex, 1)

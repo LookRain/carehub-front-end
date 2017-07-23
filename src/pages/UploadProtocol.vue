@@ -14,10 +14,10 @@
 					<hr>
 					
 		
-						<mu-text-field hintText="Please upload pdf file"/>
+						<p>Please upload pdf file</p>
 							<div class="excel-upload">
 								<!-- <mu-raised-button label="Upload Excel" default onclick="document.getElementById('protocol').click();"/> -->
-	
+								{{ proFileName }}
 								<input type="file" id="protocol" name="file" @change="onFileChange"/>
 							</div>
 							<mu-raised-button label="Submit" primary @click="uploadPro"/>
@@ -42,14 +42,16 @@
 		name: 'UploadProtocol',
 		data () {
 			return {
-				file: ''
+				file: '',
+				proFileName: ''
 			}
 		},
 		methods: {
 			onFileChange (e) {
-				let data = new FormData();
+				let data = new FormData()
         data.append('file', document.getElementById('protocol').files[0])
         this.file = data
+        this.proFileName = data.get('file').name
 				// let files = e.target.files || e.dataTransfer.files;
 	   //    if (!files.length)
 	   //      return;

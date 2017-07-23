@@ -39,7 +39,7 @@
 			<!-- ./col -->
 		</div>
 		<div class="row">
-			<section class="col-lg-6 col-xs-12 connectedSortable">
+			<section class="col-lg-12 col-xs-12 connectedSortable">
 				<div class="box box-success">
 					<div class="box-header">
 						<i class="fa fa-map-marker"></i>
@@ -50,9 +50,9 @@
 					</div>
 					<div class="box-body" style="overflow: hid den;">
 						<div class="container">
-							<mu-text-field hintText="Please upload excel or csv file"/><br/>
+							<p>Please upload only csv file</p>
 							<div class="excel-upload">
-								<mu-raised-button label="Upload Excel" default onclick="document.getElementById('csv').click();"/>
+								<mu-raised-button label="Choose CSV" default onclick="document.getElementById('csv').click();"/>
 								<input type="file" style="display:none;" id="csv" name="file"/>
 							</div>
 							<br>
@@ -71,21 +71,19 @@
 
 				</div>
 			</section>
-			<section class="col-lg-6 col-xs-6 connectedSortable">
+		<!-- 	<section class="col-lg-6 col-xs-6 connectedSortable">
 				<div class="box box-success">
 					<div class="box-header">
 						<h3 class="box-title">Add A Patient</h3>
 					</div>
 					<div class="box-body" display="block" style="word-break:break-all;">
-						<mu-text-field hintText="Name" v-model="name"/><br/>
-						<mu-text-field hintText="NRIC" v-model="nric"/><br/>
-						<mu-text-field hintText="Mean Test" v-model="meanTest"/><br/>
-						<mu-text-field hintText="Ward Number" v-model="wardNumber"/><br/>
-						<mu-text-field hintText="Region" v-model="region"/><br/>						
+						<mu-text-field hintText="Case ID" v-model="newPatient.CaseId"/><br/>
+						<mu-text-field hintText="Mean Test" v-model="newPatient.MeanTest"/><br/>
+						<mu-text-field hintText="Ward Number" v-model="newPatient.WardNo"/><br/>					
 						<mu-raised-button label="Add" primary @click="addPatient"></mu-raised-button>
 					</div>
 				</div>
-			</section>
+			</section> -->
 
 
 		</div>
@@ -184,11 +182,14 @@
 				isNewPatientAdded: false,
 				showCheckbox: false,
 				allusers: '',
-				name: '',
-				nric: '',
-				meanTest: '',
-				region: '',
-				wardNumber: '',
+				
+				newPatient: {
+					CaseId: '',
+					MeanTest: '',
+					PStatus: 0,
+					WardNo: ''
+				},
+				
 				returnedPatient: ''
 			}
 		},
@@ -218,14 +219,7 @@
 					// if (!(this.name && this.nric && this.meanTest && this.region && this.wardNumber)) {
 					// 	alert('Please fill in all patient information!')
 					// } else {
-						this.$post('/Patients', {
-							'NRIC': this.nric,
-							'PName': this.name,
-							'MeanTest': this.meanTest,
-							'WardNo': this.wardNumber,
-							'Region': this.region,
-							'PStatus': 0
-						}).then((response) => {
+						this.$post('/Patients', this.newPatient).then((response) => {
 							this.returnedPatient = response.data
 							alert('Added successfully!' + this.returnedPatient.PName)
 							this.clearPatientFields()
