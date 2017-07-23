@@ -16,29 +16,36 @@
 					<div class="box-body">
 
 						<mu-text-field label="Search For Patient by Case ID" v-model="searchText"/><mu-raised-button label="Clear" @click="clearSearch"/>
-						<mu-table :showCheckbox="false" v-show="showFullTable">
-							<mu-thead>
-								<mu-tr>
-									<!-- <mu-th>Patient Name</mu-th> -->
-									<mu-th>Case ID</mu-th>
-									<mu-th>No. of Call</mu-th>
-									<mu-th>Scheduled Date</mu-th>
-									<mu-th>Tier</mu-th>
-									<mu-th>Action</mu-th>
-								</mu-tr>
-							</mu-thead>
-							<mu-tbody>
-								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call)">
-									<!-- <mu-td>{{ call.PName }}</mu-td> -->
-									<mu-td>{{ call.CaseId }}</mu-td>
-									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
-									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
-									<mu-td>
-										<mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)" />
-									</mu-td>
-									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
+						<table v-show="showFullTable">
+							<tr>
+			
+									<!-- <th>Patient Name</th> -->
+									<th>Case ID</th>
+									<th>No. of Call</th>
+									<th>Scheduled Date</th>
+									<th>Tier</th>
+									<th>Action</th>
+								
+							</tr>
 
-									<mu-dialog :open="dialog" title="Confirmation" @close="close">
+							
+								<tr v-for="call, index in allTasks" :key="index" @click="choosePatient(call)">
+									<!-- <td>{{ call.PName }}</td> -->
+									<td>{{ call.CaseId }}</td>
+									<td>{{ call.CallNo | parseCallNo }}</td>
+									<td>{{ call.CallDate | parseDate }}</td>
+									<td>
+										<mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)" />
+									</td>
+									<td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></td>
+
+									
+
+								</tr>
+								
+							
+						</table>	
+						<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
 										<br>
 										Edit Remarks about patient
@@ -59,32 +66,32 @@
 										<mu-flat-button slot="actions" @click="closeElevate"  label="Close"/>
 										<mu-flat-button slot="actions" primary @click="confirmElevate" label="Elevate"/>
 									</mu-dialog>
-
-								</mu-tr>
-								
-							</mu-tbody>
-						</mu-table>	
 						
-						<mu-table :showCheckbox="false" v-show="searchText">
-							<mu-thead>
-								<mu-tr>
-									<!-- <mu-th>Patient Name</mu-th> -->
-									<mu-th>Case ID</mu-th>
-									<mu-th>No. of Call</mu-th>
-									<mu-th>Scheduled Date</mu-th>
-									<mu-th>Tier</mu-th>
-									<mu-th>Action</mu-th>
-								</mu-tr>
-							</mu-thead>
-							<mu-tbody>
-								<mu-tr v-for="call, index in searchResult" :key="index" @click.native="choosePatient(call)">
-									<!-- <mu-td>{{ call.PName }}</mu-td> -->
-									<mu-td>{{ call.CaseId }}</mu-td>
-									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
-									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
-									<mu-td><mu-raised-button :label="call.Tier.toString()" /></mu-td>
-									<mu-td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
-									<mu-dialog :open="dialog" title="Confirmation" @close="close">
+						<table :showCheckbox="false" v-show="searchText">
+
+								<tr>
+									<!-- <th>Patient Name</th> -->
+									<th>Case ID</th>
+									<th>No. of Call</th>
+									<th>Scheduled Date</th>
+									<th>Tier</th>
+									<th>Action</th>
+								</tr>
+
+
+								<tr v-for="call, index in searchResult" :key="index" @click="choosePatient(call)">
+									<!-- <td>{{ call.PName }}</td> -->
+									<td>{{ call.CaseId }}</td>
+									<td>{{ call.CallNo | parseCallNo }}</td>
+									<td>{{ call.CallDate | parseDate }}</td>
+									<td><mu-raised-button :label="call.Tier.toString()" /></td>
+									<td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></td>
+									
+								</tr>
+								
+
+						</table>	
+						<mu-dialog :open="dialog" title="Confirmation" @close="close">
 										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
 										<br>
 										Edit Remarks about patient
@@ -93,10 +100,6 @@
 										<mu-flat-button slot="actions" @click="close" primary label="No"/>
 										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
 									</mu-dialog>
-								</mu-tr>
-								
-							</mu-tbody>
-						</mu-table>	
 					</div>
 					<!-- /.box-body-->
 
@@ -297,11 +300,11 @@
 </script>
 
 <style lang="css" scoped>
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
+th, td {
+	border-bottom: 1px solid #ddd;
+  padding: 15px;
 }
 tr:hover {
-	background-color: red;
+	background-color: #d2d5db;
 }
 </style>
