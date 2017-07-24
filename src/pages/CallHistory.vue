@@ -24,7 +24,7 @@
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
-								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call.PatientId)">
+								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call)">
 									<!-- <mu-td>{{ call.PName }}</mu-td> -->
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
@@ -56,8 +56,8 @@
 							<!-- <mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item> -->
 							<mu-list-item><h3>Case ID: {{ activePatient.CaseId }}</h3></mu-list-item>
 							<mu-list-item><h3>Tier: {{ activePatient.Tier }}</h3></mu-list-item>
-							<mu-list-item><h3>Mean Test: {{ activePatient.MeanTest }}</h3></mu-list-item>
-							<mu-list-item><h3>Ward Number: {{ activePatient.WardNo }}</h3></mu-list-item>
+							<mu-list-item><h3>Call Type: {{ activePatient.CallType }}</h3></mu-list-item>
+							<mu-list-item><h3>Remark: {{ activePatient.CallRemark }}</h3></mu-list-item>
 						</mu-list>
 					</div>
 				</div>
@@ -80,13 +80,19 @@
 		computed: {
 	    username() {
 	    	return this.$store.state.user.Email
+	    // },
+	    // allTasks() {
+
+	    // 	this.$get('claimedcallhistory/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
 	    }
 	  },
 	  methods: {
-	  	choosePatient (id) {
-	  		this.$get('patients/' + id).then(response => {
-					this.activePatient = response.data
-				})
+	  	choosePatient (c) {
+	  		this.activePatient = c
+	  	},
+	  	fetchData() {
+	  		console.log('fetching')
+	  		this.$get('claimedcallhistory/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
 	  	}
 	  },
 	  filters: {
@@ -107,12 +113,9 @@
 	  },
 
 	  created() {
-	  	this.$get('claimedcallhistory/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
+	  	this.fetchData()
+	  },
 
-	  },
-	  mounted() {
-	  	
-	  },
 	  watch: {
 	  	username(val) {
 				if (val) {

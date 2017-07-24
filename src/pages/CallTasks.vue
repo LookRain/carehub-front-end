@@ -15,91 +15,100 @@
 					</div>
 					<div class="box-body">
 
-						<mu-text-field label="Search For Patient by Case ID" v-model="searchText"/><mu-raised-button label="Clear" @click="clearSearch"/>
-						<table v-show="showFullTable">
-							<tr>
-			
-									<!-- <th>Patient Name</th> -->
-									<th>Case ID</th>
-									<th>No. of Call</th>
-									<th>Scheduled Date</th>
-									<th>Tier</th>
-									<th>Action</th>
-								
-							</tr>
+						<!-- <mu-text-field label="Search For Patient by Case ID" v-model="searchText"/><mu-raised-button label="Clear" @click="clearSearch"/> -->
+						<mu-raised-button label="Clear" @click="clearSearch"/>
+						<hr>
+						<mu-radio label="1st Call" name="group" nativeValue="1" v-model="value" class="demo-radio"/> 
+  					<mu-radio label="2nd Call" name="group" nativeValue="2" v-model="value"  class="demo-radio"/> 
+  					<mu-radio label="3rd Call" name="group" nativeValue="3" v-model="value"  class="demo-radio"/> 
+  					<mu-radio label="4th Call" name="group" nativeValue="4" v-model="value"  class="demo-radio"/> 
+  					<mu-radio label="5th Call" name="group" nativeValue="5" v-model="value"  class="demo-radio"/> 
+  					<mu-radio label="6th Call" name="group" nativeValue="6" v-model="value"  class="demo-radio"/> 
+  					<mu-radio label="7th Call" name="group" nativeValue="7" v-model="value"  class="demo-radio"/>
+  					<hr>
+  					<mu-radio label="Oldest First" name="group" nativeValue="asc_date" v-model="value"  class="demo-radio"/>  
+  					<mu-radio label="Newest First" name="group" nativeValue="desc_date" v-model="value"  class="demo-radio"/>  
 
-							
-								<tr v-for="call, index in allTasks" :key="index" @click="choosePatient(call)">
-									<!-- <td>{{ call.PName }}</td> -->
-									<td>{{ call.CaseId }}</td>
-									<td>{{ call.CallNo | parseCallNo }}</td>
-									<td>{{ call.CallDate | parseDate }}</td>
-									<td>
+						<mu-table :showCheckbox="false" v-show="!value">
+							<mu-thead>
+								<mu-tr>
+									<!-- <mu-th>Patient Name</mu-th> -->
+									<mu-th>Case ID</mu-th>
+									<mu-th>No. of Call</mu-th>
+									<mu-th>Scheduled Date</mu-th>
+									<mu-th>Tier</mu-th>
+									<mu-th>Action</mu-th>
+								</mu-tr>
+							</mu-thead>
+							<mu-tbody>
+								<mu-tr v-for="call, index in allTasks" :key="index" @click.native="choosePatient(call)">
+									<!-- <mu-td>{{ call.PName }}</mu-td> -->
+									<mu-td>{{ call.CaseId }}</mu-td>
+									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
+									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
+									<mu-td>
 										<mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)" />
-									</td>
-									<td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></td>
-
-									
-
-								</tr>
+									</mu-td>
+									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
+								</mu-tr>
 								
-							
-						</table>	
-						<mu-dialog :open="dialog" title="Confirmation" @close="close">
-										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
-										<br>
-										Edit Remarks about patient
-										<br>
-										<mu-text-field fullWidth v-model="dialogCall.CallRemark" /><br/>
-										<mu-flat-button slot="actions" @click="close" primary label="No"/>
-										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
-									</mu-dialog>
+							</mu-tbody>
+						</mu-table>	
 
-									<mu-dialog :open="elevateDialog" title="Elevate Patient Tier" @close="closeElevate">
-										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
-										<br>
-										Choose the Tier to Elevate to
-										<br>
-										<mu-select-field autoWidth fullWidth v-model="elevatedTier" :labelFocusClass="['label-foucs']">
-											<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
-										</mu-select-field>
-										<mu-flat-button slot="actions" @click="closeElevate"  label="Close"/>
-										<mu-flat-button slot="actions" primary @click="confirmElevate" label="Elevate"/>
-									</mu-dialog>
+						<mu-dialog :open="dialog" title="Confirmation" @close="close">
+							Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
+							<br>
+							Edit Remarks about patient
+							<br>
+							<mu-text-field fullWidth v-model="dialogCall.CallRemark" /><br/>
+							<mu-flat-button slot="actions" @click="close" primary label="No"/>
+							<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+						</mu-dialog>
+
+						<mu-dialog :open="elevateDialog" title="Elevate Patient Tier" @close="closeElevate">
+							Choose the Tier to Elevate to
+							<br>
+							<mu-select-field autoWidth v-model="elevatedTier" :labelFocusClass="['label-foucs']">
+								<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
+							</mu-select-field>
+							<mu-flat-button slot="actions" @click="closeElevate"  label="Close"/>
+							<mu-flat-button slot="actions" primary @click="confirmElevate" label="Elevate"/>
+						</mu-dialog>
 						
-						<table :showCheckbox="false" v-show="searchText">
-
-								<tr>
-									<!-- <th>Patient Name</th> -->
-									<th>Case ID</th>
-									<th>No. of Call</th>
-									<th>Scheduled Date</th>
-									<th>Tier</th>
-									<th>Action</th>
-								</tr>
-
-
-								<tr v-for="call, index in searchResult" :key="index" @click="choosePatient(call)">
-									<!-- <td>{{ call.PName }}</td> -->
-									<td>{{ call.CaseId }}</td>
-									<td>{{ call.CallNo | parseCallNo }}</td>
-									<td>{{ call.CallDate | parseDate }}</td>
-									<td><mu-raised-button :label="call.Tier.toString()" /></td>
-									<td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></td>
+						<mu-table :showCheckbox="false" v-show="value">
+							<mu-thead>
+								<mu-tr>
+									<!-- <mu-th>Patient Name</mu-th> -->
+									<mu-th>Case ID</mu-th>
+									<mu-th>No. of Call</mu-th>
+									<mu-th>Scheduled Date</mu-th>
+									<mu-th>Tier</mu-th>
+									<mu-th>Action</mu-th>
+								</mu-tr>
+							</mu-thead>
+							<mu-tbody>
+								<mu-tr v-for="call, index in searchResult" :key="index" @click.native="choosePatient(call)">
+									<!-- <mu-td>{{ call.PName }}</mu-td> -->
+									<mu-td>{{ call.CaseId }}</mu-td>
+									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
+									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
+									<mu-td><mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)"/></mu-td>
+									<mu-td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
 									
-								</tr>
+								</mu-tr>
 								
+							</mu-tbody>
+						</mu-table>	
 
-						</table>	
 						<mu-dialog :open="dialog" title="Confirmation" @close="close">
-										Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
-										<br>
-										Edit Remarks about patient
-										<br>
-										<mu-text-field fullWidth v-model="dialogCall.CallRemark" /><br/>
-										<mu-flat-button slot="actions" @click="close" primary label="No"/>
-										<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
-									</mu-dialog>
+							Have you completed your call to <b>{{ dialogCall.CaseId }}</b>?
+							<br>
+							Edit Remarks about patient
+							<br>
+							<mu-text-field fullWidth v-model="dialogCall.CallRemark" /><br/>
+							<mu-flat-button slot="actions" @click="close" primary label="No"/>
+							<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
+						</mu-dialog>
 					</div>
 					<!-- /.box-body-->
 
@@ -133,11 +142,8 @@
 
 <script>
 	import moment from 'moment'
-
 	export default {
-
 		name: 'CallTasks',
-
 		data () {
 			return {
 				allTasks: '',				
@@ -146,20 +152,18 @@
 				dialog: false,
 				dialogCall: {},
 				dialogCallIndex: '',
-				searchText:'',
+				// searchText:'',
 				searchResult: [],
 				elevateDialog: false,
 				tierList: ['1','2','3'],
 				activeElevatingCall: '',
-				elevatedTier: ''
+				elevatedTier: '',
+				value: ''
 			}
 		},
 		computed: {
 			username() {
 				return this.$store.state.user.Email
-			},
-			showFullTable() {
-				return !this.searchText
 			}
 		},
 		methods: {
@@ -196,8 +200,10 @@
 					this.$put('patients/' + this.dialogCall.PatientId, {CallRemark: this.dialogCall.CallRemark}).then(
 						response => {
 							console.log('Success' + response.data)
+							location.reload()
 						}).catch(err => {
-							console.log(err.response.data.Message)
+							alert(err.response.data.Message)
+							location.reload()
 						})
 				/*
 					update patient call progress
@@ -206,14 +212,19 @@
 					{
 						Progress: this.COMPLETED_PROGRESS_ID,
 						// UserName: this.$store.state.user.Email
-					}).then(response=>{console.log(response.data)})
-
+					}).then(response=>{
+						alert('Success' + response.data)
+						location.reload()
+					}).catch(err => {
+							alert(err.response.data.Message)
+							location.reload()
+						})
 				// delete the task from the list
 				this.allTasks.splice(this.dialogCallIndex, 1)
 				this.close()
 			},
 			clearSearch() {
-				this.searchText = ''
+				this.value = ''
 			},
 			openElevate(call) {
 				this.activeElevatingCall = call
@@ -265,11 +276,9 @@
 				}
 			}
 		},
-
 		created() {
 			this.$get('claimedcalls/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
 		},
-
 		watch: {
 			username(val) {
 				if (val) {
@@ -279,32 +288,58 @@
 						})
 				}
 			},
-			searchText(val) {
+			value(val) {
+				let result = ''
 				if (val) {
-					let result = this.allTasks.filter(task => {
-						return  (task.CaseId.includes(val)) 
-					})
+					if (Number.isInteger(parseInt(val))) {
+						result = this.allTasks.filter(task => {
+							return  (task.CallNo == val) 
+						})
+					} else {
+						if (val === 'asc_date') {
+							result = this.allTasks.map(a => {return {...a}})
+							result.sort((a, b) => {
+								return new Date(a.CallDate) - new Date(b.CallDate)
+							})
+						}
+						if (val === 'desc_date') {
+							result = this.allTasks.map(a => {return {...a}})
+							result.sort((a, b) => {
+								return new Date(b.CallDate) - new Date(a.CallDate)
+							})
+						}
+					}
 					this.searchResult = result
 				}
 			},
 			allTasks(val) {
+				let result = ''
 				if (val) {
-					let result = val.filter(task => {
-						return  (task.CaseId.includes(this.searchText)) 
-					})
+					if (Number.isInteger(parseInt(this.value))) {
+						result = val.filter(task => {
+							return  (task.CallNo == this.value) 
+						})
+					} else {
+						if (this.value === 'asc_date') {
+							result = val.map(a => {return {...a}})
+							result.sort((a, b) => {
+								return new Date(a.CallDate) - new Date(b.CallDate)
+							})
+						}
+						if (this.value === 'desc_date') {
+							result = val.map(a => {return {...a}})
+							result.sort((a, b) => {
+								return new Date(b.CallDate) - new Date(a.CallDate)
+							})
+						}
+					}
 					this.searchResult = result
 				}
-			}
 		}
 	}
+}
 </script>
 
 <style lang="css" scoped>
-th, td {
-	border-bottom: 1px solid #ddd;
-  padding: 15px;
-}
-tr:hover {
-	background-color: #d2d5db;
-}
+
 </style>
