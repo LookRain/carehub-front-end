@@ -65,14 +65,14 @@
 							<mu-flat-button slot="actions" primary @click="confirmComplete" label="Yes"/>
 						</mu-dialog>
 
-						<mu-dialog :open="elevateDialog" title="Elevate Patient Tier" @close="closeElevate">
-							Choose the Tier to Elevate to
+						<mu-dialog :open="elevateDialog" title="Escalate Patient Tier" @close="closeElevate">
+							Choose the Tier to Escalate to
 							<br>
 							<mu-select-field autoWidth v-model="elevatedTier" :labelFocusClass="['label-foucs']">
 								<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
 							</mu-select-field>
 							<mu-flat-button slot="actions" @click="closeElevate"  label="Close"/>
-							<mu-flat-button slot="actions" primary @click="confirmElevate" label="Elevate"/>
+							<mu-flat-button slot="actions" primary @click="confirmElevate" label="Escalate"/>
 						</mu-dialog>
 						
 						<mu-table :showCheckbox="false" v-show="value">
@@ -229,7 +229,7 @@
 			openElevate(call) {
 				this.activeElevatingCall = call
 				if (call.Tier === 3) {
-					alert('Tier 3 patient cannot be elevated anymore!')
+					alert('Tier 3 patient cannot be escalated anymore!')
 					return
 				} else {
 					this.elevateDialog = true
