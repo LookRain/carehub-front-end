@@ -83,7 +83,7 @@
 				caseId: '',
 				progress: '',
 				date: '',
-				type: 0,
+				type: '',
 				email: '',
 				matchedPatients: '',
 				enDateFormat,
@@ -121,9 +121,10 @@
 						Progress: this.CLAIMED_CONS,
 						CallType: this.type,
 						UserName: this.$store.state.user.Email,
-						CallDate: this.date
+						CallDate: this.date,
+						CallNo: 0
 					}).then(response=>{
-						alert(`New call to ${this.CaseId} successfully added!`)
+						alert(`New call to ${this.matchedPatients[0].CaseId} successfully added!`)
 						location.reload()
 					})
 				}

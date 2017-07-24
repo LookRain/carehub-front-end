@@ -21,6 +21,7 @@
 									<mu-th>Case ID</mu-th>
 									<mu-th>No. of Call</mu-th>
 									<mu-th>Date</mu-th>
+									<mu-th>Hour</mu-th>
 								</mu-tr>
 							</mu-thead>
 							<mu-tbody>
@@ -28,7 +29,8 @@
 									<!-- <mu-td>{{ call.PName }}</mu-td> -->
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
-									<mu-td>{{ call.CallDate }}</mu-td>									
+									<mu-td>{{ call.CallDate | parseDate }}</mu-td>					
+									<mu-td>{{ call.Hour }}</mu-td>						
 								</mu-tr>
 								
 							</mu-tbody>
@@ -56,7 +58,7 @@
 							<!-- <mu-list-item><h3>Name: {{ activePatient.PName }}</h3></mu-list-item> -->
 							<mu-list-item><h3>Case ID: {{ activePatient.CaseId }}</h3></mu-list-item>
 							<mu-list-item><h3>Tier: {{ activePatient.Tier }}</h3></mu-list-item>
-							<mu-list-item><h3>Call Type: {{ activePatient.CallType }}</h3></mu-list-item>
+							<mu-list-item><h3>Call Type: {{ activePatient.CallType | parseCallType }}</h3></mu-list-item>
 							<mu-list-item><h3>Remark: {{ activePatient.CallRemark }}</h3></mu-list-item>
 						</mu-list>
 					</div>
@@ -67,6 +69,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 	export default {
 
 		name: 'CallHistory',
@@ -96,7 +100,19 @@
 	  	}
 	  },
 	  filters: {
+	  	parseDate(date) {
+				moment.locale('en-gb');
+				return moment(date).format('ll')
+			},
+	  	parseCallType(t) {
+				if (t == 1) { return 'Outgoing' }
+				if (t == 2) { return 'Incoming' }
+				return 'undefined'
+			},
 	  	parseCallNo(val) {
+	  		if (val === 0) {
+					return 'ad hoc'
+				}
 	  		if (val === 1) {
 	  			return '1st Call'
 	  		}
