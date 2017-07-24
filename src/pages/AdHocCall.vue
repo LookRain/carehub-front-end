@@ -83,7 +83,7 @@
 				caseId: '',
 				progress: '',
 				date: '',
-				type: '',
+				type: 0,
 				email: '',
 				matchedPatients: '',
 				enDateFormat,
