@@ -110,7 +110,7 @@ import moment from 'moment'
 		filters: {
 			parseDate(date) {
 	  		moment.locale('en-gb');
-	  		return moment(date).format('lll')
+	  		return moment(date).format('ll')
 	  	},
 			parseStatus(code) {
 				if (code === 0) { return 'Unprocessed'}
