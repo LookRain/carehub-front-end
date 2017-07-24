@@ -80,12 +80,14 @@ new Vue({
   created() {
     // store.state.user = "bbb"
 
-    this.$get('currentuser').then((response)=>{
-      store.commit('setUser', response.data)      
-    }).catch(err => {
-      alert('Please log in first!')
-      window.location.replace('/')
-    })
+    // this.$get('currentuser').then((response)=>{
+    //   store.commit('setUser', response.data)      
+    // }).catch(err => {
+    //   alert('Please log in first!')
+    //   window.location.replace('/')
+    // })
+    
+    store.dispatch('initUser')
     
 
 

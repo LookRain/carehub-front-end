@@ -1,6 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import axios from 'axios'
+
+const instance = axios.create({
+  baseURL: 'http://localhost:55494/api/',
+  timeout: 1000,
+  headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
+})
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -37,6 +45,17 @@ const store = new Vuex.Store({
     },
     setHosWorkload(state, load) {
       state.hosWorkload = load
+    }
+  },
+  actions: {
+    initUser ({commit}) {
+      instance.get('currentuser').then(
+        (response)=>{
+        commit('setUser', response.data)      
+      }).catch(err => {
+      alert('Please log in first!')
+      window.location.replace('/')
+    })
     }
   }
 })
