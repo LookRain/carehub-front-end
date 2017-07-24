@@ -43,7 +43,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-               
+               <mu-raised-button label="Change Password" @click="redirectToChangePwd" primary></mu-raised-button>  
                 </div>
                 <div class="pull-right">
                 <mu-raised-button label="Sign Out" @click="signOut" primary></mu-raised-button>  
@@ -72,6 +72,9 @@ export default {
     signOut() {
       sessionStorage.removeItem('accessToken')
       window.location.reload()
+    },
+    redirectToChangePwd() {
+      location.href = '/ChangePwd.html'
     }
   },
   computed: {
