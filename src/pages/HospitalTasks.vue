@@ -48,6 +48,8 @@
 									<mu-tr>
 										<mu-th>Case ID</mu-th>
 										<mu-th>Date</mu-th>
+										<mu-th>Ward No.</mu-th>
+										<mu-th>Remark</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Handle By Call Centre</mu-th>
 										<mu-th>Action</mu-th>
@@ -57,6 +59,8 @@
 									<mu-tr v-for="task, index in tasks" :key="index">
 										<mu-td>{{task.CaseId}}</mu-td>
 										<mu-td>{{task.PTimeStamp | parseDate}}</mu-td>
+										<mu-td>{{task.WardNo}}</mu-td>
+										<mu-td>{{task.CallRemark}}</mu-td>
 										<mu-td>
 											<mu-select-field autoWidth fullWidth v-model="task.Tier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>
@@ -87,6 +91,8 @@
 									<mu-tr>
 										<mu-th>Case ID</mu-th>
 										<mu-th>Date</mu-th>
+										<mu-th>Ward No.</mu-th>
+										<mu-th>Remark</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Status</mu-th>
 										<mu-th>Action</mu-th>
@@ -96,6 +102,8 @@
 									<mu-tr v-for="task, index in recruit_history" :key="index">
 										<mu-td>{{ task.CaseId }}</mu-td>
 										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
+										<mu-td>{{task.WardNo}}</mu-td>
+										<mu-td>{{task.CallRemark}}</mu-td>
 										<mu-td>{{ task.Tier }}</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
@@ -113,6 +121,8 @@
 									<mu-tr>
 										<mu-th>Case ID</mu-th>
 										<mu-th>Date</mu-th>
+										<mu-th>Ward No.</mu-th>
+										<mu-th>Remark</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Status</mu-th>
 										<mu-th>Reason</mu-th>
@@ -123,6 +133,8 @@
 									<mu-tr v-for="task, index in reject_history" :key="index">
 										<mu-td>{{ task.CaseId }}</mu-td>
 										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
+										<mu-td>{{task.WardNo}}</mu-td>
+										<mu-td>{{task.CallRemark}}</mu-td>
 										<mu-td>
 											<mu-select-field autoWidth fullWidth v-model="task.Tier" :labelFocusClass="['label-foucs']">
 												<mu-menu-item v-for="item, index in tierList" :key="index" :value="index+1" :title="item"/>

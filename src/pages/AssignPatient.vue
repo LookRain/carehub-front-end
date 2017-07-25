@@ -51,21 +51,24 @@
                   <!-- <mu-th>Patient NRIC</mu-th> -->
                   <mu-th>Case ID</mu-th>
                   <mu-th>Patient Ward</mu-th>
+                  <mu-th>Remark</mu-th>
                   <mu-th>Staff Assigned</mu-th>
+                  
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
                 <mu-tr v-for="(patient, index) in parsed" :key="patient.CaseId">
                   <mu-td>{{ patient.CaseId }}</mu-td>
                   <!-- <mu-td>{{ patient.PName }}</mu-td> -->
-                  <mu-td>{{ patient.WardNo }}</mu-td>
-
+                  <mu-td>{{ patient.WardNo }}</mu-td> 
+                  <mu-td>{{ patient.CallRemark }}</mu-td>                 
                   <mu-td>
-                  <mu-select-field v-model="patient.UserName" :labelFocusClass="['label-foucs']" :label="hint + patient.UserDisplayName" :maxHeight="500">
+                  <mu-select-field v-model="patient.UserName" autoWidth fullWidth :labelFocusClass="['label-foucs']" :label="hint + patient.UserDisplayName" :maxHeight="500">
                     <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.DisplayName"/>
                   </mu-select-field>
                   {{ matchWorkload(patient.UserName) }}
                 </mu-td>
+                
               </mu-tr>                
             </mu-tbody>
           </mu-table> 
@@ -122,6 +125,7 @@
           // patient.NRIC = commaSeperatedString[1]
           patient.MeanTest = commaSeperatedString[1]
           patient.WardNo = commaSeperatedString[2]
+          patient.CallRemark = commaSeperatedString[3]
           // patient.Region = commaSeperatedString[3]
 
           patient.PStatus = 0
