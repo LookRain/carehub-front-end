@@ -48,7 +48,7 @@ window.Event = new Vue()
 
 
 const instance = window.axios.create({
-  baseURL: 'http://localhost:55494/api/',
+  baseURL: '/api/',
   timeout: 1000,
   headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
 })

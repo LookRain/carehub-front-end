@@ -102,8 +102,8 @@
 									<mu-tr v-for="task, index in recruit_history" :key="index">
 										<mu-td>{{ task.CaseId }}</mu-td>
 										<mu-td>{{ task.PTimeStamp | parseDate }}</mu-td>
-										<mu-td>{{task.WardNo}}</mu-td>
-										<mu-td>{{task.CallRemark}}</mu-td>
+										<mu-td>{{ task.WardNo }}</mu-td>
+										<mu-td>{{ task.CallRemark }}</mu-td>
 										<mu-td>{{ task.Tier }}</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->

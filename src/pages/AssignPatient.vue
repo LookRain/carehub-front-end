@@ -95,7 +95,7 @@
         hint: 'Default assigned user: ',
         showCheckbox: false,
         csvConfig: {
-          colNumber: 6,
+          colNumber: 4,
           hasHeader: true
         }
       }

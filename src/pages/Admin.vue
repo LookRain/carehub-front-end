@@ -209,10 +209,6 @@
 			},
 
 			parseCSV() {
-				// let data = new FormData()
-    //     data.append('file', document.getElementById('csv').files[0])
-
-				// this.csvFilename = data
 
 				let reader = new FileReader()
 				reader.onload = ()=> {
@@ -244,12 +240,7 @@
 				}	
 			},
 			mounted () {
-				if (this.$store.state.user.UserGroup === 3) {
-					this.$router.push('call_tasks')
-				}
-				if (this.$store.state.user.UserGroup === 2) {
-					this.$router.push('hospital_tasks')
-				}
+				
 	
 				
 			},

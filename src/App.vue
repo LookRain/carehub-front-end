@@ -44,6 +44,14 @@
       // Event.$on('2', () => { this.mode = 2 })
       // Event.$on('3', () => { this.mode = 3 })
       // instance.get('usergroup').then((response)=>{console.log('group: ' + response.data)})
+    },
+    mounted() {
+      if (this.$store.state.user.UserGroup === 3) {
+          this.$router.push('call_tasks')
+        }
+        if (this.$store.state.user.UserGroup === 2) {
+          this.$router.push('hospital_tasks')
+        }
     }
   }
 
