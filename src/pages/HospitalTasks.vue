@@ -95,7 +95,7 @@
 										<mu-th>Remark</mu-th>
 										<mu-th>Tier</mu-th>
 										<mu-th>Status</mu-th>
-										<mu-th>Action</mu-th>
+			
 									</mu-tr>
 								</mu-thead>
 								<mu-tbody>
@@ -107,7 +107,7 @@
 										<mu-td>{{ task.Tier }}</mu-td>
 										<mu-td>{{ task.PStatus | parseStatus }}</mu-td>
 										<!-- <mu-td>{{task.PStatus}}</mu-td> -->
-										<mu-raised-button label="Reject" backgroundColor="red" @click="openReject(task, index)"/>
+		
 									</mu-tr>
 								</mu-tbody>
 							</mu-table>	
