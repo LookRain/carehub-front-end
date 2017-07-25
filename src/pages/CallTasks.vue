@@ -47,7 +47,7 @@
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
 									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
 									<mu-td>
-										<mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)" />
+										<mu-raised-button :label="parseTier(call.Tier)" @click="openElevate(call)" />
 									</mu-td>
 									<mu-td><mu-raised-button label="Complete" @click="open(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
 								</mu-tr>
@@ -92,7 +92,7 @@
 									<mu-td>{{ call.CaseId }}</mu-td>
 									<mu-td>{{ call.CallNo | parseCallNo }}</mu-td>
 									<mu-td>{{ call.CallDate | parseDate }}</mu-td>
-									<mu-td><mu-raised-button :label="call.Tier.toString()" @click="openElevate(call)"/></mu-td>
+									<mu-td><mu-raised-button :label="parseTier(call.Tier)" @click="openElevate(call)"/></mu-td>
 									<mu-td><mu-raised-button label="Complete" @click="openInSearchResult(call, index)" class="demo-raised-button" backgroundColor="red"/></mu-td>
 									
 								</mu-tr>
@@ -167,8 +167,12 @@
 			}
 		},
 		methods: {
-			test() {
-				alert(123)
+			parseTier(t) {
+				if (t) {
+					return t.toString()
+				} else {
+					return t
+				}
 			},
 			choosePatient (c) {
 	  	// 	this.$get('patients/' + id).then(response => {

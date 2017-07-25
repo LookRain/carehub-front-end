@@ -99,7 +99,7 @@
 					{
 						Progress: this.CLAIMED_PROGRESS_ID,
 						UserName: this.$store.state.user.Email
-					}).then(response=>{alert(response.data)}).catch(err => {
+					}).then(response=>{alert('Success! ' + response.data)}).catch(err => {
 							alert(err.response.data.Message)
 							location.reload()
 						})
