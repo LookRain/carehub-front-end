@@ -23,7 +23,7 @@
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
-                <mu-tr v-for="user in hosWorkload">
+                <mu-tr v-for="user, index in hosWorkload" key="index">
                   <mu-td>{{ user.DisplayedName }}</mu-td>
                   <!-- <mu-td>{{ user.UserName }}</mu-td> -->
                   <mu-td>{{ user.Workload }}</mu-td>
