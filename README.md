@@ -178,35 +178,36 @@ There are 2 `<mu-table>` present in the page. The full table is displayed when `
 this.$get('claimedcalls/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
 ```
 
-&ensp;
+<br>
 The watcher watches changes happened to `value` and change `searchResult` data according to the user's choice.
 It also watches for changes happened to `allTasks` since when a call is completed from the table rendered from `searchResult`, although it gets deleted from `allTasks`, but it does not trigger immediate re-rendering of the `searchResult` table.
-&ensp;
+<br>
 Escalation and completion are done in these two methods by sending out API requests to the server: `openElevate()`, `confirmComplete()`
-&ensp;
+
+
 **CallClaim.vue**
 This page is responsible for the claiming of new calls for call centre team user.
 It roughly follows the same structure of `CallTasks.vue`.
-&ensp;
+
+
 **CallHistory.vue**
 This page is responsible for the viewing all call history that was completed by the call centre team user.
 It roughly follows the same structure of `CallTasks.vue`.
 
-&ensp;
 **Settings.vue**
 This page is responsible for holding the registration link for Admin user,
 as well as update and creation of ward assignments.
-&ensp;
+
+
 **StatsSummary.vue**
 This page is responsible for the generation of statistics summaries for the Admin user.
-&ensp;
+
+
 **UploadProtocol.vue**
 This page is responsible for the upload of protocols for the Admin user.
-&ensp;
+
+
 **Protocols.vue**
 This page actually uses `jQuery` to display a step form made during the prototype phase of this project. Due to time limit I did not transform it into a Vue component, so it is a bit clunky in size.
 Please optimize this component in the future.
-&ensp;
---------
-
 
