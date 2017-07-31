@@ -77,7 +77,7 @@ import moment from 'moment'
 
 		data () {
 			return {
-				allTasks: '',				
+				// allTasks: '',				
 				activePatient: '',
 			}
 		},
@@ -88,6 +88,9 @@ import moment from 'moment'
 	    // allTasks() {
 
 	    // 	this.$get('claimedcallhistory/values?username=' + this.$store.state.user.Email).then(response=>{this.allTasks = response.data})
+	    },
+	    allTasks() {
+	    	return this.$store.state.callHistory
 	    }
 	  },
 	  methods: {
@@ -129,18 +132,19 @@ import moment from 'moment'
 	  },
 
 	  created() {
-	  	this.fetchData()
+	  	// this.fetchData()
+	  	this.$store.dispatch('initCallHistory')
 	  },
 
 	  watch: {
-	  	username(val) {
+	  	/*username(val) {
 				if (val) {
 					this.$get('claimedcallhistory/values?username=' + val).then(
 					response => {
 					this.allTasks = response.data
 					})
 				}
-			}
+			}*/
 	  }
 	}
 </script>

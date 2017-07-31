@@ -9,6 +9,22 @@ const instance = axios.create({
   headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
 })
 
+let fetchUser = new Promise((resolve, reject) => {
+
+        instance.get('currentuser').then(
+          (response)=>{
+            // commit('setUser', response.data)
+            console.log('got it')
+            resolve(response.data)
+          })
+          .catch(err => {
+            // alert('Please log in first!')
+            // window.location.replace('/')
+            reject(err)
+          })
+
+        })
+
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -21,13 +37,17 @@ const store = new Vuex.Store({
   	rawCSV: 'init csv',
     allHosUsers: [],
     wardAssignment: {},
-    hosWorkload: []
+    hosWorkload: [],
+    callHistory: ''
 
   },
   mutations: {
   	setUser (state, userInfo) {
   		state.user = userInfo
   	},
+    setCallHistory (state, callHistory) {
+      state.callHistory = callHistory
+    },
   	setCSV(state, csv) {
   		state.rawCSV = csv
   	},
@@ -48,14 +68,34 @@ const store = new Vuex.Store({
     }
   },
   actions: {
+    // initUser ({commit}) {
+    //   instance.get('currentuser').then(
+    //     (response)=>{
+    //     commit('setUser', response.data)      
+    //   }).catch(err => {
+    //   alert('Please log in first!')
+    //   window.location.replace('/')
+    // })
+    // }
+
     initUser ({commit}) {
-      instance.get('currentuser').then(
-        (response)=>{
-        commit('setUser', response.data)      
+      fetchUser.then(data => {
+        commit('setUser', data)
       }).catch(err => {
-      alert('Please log in first!')
-      window.location.replace('/')
-    })
+        alert('Something went wrong while trying to log you in.')
+        window.location.replace('/')
+      })
+    },
+
+    initCallHistory ({commit}) {
+      console.log('initcallhistory dispatched')
+      fetchUser.then(data => {
+        // console.log('try this: ' + JSON.stringify(data))
+        instance.get('claimedcallhistory/values?username=' + data.Email).then(calHistoryRes => {
+          commit('setCallHistory', calHistoryRes.data)
+        })
+        
+      }).catch(err=>{console.log('what happed')})
     }
   }
 })
