@@ -9,21 +9,16 @@ const instance = axios.create({
   headers: {'Authorization': 'Bearer ' + sessionStorage.getItem("accessToken")}
 })
 
-let fetchUser = new Promise((resolve, reject) => {
-
-        instance.get('currentuser').then(
-          (response)=>{
-            // commit('setUser', response.data)
-            console.log('got it')
-            resolve(response.data)
+let fetchUser = instance.get('currentuser').then(
+          response => {
+            console.log('chain step 1: got user response')
+            return response.data
           })
           .catch(err => {
-            // alert('Please log in first!')
-            // window.location.replace('/')
-            reject(err)
+            throw err
           })
 
-        })
+        
 
 Vue.use(Vuex)
 
@@ -68,15 +63,6 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    // initUser ({commit}) {
-    //   instance.get('currentuser').then(
-    //     (response)=>{
-    //     commit('setUser', response.data)      
-    //   }).catch(err => {
-    //   alert('Please log in first!')
-    //   window.location.replace('/')
-    // })
-    // }
 
     initUser ({commit}) {
       fetchUser.then(data => {
@@ -89,15 +75,26 @@ const store = new Vuex.Store({
 
     initCallHistory ({commit}) {
       console.log('initcallhistory dispatched')
-      fetchUser.then(data => {
-        // console.log('try this: ' + JSON.stringify(data))
-        instance.get('claimedcallhistory/values?username=' + data.Email).then(calHistoryRes => {
-          commit('setCallHistory', calHistoryRes.data)
+      fetchUser.then(user => {
+        console.log('chain step 2: received user from step 1, requesting for call history')
+        return instance.get('claimedcallhistory/values?username=' + user.Email)
         })
-        
-      }).catch(err=>{console.log('what happed')})
+      .catch(err => {
+        throw err
+      })
+      .then(calHistoryRes => {
+        console.log('chain step 3: received call history')
+        commit('setCallHistory', calHistoryRes.data)        
+      })
+      .catch(err => {
+        alert('Failed to retrieve call history, please try re-logging in.')
+      })
     }
   }
 })
 
 export default store
+
+
+
+
