@@ -120,26 +120,30 @@
 					this.activePatient = response.data
 				})
 			},
-	  filters: {
+
+		},
+		filters: {
 	  	parseCallNo(val) {
-	  		if (val === 1) {
-	  			return '1st Call'
-	  		}
-	  		if (val === 2) {
-	  			return '2nd Call'
-	  		}
-	  		if (val === 3) {
-	  			return '3rd Call'
-	  		}
-	  		if (val === 4) {
-	  			return '4th Call'
-	  		}
-	  		if (val === 5) {
-	  			return '5th Call'
-	  		}
-	  	}
+				if (val === 0) {
+					return 'ad hoc'
+				}
+				if (val === 1) {
+					return '1st Call'
+				}
+				if (val === 2) {
+					return '2nd Call'
+				}
+				if (val === 3) {
+					return '3rd Call'
+				}
+				if (val === 4) {
+					return '4th Call'
+				}
+				if (val === 5) {
+					return '5th Call'
+				}
+			}
 	  }
-	}
 }
 
 </script>
