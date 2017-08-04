@@ -75,73 +75,72 @@
 	import moment from 'moment'
 	import enDateFormat from '@/utils/DateFormat'
 
-
 	export default {
-		name: 'AdHocCall',
-		data () {
-			return {
-				caseId: '',
-				progress: '',
-				date: '',
-				type: '',
-				email: '',
-				matchedPatients: '',
-				enDateFormat,
-				CLAIMED_CONS: 1,
-			}	
-		},
-		watch: {
-			caseId(val) {
-				this.$get('searchpatients/values?info=' + val).then(response => {
-					this.matchedPatients = response.data
-				})
-			}
-		},
-		computed: {
-			parsedCallType() {
-				if (this.type === 1) {
-					return 'outgoing'
-				} 
-				if (this.type === 2) {
-					return 'incoming'
-				}
-				return undefined
-			}
-		},
-		methods: {
-			submit() {
-				if (!this.caseId || !this.type || !this.date) {
-					alert('Please make sure you have typed in all fields!')
-					return
-				}
-				let confirmation = confirm(`Are you sure you want to add a ${this.parsedCallType} call to ${this.matchedPatients[0].CaseId} on ${this.date}?`)
-				if (confirmation) {
-					this.$post('adhoc', {
-						PatientId: this.matchedPatients[0].PId,
-						Progress: this.CLAIMED_CONS,
-						CallType: this.type,
-						UserName: this.$store.state.user.Email,
-						CallDate: this.date,
-						CallNo: 0
-					}).then(response=>{
-						alert(`New call to ${this.matchedPatients[0].CaseId} successfully added!`)
-						location.reload()
-					})
-				}
-			}
-			},
-			filters: {
-				parseDate(date) {
-					moment.locale('en-gb');
-					return moment(date).format('lll')
-				},
-				parseStatus(code) {
-					if (code === 0) { return 'Unprocessed'}
-						if (code === 1) { return 'Recruited'}
-							if (code === 2) { return 'Rejected'}
-						}
-				}
-			}
+	  name: 'AdHocCall',
+	  data () {
+	    return {
+	      caseId: '',
+	      progress: '',
+	      date: '',
+	      type: '',
+	      email: '',
+	      matchedPatients: '',
+	      enDateFormat,
+	      CLAIMED_CONS: 1
+	    }
+	  },
+	  watch: {
+	    caseId (val) {
+	      this.$get('searchpatients/values?info=' + val).then(response => {
+	        this.matchedPatients = response.data
+	      })
+	    }
+	  },
+	  computed: {
+	    parsedCallType () {
+	      if (this.type === 1) {
+	        return 'outgoing'
+	      }
+	      if (this.type === 2) {
+	        return 'incoming'
+	      }
+	      return undefined
+	    }
+	  },
+	  methods: {
+	    submit () {
+	      if (!this.caseId || !this.type || !this.date) {
+	        alert('Please make sure you have typed in all fields!')
+	        return
+	      }
+	      let confirmation = confirm(`Are you sure you want to add a ${this.parsedCallType} call to ${this.matchedPatients[0].CaseId} on ${this.date}?`)
+	      if (confirmation) {
+	        this.$post('adhoc', {
+	          PatientId: this.matchedPatients[0].PId,
+	          Progress: this.CLAIMED_CONS,
+	          CallType: this.type,
+	          UserName: this.$store.state.user.Email,
+	          CallDate: this.date,
+	          CallNo: 0
+	        }).then(response => {
+	          alert(`New call to ${this.matchedPatients[0].CaseId} successfully added!`)
+	          location.reload()
+	        })
+	      }
+	    }
+	  },
+	  filters: {
+	    parseDate (date) {
+	      moment.locale('en-gb')
+	      return moment(date).format('lll')
+	    },
+	    parseStatus (code) {
+	      if (code === 0) { return 'Unprocessed' }
+	      if (code === 1) { return 'Recruited' }
+	      if (code === 2) { return 'Rejected' }
+	    }
+	  }
+	}
 		</script>
 		<style lang="css" scoped>
 		</style>

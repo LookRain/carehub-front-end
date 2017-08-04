@@ -23,7 +23,7 @@
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
-                <mu-tr v-for="user, index in hosWorkload" key="index">
+                <mu-tr v-for="(user, index) in hosWorkload" :key="index">
                   <mu-td>{{ user.DisplayedName }}</mu-td>
                   <!-- <mu-td>{{ user.UserName }}</mu-td> -->
                   <mu-td>{{ user.Workload }}</mu-td>
@@ -64,7 +64,7 @@
                   <mu-td>{{ patient.CallRemark }}</mu-td>                 
                   <mu-td>
                   <mu-select-field v-model="patient.UserName" autoWidth fullWidth :labelFocusClass="['label-foucs']" :label="hint + patient.UserDisplayName" :maxHeight="500">
-                    <mu-menu-item v-for="user, index in hosUsers" :key="index" :value="user.Email" :title="user.DisplayName"/>
+                    <mu-menu-item v-for="(user, index) in hosUsers" :key="index" :value="user.Email" :title="user.DisplayName"/>
                   </mu-select-field>
                   {{ matchWorkload(patient.UserName) }}
                 </mu-td>
@@ -101,24 +101,23 @@
       }
     },
     computed: {
-      hosWorkload() {
+      hosWorkload () {
         return this.$store.state.hosWorkload
       },
-      hosUsers() {
+      hosUsers () {
         return this.$store.state.allHosUsers
       },
-      raw() {
+      raw () {
         return this.$store.state.rawCSV
       },
-      parsed() {
-
+      parsed () {
         let trimedCSV = this.raw.trim()
         let lineSplitCSV = trimedCSV.split('\r\n')
         let result = []
         lineSplitCSV.forEach(line => {
           let commaSeperatedString = line.split(',')
           if (!commaSeperatedString[0] || !commaSeperatedString[1] || !commaSeperatedString[2]) {
-            return 
+            return
           }
           let patient = {}
           patient.CaseId = commaSeperatedString[0]
@@ -146,11 +145,11 @@
       }
     },
     methods: {
-      sendNewUser(msg) {
+      sendNewUser (msg) {
         console.log(msg)
         this.$emit(msg)
       },
-      matchWorkload(email) {
+      matchWorkload (email) {
         let result = ''
         this.hosWorkload.forEach(w => {
           if (w.UserName === email) {
@@ -159,7 +158,7 @@
         })
         return result
       },
-      matchAssignedUser(wardNo) {
+      matchAssignedUser (wardNo) {
         // type == 1 : return username/email
         // tyle == 2 : return display name
         let user = {}
@@ -174,8 +173,8 @@
         })
         return user
       },
-      postAssignment() {
-        this.$post('BulkPatients', this.parsed).then(response=> {
+      postAssignment () {
+        this.$post('BulkPatients', this.parsed).then(response => {
           alert('Added successfully!')
           this.$router.push({name: 'Admin'})
         }).catch(err => {
@@ -186,8 +185,8 @@
     watch: {
 
     },
-    created() {
-      this.$get('hospitalteamworkload').then(response=> {
+    created () {
+      this.$get('hospitalteamworkload').then(response => {
         this.hosWorkload = response.data
       })
     }
