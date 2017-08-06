@@ -135,7 +135,7 @@ export default {
     return {
     }
   },
-  created() {
+  created () {
         /*
  * jQuery / jqLite Wizard Plugin
  * version: 0.0.7

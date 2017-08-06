@@ -93,61 +93,59 @@
 import moment from 'moment'
 	export default {
 
-		name: 'Patients',
+	  name: 'Patients',
 
-		data () {
-			return {
-				searchField: '',
-				searchResult: [],
-				showCheckbox: false,
-				allPatients: [],
-				currentPage: 1,
-				numPerPage: 20,
-				showSizeChanger: true,
-				pageSizeOption: [10, 20, 30, 40]
-			}
-		},
-		filters: {
-			parseDate(date) {
-	  		moment.locale('en-gb');
-	  		return moment(date).format('ll')
+	  data () {
+	    return {
+	      searchField: '',
+	      searchResult: [],
+	      showCheckbox: false,
+	      allPatients: [],
+	      currentPage: 1,
+	      numPerPage: 20,
+	      showSizeChanger: true,
+	      pageSizeOption: [10, 20, 30, 40]
+	    }
+	  },
+	  filters: {
+	    parseDate (date) {
+	  		moment.locale('en-gb')
+  		return moment(date).format('ll')
 	  	},
-			parseStatus(code) {
-				if (code === 0) { return 'Unprocessed'}
-					if (code === 1) { return 'Recruited'}
-						if (code === 2) { return 'Rejected'}
-					}
-			},
-			methods: {
-				search() {
-					this.$get('searchpatients/values?info=' + this.searchField).then(response => {
-						this.searchResult = response.data
-					})
-				},
-				changeCurrentPatients() {
-					this.currentPatients = this.allPatients.slice(this.currentPage * 1 - 1, this.currentPage * 1 - 1 + this.currentPage * 10)
-				},
-				handleClick (newIndex) {
-					this.currentPage = newIndex
-				},
-				handlePageSizeChange(newIndex) {
-					this.numPerPage = newIndex
-				}
-			},
-			computed: {
-				currentPatients() {
-					return this.allPatients.slice((this.currentPage - 1) * this.numPerPage, (this.currentPage) * this.numPerPage)
-				},
-				total() {
-					return parseInt(this.allPatients.length)
-				}
-			},
-			created() {
-
-				this.$get('Patients').then((response) => {this.allPatients = response.data})
-
-			}
-		}
+	    parseStatus (code) {
+	      if (code === 0) { return 'Unprocessed' }
+	      if (code === 1) { return 'Recruited' }
+	      if (code === 2) { return 'Rejected' }
+	    }
+	  },
+	  methods: {
+	    search () {
+	      this.$get('searchpatients/values?info=' + this.searchField).then(response => {
+	        this.searchResult = response.data
+	      })
+	    },
+	    changeCurrentPatients () {
+	      this.currentPatients = this.allPatients.slice(this.currentPage * 1 - 1, this.currentPage * 1 - 1 + this.currentPage * 10)
+	    },
+	    handleClick (newIndex) {
+	      this.currentPage = newIndex
+	    },
+	    handlePageSizeChange (newIndex) {
+	      this.numPerPage = newIndex
+	    }
+	  },
+	  computed: {
+	    currentPatients () {
+	      return this.allPatients.slice((this.currentPage - 1) * this.numPerPage, (this.currentPage) * this.numPerPage)
+	    },
+	    total () {
+	      return parseInt(this.allPatients.length)
+	    }
+	  },
+	  created () {
+    this.$get('Patients').then((response) => { this.allPatients = response.data })
+  }
+	}
 	</script>
 
 	<style lang="css" scoped>
