@@ -22,7 +22,7 @@ import 'admin-lte/dist/css/skins/_all-skins.min.css'
 import 'admin-lte/dist/css/skins/skin-green.css'
 import 'font-awesome/css/font-awesome.min.css'
 
-import 'admin-lte/dist/js/app.min.js'
+import 'admin-lte/dist/js/adminlte.min.js'
 import 'admin-lte/dist/js/pages/dashboard.js'
 import 'admin-lte/plugins/jQueryUI/jquery-ui.min.js'
 import 'jquery-ui/ui/widgets/sortable.js'
@@ -81,14 +81,14 @@ new Vue({
     // store.state.user = "bbb"
 
     // this.$get('currentuser').then((response)=>{
-    //   store.commit('setUser', response.data)      
+    //   store.commit('setUser', response.data)
     // }).catch(err => {
     //   alert('Please log in first!')
     //   window.location.replace('/')
     // })
-    
+
     store.dispatch('initUser')
-    
+
 
 
     this.$get('wardassignment').then(response => {

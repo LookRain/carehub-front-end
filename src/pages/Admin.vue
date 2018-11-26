@@ -16,7 +16,7 @@
           <div class="icon">
             <i class="ion ion-bag"></i>
           </div>
-          
+
         </div>
       </div>
       <!-- ./col -->
@@ -33,7 +33,7 @@
           <div class="icon">
             <i class="ion ion-bag"></i>
           </div>
-          
+
         </div>
       </div>
       <!-- ./col -->
@@ -80,7 +80,7 @@
           <div class="box-body" display="block" style="word-break:break-all;">
             <mu-text-field hintText="Case ID" v-model="newPatient.CaseId"/><br/>
             <mu-text-field hintText="Mean Test" v-model="newPatient.MeanTest"/><br/>
-            <mu-text-field hintText="Ward Number" v-model="newPatient.WardNo"/><br/>					
+            <mu-text-field hintText="Ward Number" v-model="newPatient.WardNo"/><br/>
             <mu-raised-button label="Add" primary @click="addPatient"></mu-raised-button>
           </div>
         </div>
@@ -101,7 +101,7 @@
       </section>
     </div>
 
-    <div class="row">		
+    <div class="row">
       <section class="col-lg-6 col-xs-12 connectedSortable">
         <div class="box box-warning">
           <div class="box-header">
@@ -117,7 +117,7 @@
                 <mu-tr>
                   <mu-th>Name</mu-th>
                   <!-- <mu-th>Email</mu-th> -->
-                  <mu-th>Workload</mu-th>							
+                  <mu-th>Workload</mu-th>
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
@@ -146,7 +146,7 @@
                 <mu-tr>
                   <mu-th>Name</mu-th>
                   <!-- <mu-th>Email</mu-th> -->
-                  <mu-th>Workload</mu-th>							
+                  <mu-th>Workload</mu-th>
                 </mu-tr>
               </mu-thead>
               <mu-tbody>
@@ -160,7 +160,7 @@
           </div>
         </div>
       </section>
-    </div>   
+    </div>
 
   </div>
 </template>

@@ -14,7 +14,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "admin-lte": "^2.3.11",
+    "admin-lte": "^2.4.8",
     "axios": "^0.16.2",
     "bootstrap": "^3.3.7",
     "bootstrap3-wysihtml5-bower": "^0.3.3",

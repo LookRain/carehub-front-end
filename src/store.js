@@ -18,7 +18,7 @@ let fetchUser = instance.get('currentuser').then(
             throw err
           })
 
-        
+
 
 Vue.use(Vuex)
 
@@ -69,7 +69,7 @@ const store = new Vuex.Store({
         commit('setUser', data)
       }).catch(err => {
         alert('Something went wrong while trying to log you in.')
-        window.location.replace('/')
+        // window.location.replace('/')
       })
     },
 
@@ -84,7 +84,7 @@ const store = new Vuex.Store({
       })
       .then(calHistoryRes => {
         console.log('chain step 3: received call history')
-        commit('setCallHistory', calHistoryRes.data)        
+        commit('setCallHistory', calHistoryRes.data)
       })
       .catch(err => {
         alert('Failed to retrieve call history, please try re-logging in.')
